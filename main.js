@@ -1,4 +1,5 @@
 import App from './App'
+import store from './store' 
 
 // #ifndef VUE3
 import Vue from 'vue'
@@ -34,7 +35,8 @@ try {
 } catch (error) { }
 
 const app = new Vue({
-  ...App
+  ...App,
+  store
 })
 app.$mount()
 // #endif

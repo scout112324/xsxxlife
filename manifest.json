@@ -1,6 +1,6 @@
 {
-    "name" : "onlineAndOffline",
-    "appid" : "__UNI__4116BA0",
+    "name" : "figma",
+    "appid" : "",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -50,11 +50,18 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx07b72feb60f5e7aa",
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+		// 小程序定位配置
+		"permission": {
+		  "scope.userLocation": {
+		   "desc": "你的位置信息将用于小程序位置接口的效果展示"
+		  }
+		 },
+		 "requiredPrivateInfos": ["getLocation", "chooseLocation"]
     },
     "mp-alipay" : {
         "usingComponents" : true
