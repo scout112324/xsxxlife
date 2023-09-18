@@ -37,6 +37,30 @@
 					<info-item></info-item>
 				</view>
 			</view>
+			<view class="attachment-community">
+				<view class="title">
+					<image class="life" src="../../static/home/shequnbiaoti.png" mode=""></image>
+					<view class="more"></view>
+				</view>
+				<view class="community-list">
+					<view class="community-item">
+						<view class="left">
+
+						</view>
+						<view class="center">
+							<view class="name">
+								上海本地社区生活圈
+							</view>
+							<view class="detail">
+								哲哲小王-上海市 已加入生活圈
+							</view>
+						</view>
+						<view class="right">
+							<button class="add">+加入</button>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -275,8 +299,68 @@
 					}
 				}
 
-				.life-list {
-					
+				.life-list {}
+			}
+
+			.attachment-community {
+				margin-top: 20rpx;
+				height: 711rpx;
+				background: #FFFFFF;
+				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
+				border-radius: 16rpx;
+				padding: 33rpx 20rpx;
+
+				.title {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+
+					.life {
+						width: 155rpx;
+						height: 58rpx;
+					}
+				}
+
+				.community-list {
+					margin-top: 30rpx;
+
+					.community-item {
+						height: 173rpx;
+						background: #F5F5F5;
+						border-radius: 24rpx;
+						margin: 20rpx 0;
+						padding: 28rpx 38rpx;
+
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+
+						.left {
+							width: 96rpx;
+							height: 96rpx;
+							background: #DADBDC;
+							border-radius: 16rpx;
+						}
+						.center {
+							flex: 1;
+							margin: 0 35rpx;
+							.name {
+								font-size: 30rpx;
+								font-family: PingFangSC-Medium, PingFang SC;
+								font-weight: 500;
+								color: #232624;
+								line-height: 42rpx;
+							}
+							.detail {
+								margin-top: 12rpx;
+								font-size: 24rpx;
+								font-family: PingFangSC-Regular, PingFang SC;
+								font-weight: 400;
+								color: #4D504F;
+								line-height: 33rpx;
+							}
+						}
+					}
 				}
 			}
 		}
