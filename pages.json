@@ -36,7 +36,10 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "线上线下"
+				"navigationBarTitleText": "线上线下",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{

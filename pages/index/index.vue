@@ -5,10 +5,6 @@
 				<text>{{ cityname }}</text>
 				<uni-icons type="bottom" size="16"></uni-icons>
 			</view>
-			<view class="search-address">
-				<uni-search-bar radius="20" @confirm="search" :focus="true" v-model="searchValue" cancelButton="none">
-				</uni-search-bar>
-			</view>
 		</view>
 		<view class="notice">
 			<text>公告:</text>
