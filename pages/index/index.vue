@@ -11,45 +11,18 @@
 				</view>
 			</view>
 		</u-navbar>
-		<view class="notice">
-			<text>公告:</text>
-			<text>******</text>
-		</view>
-		<view class="service">
-			<block v-for="item in serviceData" :key="item.id">
-				<button @click="handleClickService(item.name)">{{item.name}}</button>
-			</block>
-			<button class="occupy">宠物寄养</button>
-		</view>
-		<view class="life">
-			<text class="left">生活圈</text>
-			<text class="right">查看更多</text>
-		</view>
-		<view class="life-list">
-			<block v-for="(item,index) in lifeDate" :key="item.id">
-				<view class="life-title">{{item.title}}</view>
-				<view class="life-item">
-					<block v-for="subitem in item.list" :key="subitem.id">
-						<image class="image" :src="subitem.image" alt=""></image>
-					</block>
-				</view>
-			</block>
-		</view>
-		<view class="communities">
-			<view class="title">
-				附近社区
+		<view class="content-page">
+			<view class="notice">
+				<image class="jiebao" src="../../static/home/jiebao.png" mode=""></image>
+				<text class="content">发布闲置后支持线上线下交易啦～</text>
 			</view>
-			<view class="commu-item">
-				<block v-for="item in communitiesData" :key="item.id">
-					<view class="container">
-						<view class="left">
-							{{item.name}}
-						</view>
-						<view class="right">
-							点击加入
-						</view>
+			<view class="service">
+				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item.name)">
+					<image class="icon" :src="item.icon" mode=""></image>
+					<view class="title">
+						{{item.name}}
 					</view>
-				</block>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -64,95 +37,48 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
-				searchValue: "",
 				cityname: "上海市",
-				lifeDate: [{
-						id: 1,
-						title: "闲置：****",
-						list: [{
-								id: 11,
-								name: "测试1",
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 12,
-								name: "测试2",
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 13,
-								name: "测试3",
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							}
-						]
-					},
-					{
-						id: 2,
-						title: "转租：****",
-						list: [{
-								id: 21,
-								name: "测试1",
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 22,
-								name: "测试2",
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 23,
-								name: "测试3",
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							}
-						]
-					}
-				],
-				communitiesData: [{
-						id: 1,
-						name: "松江九亭生活圈"
-					},
-					{
-						id: 2,
-						name: "松江九亭生活圈"
-					},
-					{
-						id: 3,
-						name: "松江九亭生活圈"
-					}
-				],
 				serviceData: [{
 						id: 1,
-						name: "综合服务"
+						name: "综合服务",
+						icon: "../../static/home/zonghefuwu.png"
 					},
 					{
 						id: 2,
-						name: "附近社区"
+						name: "附近社群",
+						icon: "../../static/home/fujinshequn.png"
 					},
 					{
 						id: 3,
-						name: "兼职入口"
+						name: "兼职入口",
+						icon: "../../static/home/jianzhirukou.png"
 					},
 					{
 						id: 4,
-						name: "房屋转让"
+						name: "房屋转让",
+						icon: "../../static/home/fangwuzhuanrang.png"
 					},
 					{
 						id: 5,
-						name: "寻人寻物"
+						name: "寻人寻物",
+						icon: "../../static/home/xunrenxunwu.png"
 					},
 					{
 						id: 6,
-						name: "闲置交易"
+						name: "闲置交易",
+						icon: "../../static/home/xianzhijiaoyi.png"
 					},
 					{
 						id: 7,
-						name: "同城活动"
+						name: "同城活动",
+						icon: "../../static/home/tongchenghuodong.png"
 					},
 					{
 						id: 8,
-						name: "大件清运"
+						name: "大件清运",
+						icon: "../../static/home/dajianqingyun.png"
 					}
-				]
+				],
 			}
 		},
 		onShow() {
@@ -177,7 +103,7 @@
 							url: "/pages/index/service/service"
 						})
 						break;
-					case "附近社区":
+					case "附近社群":
 						uni.navigateTo({
 							url: "/pages/index/service/community"
 						})
@@ -222,13 +148,13 @@
 
 <style lang="scss" scoped>
 	.home-page {
-		margin: 10rpx;
+
 
 		.address {
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
-			
+
 			.dingwei {
 				width: 30rpx;
 				height: 34rpx;
@@ -239,6 +165,7 @@
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+
 				.xiala {
 					width: 16rpx;
 					height: 9rpx;
@@ -247,52 +174,55 @@
 			}
 		}
 
-		.notice {
-			display: flex;
-			justify-content: center;
-		}
+		.content-page {
+			background-color: #F1F1F2;
+			padding: 24rpx 15rpx;
 
-		.service {
-			display: flex;
-			flex-shrink: 1;
-			flex-wrap: wrap;
-
-			::v-deep button {
-				width: 30%;
-				margin: 10rpx;
-				font-size: 28rpx;
-			}
-
-			.occupy {
-				visibility: hidden;
-			}
-		}
-
-		.life {
-			display: flex;
-			justify-content: space-between;
-			align-content: center;
-		}
-
-		.life-list {
-			.life-item {
+			.notice {
 				display: flex;
-				flex-wrap: nowrap;
+				align-items: center;
+				height: 64rpx;
+				background: #FFFFFF;
+				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
+				border-radius: 16rpx;
 
-				.image {
-					margin: 20rpx;
-					display: inline-block;
-					width: 120rpx;
-					height: 120rpx;
+				.jiebao {
+					width: 40rpx;
+					height: 32rpx;
+					margin: 0 10rpx 0 18rpx;
+				}
+
+				.content {
+					font-size: 26rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #855C15;
+					line-height: 26rpx;
 				}
 			}
-		}
 
-		.communities {
-			.container {
+			.service {
 				display: flex;
-				justify-content: space-between;
+				flex-shrink: 1;
+				flex-wrap: wrap;
 				align-items: center;
+				margin: 20rpx 0;
+				height: 348rpx;
+				background: #FFFFFF;
+				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
+				border-radius: 20rpx;
+
+				.item {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					width: 25%;
+
+					.icon {
+						width: 68rpx;
+						height: 60rpx;
+					}
+				}
 			}
 		}
 	}
