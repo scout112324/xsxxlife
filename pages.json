@@ -1,12 +1,14 @@
 {
+	"easycom": {
+		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+	},
 	"tabBar": {
 		"color": "#232624",
 		"selectedColor": "#232624",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"fontSize": "20rpx",
-		"list": [
-			{
+		"list": [{
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "static/tabbar/shouye.png",
@@ -36,133 +38,120 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "线上线下",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#FBE64D",
+				// "navigationBarTitleText": "线上线下",
+				// "enablePullDownRefresh": false,
+				// "navigationBarBackgroundColor": "#FBE64D",
+				// "navigationBarTextStyle": "black"
+				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
 		},
 		{
-            "path" : "pages/unused/index",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "闲置交易",
-                "enablePullDownRefresh": false
-            }          
-        },
-		{
-		    "path" : "pages/unused/detailUnused/detail",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "闲置详情",
-		        "enablePullDownRefresh": false
-		    }          
+			"path": "pages/unused/index",
+			"style": {
+				"navigationBarTitleText": "闲置交易",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-		    "path" : "pages/unused/addUnused/addUnused",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "发布需求",
-		        "enablePullDownRefresh": false
-		    }          
+			"path": "pages/unused/detailUnused/detail",
+			"style": {
+				"navigationBarTitleText": "闲置详情",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-			"path" : "pages/message/index",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "资讯",
-			    "enablePullDownRefresh": false
-			}  
+			"path": "pages/unused/addUnused/addUnused",
+			"style": {
+				"navigationBarTitleText": "发布需求",
+				"enablePullDownRefresh": false
+			}
 		},
 		{
-			"path" : "pages/user/index",
-			"style" :                                                                                    
-			{
-			    "navigationBarTitleText": "我的",
-			    "enablePullDownRefresh": false
-			}  
+			"path": "pages/message/index",
+			"style": {
+				"navigationBarTitleText": "资讯",
+				"enablePullDownRefresh": false
+			}
 		},
-        {
-            "path" : "pages/index/area/area",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }       
-        },
+		{
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/index/area/area",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
 		{
 			"path": "pages/index/service/service",
-			"style" :
-			{
-			    "navigationBarTitleText": "综合服务",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "综合服务",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/index/service/modules/serviceDetail/serviceDetail",
-			"style" :
-			{
-			    "navigationBarTitleText": "本地服务",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "本地服务",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/index/service/community",
-			"style" :
-			{
-			    "navigationBarTitleText": "附近社群",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "附近社群",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/index/service/partTime",
-			"style" :
-			{
-			    "navigationBarTitleText": "兼职入口",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "兼职入口",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/index/service/houseTransfer",
-			"style" :
-			{
-			    "navigationBarTitleText": "房屋转让",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "房屋转让",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/index/service/lookForPeople",
-			"style" :
-			{
-			    "navigationBarTitleText": "寻人寻物",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "寻人寻物",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/index/service/idleTransaction",
-			"style" :
-			{
-			    "navigationBarTitleText": "闲置交易",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "闲置交易",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/index/service/intraCityActivity",
-			"style" :
-			{
-			    "navigationBarTitleText": "同城活动",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "同城活动",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/index/service/largeShipmentClearance",
-			"style" :
-			{
-			    "navigationBarTitleText": "大件清运",
-			    "enablePullDownRefresh": false
+			"style": {
+				"navigationBarTitleText": "大件清运",
+				"enablePullDownRefresh": false
 			}
 		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

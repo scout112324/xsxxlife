@@ -1,11 +1,16 @@
 <template>
 	<view class="home-page">
-		<view class="address">
-			<view class="select-address" @click="handleAddress">
-				<text>{{ cityname }}</text>
-				<uni-icons type="bottom" size="16"></uni-icons>
+		<u-navbar title="线上线下" :bgColor="bgColor" placeholder leftIcon="" :titleStyle="titleStyle">
+			<view class="u-nav-slot" slot="left">
+				<view class="address">
+					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
+					<view class="select-address" @click="handleAddress">
+						<text>{{ cityname }}</text>
+						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
+					</view>
+				</view>
 			</view>
-		</view>
+		</u-navbar>
 		<view class="notice">
 			<text>公告:</text>
 			<text>******</text>
@@ -13,7 +18,7 @@
 		<view class="service">
 			<block v-for="item in serviceData" :key="item.id">
 				<button @click="handleClickService(item.name)">{{item.name}}</button>
-			</block>	
+			</block>
 			<button class="occupy">宠物寄养</button>
 		</view>
 		<view class="life">
@@ -54,8 +59,13 @@
 	export default {
 		data() {
 			return {
+				bgColor: "#FAE54D",
+				titleStyle: {
+					fontWeight: 500,
+					color: "#131313"
+				},
 				searchValue: "",
-				cityname: "上海",
+				cityname: "上海市",
 				lifeDate: [{
 						id: 1,
 						title: "闲置：****",
@@ -110,8 +120,7 @@
 						name: "松江九亭生活圈"
 					}
 				],
-				serviceData: [
-					{
+				serviceData: [{
 						id: 1,
 						name: "综合服务"
 					},
@@ -162,10 +171,10 @@
 			search() {},
 			// 点击不同的服务切换到不同的服务界面
 			handleClickService(name) {
-				switch(name) {
+				switch (name) {
 					case "综合服务":
 						uni.navigateTo({
-							url:"/pages/index/service/service"
+							url: "/pages/index/service/service"
 						})
 						break;
 					case "附近社区":
@@ -185,12 +194,12 @@
 						break;
 					case "寻人寻物":
 						uni.navigateTo({
-							url:"/pages/index/service/lookForPeople"
+							url: "/pages/index/service/lookForPeople"
 						})
 						break;
 					case "闲置交易":
 						uni.navigateTo({
-							url:"/pages/index/service/idleTransaction"
+							url: "/pages/index/service/idleTransaction"
 						})
 						break;
 					case "同城活动":
@@ -200,11 +209,11 @@
 						break;
 					case "大件清运":
 						uni.navigateTo({
-							url:"/pages/index/service/largeShipmentClearance"
+							url: "/pages/index/service/largeShipmentClearance"
 						})
 						break;
 					default:
-					    return
+						return
 				}
 			}
 		}
@@ -219,11 +228,22 @@
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
-			height: 100rpx;
+			
+			.dingwei {
+				width: 30rpx;
+				height: 34rpx;
+				margin-right: 4rpx;
+			}
 
 			.select-address {
 				display: flex;
 				justify-content: space-between;
+				align-items: center;
+				.xiala {
+					width: 16rpx;
+					height: 9rpx;
+					margin-left: 9rpx;
+				}
 			}
 		}
 
