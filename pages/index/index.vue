@@ -43,22 +43,9 @@
 					<view class="more"></view>
 				</view>
 				<view class="community-list">
-					<view class="community-item">
-						<view class="left">
-
-						</view>
-						<view class="center">
-							<view class="name">
-								上海本地社区生活圈
-							</view>
-							<view class="detail">
-								哲哲小王-上海市 已加入生活圈
-							</view>
-						</view>
-						<view class="right">
-							<u-button text="+加入"></u-button>
-						</view>
-					</view>
+					<community-item></community-item>
+					<community-item></community-item>
+					<community-item></community-item>
 				</view>
 			</view>
 		</view>
@@ -67,9 +54,11 @@
 
 <script>
 	import infoItem from "@/components/info_item.vue"
+	import communityItem from "@/components/community_item.vue"
 	export default {
 		components: {
-			infoItem
+			infoItem,
+			communityItem
 		},
 		data() {
 			return {
@@ -323,58 +312,7 @@
 				}
 
 				.community-list {
-					margin-top: 30rpx;
-
-					.community-item {
-						height: 173rpx;
-						background: #F5F5F5;
-						border-radius: 24rpx;
-						margin: 20rpx 0;
-						padding: 28rpx 38rpx;
-						box-sizing: border-box;
-
-						display: flex;
-						justify-content: space-between;
-						align-items: center;
-
-						.left {
-							width: 96rpx;
-							height: 96rpx;
-							background: #DADBDC;
-							border-radius: 16rpx;
-						}
-
-						.center {
-							flex: 1;
-							margin: 0 35rpx;
-
-							.name {
-								font-size: 30rpx;
-								font-family: PingFangSC-Medium, PingFang SC;
-								font-weight: 500;
-								color: #232624;
-								line-height: 42rpx;
-							}
-
-							.detail {
-								margin-top: 12rpx;
-								font-size: 24rpx;
-								font-family: PingFangSC-Regular, PingFang SC;
-								font-weight: 400;
-								color: #4D504F;
-								line-height: 33rpx;
-							}
-						}
-
-						.right {
-							::v-deep .u-button {
-								width: 112rpx;
-								height: 52rpx;
-								background: #FFD100;
-								border-radius: 26rpx;
-							}
-						}
-					}
+					margin-top: 30rpx;	
 				}
 			}
 		}
