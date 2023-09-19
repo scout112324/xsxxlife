@@ -1,5 +1,5 @@
 <template>
-	<view class="item">
+	<view class="item" @click="handleClick">
 		<view class="avatar">
 			<image class="image"
 				src="https://tse4-mm.cn.bing.net/th/id/OIP-C.u1D8WJbUIIXMV2w-qa4r5wAAAA?pid=ImgDet&rs=1" mode="">
@@ -57,6 +57,21 @@
 </template>
 
 <script>
+	export default {
+		props: {
+			pageType: String
+		},
+		data() {
+			return {}
+		},
+		methods: {
+			handleClick() {
+				if(this.pageType == 'unused') {
+					this.$emit('handleJumpDetail')
+				}
+			}
+		}
+	}
 </script>
 
 <style lang="scss" scoped>

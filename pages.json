@@ -59,7 +59,9 @@
 			"path": "pages/unused/detailUnused/detail",
 			"style": {
 				"navigationBarTitleText": "闲置详情",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{
