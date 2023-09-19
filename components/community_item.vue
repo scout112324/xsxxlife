@@ -1,8 +1,9 @@
 <template>
 	<view class="community-item">
-		<view class="left">
+		<uni-badge class="uni-badge-left-margin" :text="value" absolute="rightTop" size="small">
+			<view class="left"></view>
+		</uni-badge>
 
-		</view>
 		<view class="center">
 			<view class="name">
 				上海本地社区生活圈
@@ -18,6 +19,13 @@
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+				value: 100
+			}
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -38,6 +46,7 @@
 			height: 96rpx;
 			background: #DADBDC;
 			border-radius: 16rpx;
+
 		}
 
 		.center {
@@ -68,7 +77,7 @@
 				height: 52rpx;
 				background: #FFD100;
 				border-radius: 26rpx;
-				
+
 				font-size: 28rpx;
 				font-family: PingFangSC-Medium, PingFang SC;
 				font-weight: 500;

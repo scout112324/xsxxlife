@@ -1,44 +1,38 @@
 <template>
 	<view class="community-page">
-		<view class="community-list">
-			<view class="community-item" v-for="item in communityData" :key="item.id">
-				<view class="left">
-					{{item.address}}
-				</view>
-				<view class="right">
-					<text>点击加入</text>
-				</view>
+		<u-navbar title="附近社群" :bgColor="bgColor" leftIcon="" :titleStyle="titleStyle" placeholder>
+			<view class="u-nav-slot" slot="left"></view>
+		</u-navbar>
+		<view class="community-container">
+			<view class="community-list">
+				<community-item></community-item>
+				<community-item></community-item>
+				<community-item></community-item>
+				<community-item></community-item>
+				<community-item></community-item>
+				<community-item></community-item>
+				<community-item></community-item>
+				<community-item></community-item>
+				<community-item></community-item>
+				<community-item></community-item>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import communityItem from "@/components/community_item.vue"
 	export default {
+		components: {
+			communityItem
+		},
 		data() {
 			return {
-				communityData: [
-					{
-						id: 1,
-						address: "松江九亭生活圈"
-					},
-					{
-						id: 2,
-						address: "松江生活圈"
-					},
-					{
-						id: 3,
-						address: "上海本地社区生活圈"
-					},
-					{
-						id: 4,
-						address: "松江九亭生活圈"
-					},
-					{
-						id: 5,
-						address: "青浦生活圈"
-					}
-				]
+				bgColor: "#FBE94E",
+				titleStyle: {
+					fontWeight: 500,
+					color: "#131313"
+				},
 			}
 		},
 		methods: {
@@ -49,15 +43,21 @@
 
 <style lang="scss" scoped>
 .community-page {
-	.community-list {
-		margin: 20rpx;
-		.community-item {
-			margin: 20rpx 0;
-			padding: 20rpx;
-			background-color: #ccc;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+	background-color: #F3F6F5;
+	.community-container {
+		height: 92rpx;
+		background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		border-bottom-left-radius: 30rpx;
+		border-bottom-right-radius: 30rpx;
+		box-sizing: border-box;
+		.community-list {
+			margin: 0rpx 15rpx;
+			height: 1150rpx;
+			overflow-y: auto;
+			background: #FFFFFF;
+			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
+			border-radius: 20rpx;
+			padding: 10rpx 20rpx;
 		}
 	}
 }

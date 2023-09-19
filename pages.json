@@ -108,7 +108,9 @@
 			"path": "pages/index/service/community",
 			"style": {
 				"navigationBarTitleText": "附近社群",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{

@@ -39,7 +39,6 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
-				systemBarHeight: 0,
 				userData: [{
 						id: 1,
 						name: "收藏列表",
