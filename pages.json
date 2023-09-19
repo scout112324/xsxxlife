@@ -65,8 +65,10 @@
 		{
 			"path": "pages/unused/addUnused/addUnused",
 			"style": {
-				"navigationBarTitleText": "发布需求",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "发布闲置",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{

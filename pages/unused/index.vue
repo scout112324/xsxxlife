@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="publish">
-			<u-button icon="plus-circle-fill" text="图标按钮"></u-button>
+			<u-button icon="plus-circle-fill" text="图标按钮" @click="handlePublishClick"></u-button>
 		</view>
 		<!-- <view class="idle-list">
 			<view class="idle-item" v-for="item in unusedData" :key="item.id" @click="handleDetail(item)">
@@ -62,11 +62,11 @@
 			// 		url: "/pages/unused/detailUnused/detail"
 			// 	})
 			// },
-			// fabClick() {
-			// 	uni.navigateTo({
-			// 		url: "/pages/unused/addUnused/addUnused"
-			// 	})
-			// }
+			handlePublishClick() {
+				uni.navigateTo({
+					url: "/pages/unused/addUnused/addUnused"
+				})
+			}
 		}
 	}
 </script>
@@ -84,7 +84,7 @@
 
 			.unused-list {
 				margin: 0rpx 15rpx;
-				height: 966rpx;
+				height: 1006rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
