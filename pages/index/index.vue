@@ -56,7 +56,7 @@
 							</view>
 						</view>
 						<view class="right">
-							<button class="add">+加入</button>
+							<u-button text="+加入"></u-button>
 						</view>
 					</view>
 				</view>
@@ -309,6 +309,7 @@
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 16rpx;
 				padding: 33rpx 20rpx;
+				box-sizing: border-box;
 
 				.title {
 					display: flex;
@@ -330,6 +331,7 @@
 						border-radius: 24rpx;
 						margin: 20rpx 0;
 						padding: 28rpx 38rpx;
+						box-sizing: border-box;
 
 						display: flex;
 						justify-content: space-between;
@@ -341,9 +343,11 @@
 							background: #DADBDC;
 							border-radius: 16rpx;
 						}
+
 						.center {
 							flex: 1;
 							margin: 0 35rpx;
+
 							.name {
 								font-size: 30rpx;
 								font-family: PingFangSC-Medium, PingFang SC;
@@ -351,6 +355,7 @@
 								color: #232624;
 								line-height: 42rpx;
 							}
+
 							.detail {
 								margin-top: 12rpx;
 								font-size: 24rpx;
@@ -358,6 +363,15 @@
 								font-weight: 400;
 								color: #4D504F;
 								line-height: 33rpx;
+							}
+						}
+
+						.right {
+							::v-deep .u-button {
+								width: 112rpx;
+								height: 52rpx;
+								background: #FFD100;
+								border-radius: 26rpx;
 							}
 						}
 					}
