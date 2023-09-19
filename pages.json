@@ -50,7 +50,9 @@
 			"path": "pages/unused/index",
 			"style": {
 				"navigationBarTitleText": "闲置交易",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{
@@ -138,7 +140,9 @@
 			"path": "pages/index/service/idleTransaction",
 			"style": {
 				"navigationBarTitleText": "闲置交易",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{

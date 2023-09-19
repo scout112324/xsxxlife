@@ -1,6 +1,20 @@
 <template>
 	<view class="unused-page">
-		<view class="idle-list">
+		<u-navbar title="闲置" :bgColor="bgColor" leftIcon="" :titleStyle="titleStyle" placeholder>
+			<view class="u-nav-slot" slot="left"></view>
+		</u-navbar>
+		<view class="unused-container">
+			<view class="unused-list">
+				<infoItem></infoItem>
+				<infoItem></infoItem>
+				<infoItem></infoItem>
+				<infoItem></infoItem>
+			</view>
+		</view>
+		<view class="publish">
+			<u-button icon="plus-circle-fill" text="图标按钮"></u-button>
+		</view>
+		<!-- <view class="idle-list">
 			<view class="idle-item" v-for="item in unusedData" :key="item.id" @click="handleDetail(item)">
 				<view class="title">
 					<view class="left">
@@ -23,114 +37,81 @@
 		<view class="publish">
 			<uni-fab ref="fab" :pattern="pattern" :horizontal="horizontal" :vertical="vertical"
 				:direction="direction" @fabClick="fabClick" />
-		</view>
+		</view> -->
 	</view>
 </template>
 
 <script>
+	import infoItem from "@/components/info_item.vue"
 	export default {
+		components: {
+			infoItem
+		},
 		data() {
 			return {
-				unusedData: [{
-						id: 11,
-						desc: "房屋转租房屋转租房屋转租房屋转租房屋转租房屋转租",
-						price: "2000",
-						goods: [{
-								id: 1,
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 2,
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 3,
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 4,
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-						]
-					},
-					{
-						id: 12,
-						desc: "房屋转租房屋转租房屋转租房屋转租房屋转租房屋转租",
-						price: "2000",
-						goods: [{
-								id: 1,
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 2,
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 3,
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-							{
-								id: 4,
-								image: "https://tse3-mm.cn.bing.net/th/id/OIP-C.W38cHNbpeslJrW3v0DyP4QHaEK?pid=ImgDet&rs=1"
-							},
-						]
-					}
-				],
-				title: 'uni-fab',
-				directionStr: '垂直',
-				horizontal: 'right',
-				vertical: 'bottom',
-				direction: 'horizontal',
-				pattern: {
-					color: '#7A7E83',
-					backgroundColor: '#fff',
-					selectedColor: '#007AFF',
-					buttonColor: '#007AFF',
-					iconColor: '#fff'
+				bgColor: "#FBE94E",
+				titleStyle: {
+					fontWeight: 500,
+					color: "#131313"
 				},
-				is_color_type: false,
 			}
 		},
 		methods: {
-			handleDetail(item) {
-				uni.navigateTo({
-					url: "/pages/unused/detailUnused/detail"
-				})
-			},
-			fabClick() {
-				uni.navigateTo({
-					url: "/pages/unused/addUnused/addUnused"
-				})
-			}
+			// handleDetail(item) {
+			// 	uni.navigateTo({
+			// 		url: "/pages/unused/detailUnused/detail"
+			// 	})
+			// },
+			// fabClick() {
+			// 	uni.navigateTo({
+			// 		url: "/pages/unused/addUnused/addUnused"
+			// 	})
+			// }
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
 	.unused-page {
-		.idle-list {
-			.idle-item {
-				background-color: #ccc;
-				margin: 20rpx;
-				padding: 20rpx;
+		background-color: #F3F6F5;
 
-				.title {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-				}
+		.unused-container {
+			height: 92rpx;
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+			border-bottom-left-radius: 30rpx;
+			border-bottom-right-radius: 30rpx;
+			box-sizing: border-box;
 
-				.content {
-					display: flex;
-					justify-content: space-between;
-					flex-wrap: wrap;
+			.unused-list {
+				margin: 0rpx 15rpx;
+				height: 966rpx;
+				background: #FFFFFF;
+				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
+				border-radius: 20rpx;
+				overflow-y: auto;
+				padding: 10rpx 20rpx;
+			}
+		}
 
-					.image {
-						margin: 20rpx 0;
-						width: 30%;
-						height: 220rpx;
-					}
-				}
+		.publish {
+			position: fixed;
+			bottom: 15rpx;
+			width: 100%;
+
+			::v-deep .u-button {
+				width: 280rpx;
+				height: 91rpx;
+				background: #FFD100;
+				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(255, 209, 0, 0.31);
+				border-radius: 46rpx;
+				border: 0 solid rgba(255, 209, 0, 0.31);	
+			}
+			::v-deep .u-button__text {
+				margin-left: 6rpx;
+				font-size: 30rpx !important;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #232624;
 			}
 		}
 	}
