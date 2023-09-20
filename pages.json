@@ -199,8 +199,21 @@
 			"path": "pages/index/service/largeShipmentClearance",
 			"style": {
 				"navigationBarTitleText": "大件清运",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
+		},
+		{
+		    "path" : "pages/index/service/modules/largeShipmentDetail/largeShipmentDetail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "大件清运详情",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+		    }
+		    
 		}
     ],
 	"globalStyle": {

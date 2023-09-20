@@ -74,6 +74,8 @@
 					this.$emit('handleJumpHouseDetail')
 				} else if (this.pageType == 'peopleTransfer') {
 					this.$emit('handleJumpPeopleDetail')
+				} else if (this.pageType == 'largeShipmentTransfer') {
+					this.$emit('handleJumpLargeDetail')
 				}
 			}
 		}
