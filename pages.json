@@ -134,7 +134,9 @@
 			"path": "pages/index/service/partTime",
 			"style": {
 				"navigationBarTitleText": "兼职入口",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{

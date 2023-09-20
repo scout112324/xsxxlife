@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="publish">
-			<u-button icon="plus-circle-fill" text="图标按钮" @click="handlePublishClick"></u-button>
+			<u-button icon="plus-circle-fill" text="发布闲置" @click="handlePublishClick"></u-button>
 		</view>
 	</view>
 </template>
