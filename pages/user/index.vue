@@ -51,27 +51,32 @@
 					},
 					{
 						id: 3,
+						name: "我的消息",
+						icon: "../../static/user/xiaoxi.png"
+					},
+					{
+						id: 4,
 						name: "我的活动",
 						icon: "../../static/user/huodong.png"
 					},
 					{
-						id: 4,
+						id: 5,
 						name: "我的发布",
 						icon: "../../static/user/fabu.png"
 					},
 					{
-						id: 5,
+						id: 6,
 						name: "交易记录",
 						icon: "../../static/user/jiaoyi.png"
 					},
 					
 					{
-						id: 6,
+						id: 7,
 						name: "联系客服",
 						icon: "../../static/user/kefu.png"
 					},
 					{
-						id: 7,
+						id: 8,
 						name: "意见反馈",
 						icon: "../../static/user/yijian.png"
 					}
