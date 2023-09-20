@@ -70,6 +70,8 @@
 					this.$emit('handleJumpDetail')
 				} else if (this.pageType == 'message') {
 					this.$emit('handleJumpMessageDetail')
+				} else if (this.pageType == 'houseTransfer') {
+					this.$emit('handleJumpHouseDetail')
 				}
 			}
 		}
