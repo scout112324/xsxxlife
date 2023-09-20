@@ -111,7 +111,9 @@
 			"path": "pages/index/service/service",
 			"style": {
 				"navigationBarTitleText": "综合服务",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{

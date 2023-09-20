@@ -270,6 +270,7 @@
 					.icon {
 						width: 68rpx;
 						height: 60rpx;
+						margin-bottom: 17rpx;
 					}
 				}
 			}
