@@ -29,7 +29,7 @@
 			<view class="life-circle">
 				<view class="title">
 					<image class="life" src="../../static/home/shenghuoquanbiaoti.png" mode=""></image>
-					<view class="more">
+					<view class="more" @click="handleMoreClick">
 						<text class="check">查看更多</text>
 						<image class="tiaozhuan" src="../../static/home/tiaozhuan.png" mode=""></image>
 					</view>
@@ -121,6 +121,12 @@
 		},
 		onHide() {},
 		methods: {
+			// 点击更多跳转到闲置列表
+			handleMoreClick() {
+				uni.switchTab({
+					url: "/pages/unused/index"
+				})
+			},
 			handleAddress() {
 				uni.navigateTo({
 						url: "/pages/index/area/area"
@@ -156,9 +162,12 @@
 						})
 						break;
 					case "闲置交易":
-						uni.navigateTo({
-							url: "/pages/index/service/idleTransaction"
+						uni.switchTab({
+							url: "/pages/unused/index"
 						})
+						// uni.navigateTo({
+						// 	url: "/pages/index/service/idleTransaction"
+						// })
 						break;
 					case "同城活动":
 						uni.navigateTo({
