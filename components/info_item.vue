@@ -66,8 +66,10 @@
 		},
 		methods: {
 			handleClick() {
-				if(this.pageType == 'unused') {
+				if (this.pageType == 'unused') {
 					this.$emit('handleJumpDetail')
+				} else if (this.pageType == 'message') {
+					this.$emit('handleJumpMessageDetail')
 				}
 			}
 		}
