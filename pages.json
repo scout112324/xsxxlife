@@ -163,8 +163,21 @@
 			"path": "pages/index/service/lookForPeople",
 			"style": {
 				"navigationBarTitleText": "寻人寻物",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
+		},
+		{
+		    "path" : "pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "寻人寻物详情",
+		        "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+		    }
+		    
 		},
 		{
 			"path": "pages/index/service/idleTransaction",
@@ -189,7 +202,7 @@
 				"enablePullDownRefresh": false
 			}
 		}
-	],
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
