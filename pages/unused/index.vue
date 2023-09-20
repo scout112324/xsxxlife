@@ -4,7 +4,7 @@
 			<view class="u-nav-slot" slot="left"></view>
 		</u-navbar>
 		<view class="unused-container">
-			<view class="unused-list">
+			<view class="unused-list" :style="{'height':screenHeight}">
 				<infoItem :pageType="pageType" @handleJumpDetail="handleJumpDetail"></infoItem>
 				<infoItem :pageType="pageType"></infoItem>
 				<infoItem :pageType="pageType"></infoItem>
@@ -23,8 +23,13 @@
 		components: {
 			infoItem
 		},
+		onReady() {
+			this.screenHeight = uni.getSystemInfoSync().screenHeight*2-380+'rpx'
+			console.log(this.screenHeight)
+		},
 		data() {
 			return {
+				screenHeight: 0,
 				pageType: "unused",
 				bgColor: "#FBE94E",
 				titleStyle: {
@@ -51,6 +56,7 @@
 <style lang="scss" scoped>
 	.unused-page {
 		background-color: #F3F6F5;
+		height: 100vh;
 
 		.unused-container {
 			height: 92rpx;
@@ -61,7 +67,7 @@
 
 			.unused-list {
 				margin: 0rpx 15rpx;
-				height: 1006rpx;
+				// height: 1006rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
