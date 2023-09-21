@@ -253,13 +253,18 @@
 					}
 				}
 			}
+
 			.btn-contact {
 				margin: 0;
 				padding: 0;
-				border: 1 solid transparent;
 				background-color: #ffffff;
 				height: 44rpx;
 				line-height: 44rpx;
+
+				&::after {
+					border: none
+				}
+
 			}
 		}
 
