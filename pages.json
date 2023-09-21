@@ -169,15 +169,14 @@
 			}
 		},
 		{
-		    "path" : "pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "寻人寻物详情",
-		        "enablePullDownRefresh": false,
+			"path": "pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail",
+			"style": {
+				"navigationBarTitleText": "寻人寻物详情",
+				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#FBE64D",
 				"navigationBarTextStyle": "black"
-		    }
-		    
+			}
+
 		},
 		{
 			"path": "pages/index/service/idleTransaction",
@@ -192,7 +191,9 @@
 			"path": "pages/index/service/intraCityActivity",
 			"style": {
 				"navigationBarTitleText": "同城活动",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{
@@ -205,17 +206,16 @@
 			}
 		},
 		{
-		    "path" : "pages/index/service/modules/largeShipmentDetail/largeShipmentDetail",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "大件清运详情",
-		        "enablePullDownRefresh": false,
+			"path": "pages/index/service/modules/largeShipmentDetail/largeShipmentDetail",
+			"style": {
+				"navigationBarTitleText": "大件清运详情",
+				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#FBE64D",
 				"navigationBarTextStyle": "black"
-		    }
-		    
+			}
+
 		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

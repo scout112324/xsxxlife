@@ -59,7 +59,7 @@
 				</view>
 			</view>
 			<view class="communicate">
-				<u-button icon="share-square" text="联系卖家" @click="handleCommuniteClick"></u-button>
+				<u-button icon="share-square" text="立即下单" @click="handleCommuniteClick"></u-button>
 			</view>
 		</view>
 	</view>
