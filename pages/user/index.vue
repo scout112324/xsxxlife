@@ -14,7 +14,7 @@
 			</view>
 		</view>
 		<view class="user-list">
-			<view class="user-item" v-for="item in userData" :key="item.id" @click="handleJumpDetail(item.name)">
+			<view class="user-item" v-for="item in userData" :key="item.id">
 				<view class="icon">
 					<image class="icon-image" :src="item.icon" mode=""></image>
 				</view>
@@ -22,8 +22,13 @@
 					<view class="name">
 						{{item.name}}
 					</view>
-					<view class="right">
-						<view class="new">
+					<view class="right" v-if="item.name=='联系客服'">
+						<button class="btn-contact" open-type="contact">
+							<uni-icons type="forward" size="22"></uni-icons>
+						</button>
+					</view>
+					<view class="right" @click="handleJumpDetail(item.name)" v-else>
+						<view class="new" v-if="item.name=='收藏列表'">
 							NEW
 						</view>
 						<uni-icons type="forward" size="22"></uni-icons>
@@ -125,11 +130,11 @@
 							url: "/pages/user/trading/trading"
 						})
 						break
-					case '联系客服':
-						uni.navigateTo({
-							url: "/pages/user/service/service"
-						})
-						break
+						// case '联系客服':
+						// 	uni.navigateTo({
+						// 		url: "/pages/user/service/service"
+						// 	})
+						// 	break
 					case '意见反馈':
 						uni.navigateTo({
 							url: "/pages/user/feedback/feedback"
@@ -247,6 +252,14 @@
 						color: #AAAAAA !important;
 					}
 				}
+			}
+			.btn-contact {
+				margin: 0;
+				padding: 0;
+				border: 1 solid transparent;
+				background-color: #ffffff;
+				height: 44rpx;
+				line-height: 44rpx;
 			}
 		}
 
