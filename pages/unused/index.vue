@@ -4,12 +4,14 @@
 			<view class="u-nav-slot" slot="left"></view>
 		</u-navbar>
 		<view class="unused-container">
-			<view class="unused-list" :style="{'height':screenHeight}">
-				<infoItem :pageType="pageType" @handleJumpDetail="handleJumpDetail"></infoItem>
-				<infoItem :pageType="pageType"></infoItem>
-				<infoItem :pageType="pageType"></infoItem>
-				<infoItem :pageType="pageType"></infoItem>
-			</view>
+			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
+			</uni-easyinput>
+		</view>
+		<view class="unused-list" :style="{'height':screenHeight}">
+			<infoItem :pageType="pageType" @handleJumpDetail="handleJumpDetail"></infoItem>
+			<infoItem :pageType="pageType"></infoItem>
+			<infoItem :pageType="pageType"></infoItem>
+			<infoItem :pageType="pageType"></infoItem>
 		</view>
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布闲置" @click="handlePublishClick"></u-button>
@@ -20,15 +22,19 @@
 <script>
 	import infoItem from "@/components/info_item.vue"
 	export default {
+		options: {
+			styleIsolation: 'shared',
+		},
 		components: {
 			infoItem
 		},
 		onReady() {
-			this.screenHeight = uni.getSystemInfoSync().screenHeight*2-380+'rpx'
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 510 + 'rpx'
 			console.log(this.screenHeight)
 		},
 		data() {
 			return {
+				keyword: "",
 				screenHeight: 0,
 				pageType: "unused",
 				bgColor: "#FBE94E",
@@ -39,6 +45,8 @@
 			}
 		},
 		methods: {
+			// 搜索
+			handleConfirm() {},
 			handleJumpDetail() {
 				uni.navigateTo({
 					url: "/pages/unused/detailUnused/detail"
@@ -59,21 +67,30 @@
 		height: 100vh;
 
 		.unused-container {
-			height: 92rpx;
+			height: 110rpx;
 			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
-			border-bottom-left-radius: 30rpx;
-			border-bottom-right-radius: 30rpx;
 			box-sizing: border-box;
+			box-sizing: border-box;
+			padding: 19rpx 0;
 
-			.unused-list {
-				margin: 0rpx 15rpx;
-				// height: 1006rpx;
-				background: #FFFFFF;
-				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
-				border-radius: 20rpx;
-				overflow-y: auto;
-				padding: 10rpx 20rpx;
+			::v-deep .uni-easyinput {
+				height: 72rpx;
+				width: 694rpx;
+				margin: 0 28rpx;
+				
 			}
+			::v-deep .is-input-border {
+				border-radius: 36rpx;
+			}
+		}
+
+		.unused-list {
+			margin: 21rpx 15rpx;
+			background: #FFFFFF;
+			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
+			border-radius: 20rpx;
+			overflow-y: auto;
+			padding: 10rpx 20rpx;
 		}
 
 		.publish {

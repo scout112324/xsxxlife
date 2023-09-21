@@ -5,7 +5,10 @@
 				<u-icon name="arrow-left" size="18" @click="handleBack"></u-icon>
 			</view>
 		</u-navbar>
-		<view class="part-time-container"></view>
+		<view class="part-time-container">
+			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
+			</uni-easyinput>
+		</view>
 		<view class="part-time-list" :style="{'height':screenHeight}">
 			<partTimeItem></partTimeItem>
 			<partTimeItem></partTimeItem>
@@ -23,15 +26,19 @@
 <script>
 	import partTimeItem from "./components/partTimeItem.vue"
 	export default {
+		options: {
+			styleIsolation: 'shared',
+		},
 		components: {
 			partTimeItem
 		},
 		onReady() {
-			this.screenHeight = uni.getSystemInfoSync().screenHeight*2-250+'rpx'
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 380 + 'rpx'
 			// console.log(this.screenHeight)
 		},
 		data() {
 			return {
+				keyword: "",
 				bgColor: "#FBE94E",
 				titleStyle: {
 					fontWeight: 500,
@@ -41,6 +48,8 @@
 			}
 		},
 		methods: {
+			// 搜索
+			handleConfirm() {},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index"
@@ -58,16 +67,28 @@
 
 		.part-time-container {
 			background-color: #F3F6F5;
-			height: 92rpx;
+			height: 110rpx;
 			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
-			border-bottom-left-radius: 30rpx;
-			border-bottom-right-radius: 30rpx;
+			// border-bottom-left-radius: 30rpx;
+			// border-bottom-right-radius: 30rpx;
 			box-sizing: border-box;
+			padding: 19rpx 0;
+
+			::v-deep .uni-easyinput {
+				height: 72rpx;
+				width: 694rpx;
+				margin: 0 28rpx;
+
+			}
+
+			::v-deep .is-input-border {
+				border-radius: 36rpx;
+			}
 		}
 
 		.part-time-list {
 			background-color: #F3F6F5;
-			margin: -92rpx 15rpx 15rpx 15rpx;
+			margin: 20rpx 15rpx 15rpx 15rpx;
 			overflow-y: auto;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			border-radius: 20rpx;
