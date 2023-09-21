@@ -25,6 +25,15 @@
 						{{item.name}}
 					</view>
 				</view>
+				<view class="item" @click="handleClickService('闲置交易')">
+					<image class="icon" src="../../static/home/mianfeixianzhijiaoyi.png" mode=""></image>
+					<view class="title">
+						闲置专区
+					</view>
+					<view class="free">
+						免费
+					</view>
+				</view>
 			</view>
 			<view class="life-circle">
 				<view class="title">
@@ -265,7 +274,7 @@
 				flex-wrap: wrap;
 				align-items: center;
 				margin: 20rpx 0;
-				height: 348rpx;
+				height: 498rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
@@ -275,11 +284,29 @@
 					flex-direction: column;
 					align-items: center;
 					width: 25%;
+					position: relative;
 
 					.icon {
 						width: 68rpx;
 						height: 60rpx;
 						margin-bottom: 17rpx;
+					}
+					.free {
+						position: absolute;
+						right: 15rpx;
+						top: -20rpx;
+						width: 58rpx;
+						height: 35rpx;
+						background: #EA3D5E;
+						border-radius: 8rpx;
+						border: 1rpx solid #FFFFFF;
+						text-align: center;
+						
+						font-size: 22rpx;
+						font-family: PingFangSC-Regular, PingFang SC;
+						font-weight: 400;
+						color: #FFFFFF;
+						line-height: 35rpx;
 					}
 				}
 			}
