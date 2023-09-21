@@ -14,7 +14,7 @@
 			</view>
 		</view>
 		<view class="user-list">
-			<view class="user-item" v-for="item in userData" :key="item.id">
+			<view class="user-item" v-for="item in userData" :key="item.id" @click="handleJumpDetail(item.name)">
 				<view class="icon">
 					<image class="icon-image" :src="item.icon" mode=""></image>
 				</view>
@@ -22,7 +22,12 @@
 					<view class="name">
 						{{item.name}}
 					</view>
-					<uni-icons type="forward" size="22"></uni-icons>
+					<view class="right">
+						<view class="new">
+							NEW
+						</view>
+						<uni-icons type="forward" size="22"></uni-icons>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -69,7 +74,7 @@
 						name: "交易记录",
 						icon: "../../static/user/jiaoyi.png"
 					},
-					
+
 					{
 						id: 7,
 						name: "联系客服",
@@ -88,7 +93,52 @@
 
 		},
 		methods: {
-
+			handleJumpDetail(name) {
+				switch (name) {
+					case '收藏列表':
+						uni.navigateTo({
+							url: "/pages/user/collection/collection"
+						})
+						break
+					case '点赞列表':
+						uni.navigateTo({
+							url: "/pages/user/upvote/upvote"
+						})
+						break
+					case '我的消息':
+						uni.navigateTo({
+							url: "/pages/user/message/message"
+						})
+						break
+					case '我的活动':
+						uni.navigateTo({
+							url: "/pages/user/activity/activity"
+						})
+						break
+					case '我的发布':
+						uni.navigateTo({
+							url: "/pages/user/publish/publish"
+						})
+						break
+					case '交易记录':
+						uni.navigateTo({
+							url: "/pages/user/trading/trading"
+						})
+						break
+					case '联系客服':
+						uni.navigateTo({
+							url: "/pages/user/service/service"
+						})
+						break
+					case '意见反馈':
+						uni.navigateTo({
+							url: "/pages/user/feedback/feedback"
+						})
+						break
+					default:
+						return
+				}
+			}
 		}
 	}
 </script>
@@ -121,7 +171,7 @@
 					border: 1rpx solid #FFD100;
 					margin: 0 30rpx;
 				}
-				
+
 				.nickname {
 					font-size: 35rpx;
 					font-family: PingFangSC-Medium, PingFang SC;
@@ -172,6 +222,25 @@
 						font-weight: 400;
 						color: #4D504F;
 						line-height: 42rpx;
+					}
+
+					.right {
+						display: flex;
+						align-items: center;
+
+						.new {
+							width: 52rpx;
+							height: 33rpx;
+							background: #EA3D5E;
+							border-radius: 10rpx;
+							text-align: center;
+							line-height: 33rpx;
+
+							font-size: 17rpx;
+							font-family: PingFangSC-Semibold, PingFang SC;
+							font-weight: 600;
+							color: #FFFFFF;
+						}
 					}
 
 					::v-deep .uni-icons {
