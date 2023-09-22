@@ -14,7 +14,7 @@
 			</view>
 		</view>
 		<view class="message-list">
-			<view class="message-item">
+			<view class="message-item" @click="handleJumpChat">
 				<uni-badge class="uni-badge-left-margin" :text="value" absolute="rightTop" size="small">
 					<view class="left"></view>
 				</uni-badge>
@@ -76,6 +76,12 @@
 					url: "/pages/user/index"
 				})
 			},
+			// 点击进入在线聊天页面
+			handleJumpChat() {
+				uni.navigateTo({
+					url: "/pages/user/chat/chat"
+				})
+			}
 		}
 	}
 </script>
