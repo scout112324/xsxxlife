@@ -265,17 +265,17 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/user/chat/chat",
+			"style": {
+				"navigationBarTitleText": "在线聊天",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+			}
+
 		}
-	    ,{
-            "path" : "pages/user/chat/chat",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
