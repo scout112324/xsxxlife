@@ -7,7 +7,7 @@
 				</view>
 				<!-- 文本框 -->
 				<textarea auto-height="true" class="chat-send btn" :class="{displaynone:isrecord}" @input="inputs"
-					@focus="focus" v-model="msg"></textarea>
+					@focus="focus" v-model="msg" :show-confirm-bar="false"></textarea>
 				<view class="record btn" :class="{displaynone:!isrecord}" @touchstart="touchstart" @touchend="touchend"
 					@touchmove="touchmove">
 					按住说话
@@ -15,17 +15,18 @@
 				<view class="bt-img" @tap="emoji">
 					<image src="../static/chat/emoji.png"></image>
 				</view>
-				<view class="bt-img" @tap="more">
+				<view class="bt-img" @tap="more" v-if="showCamera">
 					<image src="../static/chat/photo.png"></image>
 				</view>
+				<button class="send-message" @tap="messageSend" v-else>发送</button>
 			</view>
 			<!-- 表情 -->
 			<view class="emoji" :class="{displaynone:!isemoji}">
 				<view class="emoji-send">
 					<view class="emoji-send-det" @tap="emojiBack">
-						取消
+						<image src="../static/chat/close.png" mode=""></image>
 					</view>
-					<view class="emoji-send-bt" @tap="emojiSend">发送</view>
+					<!-- <view class="emoji-send-bt" @tap="emojiSend">发送</view> -->
 				</view>
 				<emoji @emotion="emotion" :height="260"></emoji>
 			</view>
@@ -74,7 +75,8 @@
 				// 直接引用地址可能出不来，需要用require
 				toc: require('../static/chat/voice.png'),
 				timer: '', //计时器
-				vlength: 0
+				vlength: 0,
+				showCamera: true
 			};
 		},
 		components: {
@@ -119,13 +121,16 @@
 			},
 			//接收表情
 			emotion(e) {
-				console.log(e),
-					this.msg = this.msg + e
+				this.msg = this.msg + e
+				if (this.msg.length > 0) {
+					this.showCamera = false
+				}
 			},
 			//文字发送
 			inputs(e) {
 				var chatm = e.detail.value;
 				var pos = chatm.indexOf('\n');
+				console.log(chatm.length)
 				// 检索字符串没有数据，返回-1
 				// if (pos != -1 && chatm.length > 1) {
 				// this.$emit('inputs', this.msg);
@@ -133,6 +138,11 @@
 				// 	this.msg = '';
 				// }, 0)
 				// }
+				if (chatm.length > 1) {
+					this.showCamera = false
+				} else {
+					this.showCamera = true
+				}
 
 				if (pos != -1 && chatm.length > 1) {
 					// 0为表情和文字
@@ -148,6 +158,14 @@
 				setTimeout(() => {
 					this.getElementHeight()
 				}, 10)
+			},
+			// 消息发送
+			messageSend() {
+				var chatm = this.msg;
+				if (chatm.length > 1) {
+					// 0为表情和文字
+					this.send(this.msg, 0)
+				}
 			},
 			// 表情内发送
 			emojiSend() {
@@ -259,6 +277,7 @@
 				}
 				this.$emit('inputs', date);
 				setTimeout(() => {
+					this.showCamera = true;
 					this.msg = '';
 				}, 0)
 			}
@@ -285,7 +304,8 @@
 	.submit-chat {
 		width: 100%;
 		display: flex;
-		align-items: flex-end;
+		// align-items: flex-end;
+		align-items: center;
 		box-sizing: border-box;
 		padding: 14rpx 14rpx;
 
@@ -294,6 +314,18 @@
 			height: 56rpx;
 			margin: 0 10rpx;
 			flex: auto;
+		}
+
+		.send-message {
+			margin: 0;
+			padding: 0 10rpx;
+			background-color: #FFD100;
+			width: 100rpx;
+			font-size: 24rpx;
+
+			&::after {
+				border: none
+			}
 		}
 
 		.btn {
@@ -324,7 +356,7 @@
 		box-shadow: 0px 11rpx 0px 0px rgba(0, 0, 0, 0.1);
 
 		.emoji-send {
-			width: 280rpx;
+			width: 120rpx;
 			height: 104rpx;
 			padding-top: 24rpx;
 			background-color: rgba(236, 237, 238, 0.8);

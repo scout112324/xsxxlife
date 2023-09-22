@@ -267,7 +267,7 @@
 			},
 			//输入框高度
 			heights(e) {
-				// console.log("高度:", e)
+				console.log("高度:", e)
 				this.inputh = e;
 				this.goBottom();
 			},
