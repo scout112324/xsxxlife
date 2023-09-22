@@ -232,7 +232,9 @@
 			"path": "pages/user/message/message",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 
 		}, {
