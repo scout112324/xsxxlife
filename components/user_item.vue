@@ -1,8 +1,6 @@
 <template>
 	<view class="user-item">
-		<view class="logo">
-			<image class="image" src="../../../static/chat/avatar.png" mode=""></image>
-		</view>
+		<image class="image" src="../../../static/chat/avatar.png" mode=""></image>
 		<view class="content">
 			<view class="title">
 				出闲置全新Apple/IPhone15一台,出闲置全新Apple/IPhone15一台。
@@ -40,16 +38,14 @@
 <style lang="scss" scoped>
 	.user-item {
 		display: flex;
-		margin-bottom: 22rpx;
+		margin-bottom: 32rpx;
 
-		.logo {
+		.image {
+			width: 188rpx;
+			height: 188rpx;
+			border-radius: 10rpx;
+
 			margin-right: 21rpx;
-
-			.image {
-				width: 188rpx;
-				height: 188rpx;
-				border-radius: 10rpx;
-			}
 		}
 
 		.content {

@@ -244,8 +244,10 @@
 		}, {
 			"path": "pages/user/activity/activity",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "我的活动",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 
 		}, {
