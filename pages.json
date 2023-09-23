@@ -226,8 +226,10 @@
 		}, {
 			"path": "pages/user/upvote/upvote",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "点赞列表",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
 			}
 
 		}, {
