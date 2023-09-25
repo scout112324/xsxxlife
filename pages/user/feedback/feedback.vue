@@ -11,14 +11,14 @@
 						placeholder="您在哪个页面，遇到了哪些问题，详细描述有利于更快的解决哦～" />
 				</uni-forms-item>
 				<uni-forms-item label="上传问题图片/视频(1/3)">
-					<u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1"
-						multiple :maxCount="9" previewFullImage>
+					<uni-file-picker file-mediatype="all" :value="imgList" multiple limit="3" ref="files" mode="grid"
+						@select="handleSelect" @success="handleSuccess" :auto-upload="false">
 						<view class="image-container">
 							<image src="../../../static/unused/tupian.png" mode="" style="width: 80rpx;height: 80rpx;">
 							</image>
 							<text class="title">添加图片/视频</text>
 						</view>
-					</u-upload>
+					</uni-file-picker>
 				</uni-forms-item>
 				<uni-forms-item label="联系方式">
 					<uni-easyinput v-model="form.phone" placeholder="请输入联系方式~" />
@@ -92,28 +92,29 @@
 			}
 		},
 		methods: {
+			handleSelect(e) {
+				console.log('选择文件：', e)
+			},
+			handleSuccess(e) {
+				console.log('上传成功', e)
+			},
 			// 手动上传
-			handUpload(event) {
-				// if(event.file && event.file.length>0) {
-				// 	event.file.forEach(item=>{
-				// 		this.imgList.push(item.url)
-				// 	})
-				// }
-				// console.log(event)
-				// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-				let chooseList = [].concat(event.file) // 当前选中列表
-				// 将选中的文件添加到文件列表
-				chooseList.map((item) => {
-					this.imgList.push({
-						...item,
-						status: '',
-						message: ''
-					})
-				})
-			},
-			deletePic(event) {
-				this.imgList.splice(event.index, 1);
-			},
+			// handUpload(event) {
+			// 	console.log(event)
+			// 	// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+			// 	let chooseList = [].concat(event.file) // 当前选中列表
+			// 	// 将选中的文件添加到文件列表
+			// 	chooseList.map((item) => {
+			// 		this.imgList.push({
+			// 			...item,
+			// 			status: '',
+			// 			message: ''
+			// 		})
+			// 	})
+			// },
+			// deletePic(event) {
+			// 	this.imgList.splice(event.index, 1);
+			// },
 			handleSubmitClick() {},
 			// 复制
 			handleCopy(value) {
