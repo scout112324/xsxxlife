@@ -23,11 +23,11 @@
 				<uni-forms-item label="联系方式">
 					<uni-easyinput v-model="form.phone" placeholder="请输入联系方式~" />
 				</uni-forms-item>
-				<uni-forms-item label="客服联系微信" class="copy-phone" label-width="170rpx">
+				<uni-forms-item label="客服联系微信" class="copy-phone" label-width="180rpx">
 					<view class="phone">
 						18909878909
 					</view>
-					<uni-button type="primary" class="uni-btn">
+					<uni-button type="primary" class="uni-btn" @tap="handleCopy('18909878909')">
 						<image src="../../../static/user/fuzhi.png" mode="aspectFit"
 							style="width: 26rpx; height: 26rpx;margin-right: 8rpx; ">
 						</image>
@@ -114,7 +114,26 @@
 			deletePic(event) {
 				this.imgList.splice(event.index, 1);
 			},
-			handleSubmitClick() {}
+			handleSubmitClick() {},
+			// 复制
+			handleCopy(value) {
+				//提示模板
+				uni.showModal({
+					content: value, //模板中提示的内容
+					confirmText: '复制内容',
+					showCancel: false,
+					success: () => { //点击复制内容的后调函数
+						uni.setClipboardData({
+							data: value, //要被复制的内容
+							success: () => { //复制成功的回调函数
+								uni.showToast({ //提示
+									title: '复制成功'
+								})
+							}
+						});
+					}
+				});
+			}
 		}
 	}
 </script>
@@ -191,6 +210,15 @@
 				box-sizing: border-box;
 				display: flex;
 				align-items: center;
+			}
+
+			::v-deep .uni-forms-item:last-child {
+				flex-direction: row !important;
+				align-items: center;
+			}
+
+			::v-deep .uni-forms-item__content:last-child {
+				padding-bottom: 8rpx;
 			}
 		}
 
