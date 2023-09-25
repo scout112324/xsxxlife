@@ -271,8 +271,10 @@
 		}, {
 			"path": "pages/user/feedback/feedback",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "意见反馈",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
 			}
 
 		}, {
