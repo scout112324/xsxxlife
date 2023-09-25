@@ -262,8 +262,10 @@
 		}, {
 			"path": "pages/user/trading/trading",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "交易记录",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 
 		}, {
