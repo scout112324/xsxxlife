@@ -69,8 +69,6 @@
 		.list-container {
 			background-color: #ffffff;
 			padding: 32rpx 28rpx;
-
-
 		}
 	}
 </style>
