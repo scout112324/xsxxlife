@@ -11,14 +11,15 @@
 						placeholder="您在哪个页面，遇到了哪些问题，详细描述有利于更快的解决哦～" />
 				</uni-forms-item>
 				<uni-forms-item label="上传问题图片/视频(1/3)">
-					<uni-file-picker file-mediatype="all" :value="imgList" multiple limit="3" ref="files" mode="grid"
+					<caremaItem></caremaItem>
+					<!-- <uni-file-picker file-mediatype="all" :value="imgList" multiple limit="3" ref="files" mode="grid"
 						@select="handleSelect" @success="handleSuccess" :auto-upload="false">
 						<view class="image-container">
 							<image src="../../../static/unused/tupian.png" mode="" style="width: 80rpx;height: 80rpx;">
 							</image>
 							<text class="title">添加图片/视频</text>
 						</view>
-					</uni-file-picker>
+					</uni-file-picker> -->
 				</uni-forms-item>
 				<uni-forms-item label="联系方式">
 					<uni-easyinput v-model="form.phone" placeholder="请输入联系方式~" />
@@ -43,7 +44,11 @@
 </template>
 
 <script>
+	import caremaItem from "@/components/camera_item.vue"
 	export default {
+		components: {
+			caremaItem
+		},
 		options: {
 			styleIsolation: 'shared',
 		},
