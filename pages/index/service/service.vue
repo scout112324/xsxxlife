@@ -64,7 +64,9 @@
 		},
 		methods: {
 			handleClickService(name) {
-				console.log(name)
+				uni.navigateTo({
+					url: "/pages/index/service/modules/serviceDetail/serviceDetail"
+				})
 			}
 		}
 	}

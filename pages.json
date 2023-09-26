@@ -119,8 +119,10 @@
 		{
 			"path": "pages/index/service/modules/serviceDetail/serviceDetail",
 			"style": {
-				"navigationBarTitleText": "本地服务",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "综合服务详情",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
 			}
 		},
 		{
