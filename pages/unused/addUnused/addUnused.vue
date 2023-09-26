@@ -9,14 +9,15 @@
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1"
+					<caremaItem></caremaItem>
+					<!-- <u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1"
 						multiple :maxCount="9" previewFullImage>
 						<view class="image-container">
 							<image src="../../../static/unused/tupian.png" mode="" style="width: 80rpx;height: 80rpx;">
 							</image>
 							<text class="title">添加图片/视频</text>
 						</view>
-					</u-upload>
+					</u-upload> -->
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../static/home/dingwei.png" mode=""></image>
@@ -57,11 +58,15 @@
 </template>
 
 <script>
+	import caremaItem from "@/components/camera_item.vue"
 	export default {
+		components: {
+			caremaItem
+		},
 		data() {
 			return {
 				textContent: "",
-				imgList: [],
+				// imgList: [],
 				showType: false,
 				model1: {
 					userInfo: {
@@ -132,27 +137,27 @@
 				this.bottomHeight = event.detail.height
 			},
 			// 手动上传
-			handUpload(event) {
-				// if(event.file && event.file.length>0) {
-				// 	event.file.forEach(item=>{
-				// 		this.imgList.push(item.url)
-				// 	})
-				// }
-				// console.log(event)
-				// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-				let chooseList = [].concat(event.file) // 当前选中列表
-				// 将选中的文件添加到文件列表
-				chooseList.map((item) => {
-					this.imgList.push({
-						...item,
-						status: '',
-						message: ''
-					})
-				})
-			},
-			deletePic(event) {
-				this.imgList.splice(event.index, 1);
-			},
+			// handUpload(event) {
+			// 	// if(event.file && event.file.length>0) {
+			// 	// 	event.file.forEach(item=>{
+			// 	// 		this.imgList.push(item.url)
+			// 	// 	})
+			// 	// }
+			// 	// console.log(event)
+			// 	// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+			// 	let chooseList = [].concat(event.file) // 当前选中列表
+			// 	// 将选中的文件添加到文件列表
+			// 	chooseList.map((item) => {
+			// 		this.imgList.push({
+			// 			...item,
+			// 			status: '',
+			// 			message: ''
+			// 		})
+			// 	})
+			// },
+			// deletePic(event) {
+			// 	this.imgList.splice(event.index, 1);
+			// },
 			// 发布
 			handlePublish() {
 				console.log("fabu")
@@ -268,6 +273,7 @@
 				::v-deep .u-form-item__body__right {
 					margin: 10rpx 0;
 				}
+
 				::v-deep .u-input__content__field-wrapper__field {
 					text-align: right !important;
 				}

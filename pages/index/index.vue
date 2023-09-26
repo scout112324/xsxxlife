@@ -45,7 +45,6 @@
 				</view>
 				<view class="life-list">
 					<info-item></info-item>
-					<info-item></info-item>
 				</view>
 			</view>
 			<view class="attachment-community">
@@ -312,7 +311,7 @@
 			}
 
 			.life-circle {
-				height: 1088rpx;
+				height: 601rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
@@ -345,7 +344,9 @@
 					}
 				}
 
-				.life-list {}
+				.life-list {
+					
+				}
 			}
 
 			.attachment-community {
