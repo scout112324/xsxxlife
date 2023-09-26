@@ -37,7 +37,7 @@
 				<image class="icon" src="../../../../static/home/tishi.png" mode=""></image>
 				<text class="rule">限200人报名参加</text>
 			</view>
-			<view class="right">
+			<view class="right" @click="handleJumpDetail">
 				<text>进入活动</text>
 				<uni-icons type="forward" size="13"></uni-icons>
 			</view>
@@ -53,6 +53,11 @@
 		data() {
 			return {
 
+			}
+		},
+		methods: {
+			handleJumpDetail() {
+				this.$emit('jumpIntraCityDetail')
 			}
 		}
 	}

@@ -217,6 +217,16 @@
 			}
 		},
 		{
+			"path": "pages/index/service/modules/intraCityDetail/intraCityDetail",
+			"style": {
+				"navigationBarTitleText": "同城活动详情",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+			}
+
+		},
+		{
 			"path": "pages/index/service/largeShipmentClearance",
 			"style": {
 				"navigationBarTitleText": "大件清运",

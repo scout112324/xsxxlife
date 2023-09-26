@@ -10,7 +10,7 @@
 			</uni-easyinput>
 		</view>
 		<view class="part-time-list" :style="{'height':screenHeight}">
-			<intraCityItem></intraCityItem>
+			<intraCityItem @jumpIntraCityDetail="jumpIntraCityDetail"></intraCityItem>
 			<intraCityItem></intraCityItem>
 			<intraCityItem></intraCityItem>
 		</view>
@@ -52,7 +52,12 @@
 					url: "/pages/index/index"
 				})
 			},
-			handlePublishClick() {}
+			handlePublishClick() {},
+			jumpIntraCityDetail() {
+				uni.navigateTo({
+					url: "/pages/index/service/modules/intraCityDetail/intraCityDetail"
+				})
+			}
 		}
 	}
 </script>
