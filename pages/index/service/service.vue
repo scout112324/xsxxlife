@@ -1,5 +1,10 @@
 <template>
 	<view class="service-page" :style="{'height':screenHeight}">
+		<u-navbar title="综合服务" :bgColor="bgColor" :titleStyle="titleStyle" placeholder>
+			<view class="u-nav-slot" slot="left">
+				<u-icon name="arrow-left" size="18" @click="handleBack"></u-icon>
+			</view>
+		</u-navbar>
 		<view class="occupy"></view>
 		<view class="content-page">
 			<view class="notice">
@@ -27,6 +32,11 @@
 		},
 		data() {
 			return {
+				bgColor: "#FBE94E",
+				titleStyle: {
+					fontWeight: 500,
+					color: "#131313"
+				},
 				screenHeight: 0,
 				text: "发布闲置后支持线上线下交易啦～",
 				serviceData: [{
@@ -66,6 +76,11 @@
 			handleClickService(name) {
 				uni.navigateTo({
 					url: "/pages/index/service/modules/serviceDetail/serviceDetail"
+				})
+			},
+			handleBack() {
+				uni.switchTab({
+					url: "/pages/index/index"
 				})
 			}
 		}
