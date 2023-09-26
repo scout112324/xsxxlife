@@ -144,6 +144,15 @@
 			}
 		},
 		{
+			"path": "pages/index/service/modules/partTimePublish/partTimePublish",
+			"style": {
+				"navigationBarTitleText": "发布兼职",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
 			"path": "pages/index/service/houseTransfer",
 			"style": {
 				"navigationBarTitleText": "房屋转让",

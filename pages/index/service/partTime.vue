@@ -55,7 +55,11 @@
 					url: "/pages/index/index"
 				})
 			},
-			handlePublishClick() {}
+			handlePublishClick() {
+				uni.navigateTo({
+					url: "/pages/index/service/modules/partTimePublish/partTimePublish"
+				})
+			}
 		}
 	}
 </script>
