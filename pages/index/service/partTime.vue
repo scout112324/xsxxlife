@@ -10,7 +10,7 @@
 			</uni-easyinput>
 		</view>
 		<view class="part-time-list" :style="{'height':screenHeight}">
-			<partTimeItem></partTimeItem>
+			<partTimeItem @jumpPartTimeDetail="jumpPartTimeDetail"></partTimeItem>
 			<partTimeItem></partTimeItem>
 			<partTimeItem></partTimeItem>
 			<partTimeItem></partTimeItem>
@@ -58,6 +58,11 @@
 			handlePublishClick() {
 				uni.navigateTo({
 					url: "/pages/index/service/modules/partTimePublish/partTimePublish"
+				})
+			},
+			jumpPartTimeDetail() {
+				uni.navigateTo({
+					url: "/pages/index/service/modules/partTimeDetail/partTimeDetail"
 				})
 			}
 		}

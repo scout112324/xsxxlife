@@ -25,7 +25,7 @@
 				</view>
 			</view>
 			<view class="right">
-				<button class="add">立即报名</button>
+				<button class="add" @click="handlePart">立即报名</button>
 			</view>
 		</view>
 	</view>
@@ -39,6 +39,11 @@
 		data() {
 			return {
 				value: 100
+			}
+		},
+		methods: {
+			handlePart() {
+				this.$emit('jumpPartTimeDetail')
 			}
 		}
 	}
