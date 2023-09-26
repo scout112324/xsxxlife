@@ -1,20 +1,27 @@
 <template>
 	<view class="uni-uploader__files">
+
 		<!-- 图片 -->
 		<block v-for="(image,index) in imageList" :key="index">
 			<view class="uni-uploader__file">
-				<view class="icon iconfont icon-cuo" @tap="delect(index)"></view>
+				<view class="icon-cuo" @tap="delect(index)">
+					<image class="close" src="../static/chat/close.png" mode=""></image>
+				</view>
 				<image class="uni-uploader__img" :src="image" :data-src="image" @tap="previewImage">
 				</image>
 			</view>
 		</block>
+
 		<!-- 视频 -->
-		<view class="uni-uploader__file" v-if="src">
-			<view class="uploader_video">
-				<view class="icon iconfont icon-cuo" @tap="delectVideo"></view>
-				<video :src="src" class="video"></video>
+		<block v-for="(video,index) in videoList" :key="index">
+			<view class="uni-uploader__file">
+				<view class="icon-cuo" @tap="delectVideo(index)">
+					<image class="close" src="../static/chat/close.png" mode=""></image>
+				</view>
+				<video :src="video" class="video"></video>
 			</view>
-		</view>
+		</block>
+
 		<view class="uni-uploader__input-box" v-if="VideoOfImagesShow">
 			<view class="uni-uploader__input" @tap="chooseVideoImage">
 				<image src="../../../static/unused/tupian.png" mode="" style="width: 80rpx;height: 80rpx;">
@@ -26,7 +33,7 @@
 </template>
 
 <script>
-	var sourceType = [
+	let sourceType = [
 		['camera'],
 		['album'],
 		['camera', 'album']
@@ -34,8 +41,11 @@
 	export default {
 		data() {
 			return {
-				imageList: [], //图片
-				src: "", //视频存放
+				imageList: [
+					"https://ts1.cn.mm.bing.net/th/id/R-C.efeea7fe9c2700fcff22483246e448db?rik=2GOGPn7eZvqd7A&riu=http%3a%2f%2fpic.zsucai.com%2ffiles%2f2013%2f0830%2fxiaguang4.jpg&ehk=WiVr1cmj4u7RnOhKcAbAFDCbcnEuMDMJc1g9GVQAoj8%3d&risl=&pid=ImgRaw&r=0",
+					"https://ts1.cn.mm.bing.net/th/id/R-C.efeea7fe9c2700fcff22483246e448db?rik=2GOGPn7eZvqd7A&riu=http%3a%2f%2fpic.zsucai.com%2ffiles%2f2013%2f0830%2fxiaguang4.jpg&ehk=WiVr1cmj4u7RnOhKcAbAFDCbcnEuMDMJc1g9GVQAoj8%3d&risl=&pid=ImgRaw&r=0"
+				], //图片
+				videoList: ["http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"], //视频存放
 				sourceTypeIndex: 2,
 				checkedValue: true,
 				checkedIndex: 0,
@@ -54,10 +64,16 @@
 				VideoOfImagesShow: true,
 			}
 		},
+		onReady() {
+			if (this.imageList.length + this.videoList.length >= 3) {
+				this.VideoOfImagesShow = false
+			} else {
+				this.VideoOfImagesShow = true
+			}
+		},
 		onUnload() {
-			this.src = '',
-				this.sourceTypeIndex = 2,
-				this.sourceType = ['拍摄', '相册', '拍摄或相册'];
+			this.sourceTypeIndex = 2;
+			this.sourceType = ['拍摄', '相册', '拍摄或相册'];
 		},
 		methods: {
 			chooseVideoImage() {
@@ -99,7 +115,7 @@
 									.filePath);
 								this.imageList = this.imageList.concat(imgUrls.result
 									.filePath); //微信
-								if (this.imageList.length >= 4) {
+								if (this.imageList.length + this.videoList.length >= 3) {
 									this.VideoOfImagesShow = false;
 								} else {
 									this.VideoOfImagesShow = true;
@@ -131,11 +147,12 @@
 								let videoUrls = JSON.parse(res.data) //微信和头条支持
 								this.imagesUrlPath = this.imagesUrlPath.concat(videoUrls.result
 									.filePath);
-								this.src = videoUrls.result.filePath; //微信
-								if (this.src) {
-									this.itemList = ['图片']
+								this.videoList = this.videoList.concat(videoUrls.result
+									.filePath); //微信
+								if (this.videoList.length + this.imageList.length >= 3) {
+									this.VideoOfImagesShow = false
 								} else {
-									this.itemList = ['图片', '视频']
+									this.VideoOfImagesShow = true
 								}
 
 							}
@@ -158,17 +175,28 @@
 					success: (res) => {
 						if (res.confirm) {
 							this.imageList.splice(index, 1)
+							if (this.imageList.length + this.videoList.length >= 3) {
+								this.VideoOfImagesShow = false
+							} else {
+								this.VideoOfImagesShow = true
+							}
 						}
 					}
 				})
 			},
-			delectVideo() {
+			delectVideo(index) {
+				console.log(index)
 				uni.showModal({
 					title: "提示",
 					content: "是否要删除此视频",
 					success: (res) => {
 						if (res.confirm) {
-							this.src = ''
+							this.videoList.splice(index, 1)
+							if (this.imageList.length + this.videoList.length >= 3) {
+								this.VideoOfImagesShow = false
+							} else {
+								this.VideoOfImagesShow = true
+							}
 						}
 					}
 				})
@@ -179,21 +207,47 @@
 
 <style lang="scss" scoped>
 	.uni-uploader__files {
-		width: 212rpx;
 		height: 212rpx;
-		background: #F1F1F1;
 		border-radius: 20rpx;
+
+		display: flex;
+		align-items: center;
+		flex-wrap: nowrap;
 
 		.uni-uploader__file,
 		.uni-uploader__input-box,
 		.uni-uploader__input {
-			width: 100%;
+			position: relative;
+			width: 212rpx;
 			height: 100%;
+			box-sizing: border-box;
+
+			&:nth-child(2) {
+				margin: 0 20rpx;
+			}
+
+			.uni-uploader__img,
+			.video {
+				width: 100%;
+				height: 100%;
+			}
+
+			.icon-cuo {
+				position: absolute;
+				right: -20rpx;
+				top: -20rpx;
+				z-index: 2;
+
+				.close {
+					width: 40rpx;
+					height: 40rpx;
+				}
+			}
 		}
 
 		.uni-uploader__input {
-			width: 200rpx !important;
-			height: 200rpx !important;
+			width: 212rpx !important;
+			height: 212rpx !important;
 			background: #F1F1F1;
 			border-radius: 20rpx !important;
 			align-items: center;
