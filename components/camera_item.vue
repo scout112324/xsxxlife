@@ -5,7 +5,7 @@
 		<block v-for="(image,index) in imageList" :key="index">
 			<view class="uni-uploader__file">
 				<view class="icon-cuo" @tap="delect(index)">
-					<image class="close" src="../static/chat/close.png" mode=""></image>
+					<image class="close" src="../static/home/guanbi.png" mode=""></image>
 				</view>
 				<image class="uni-uploader__img" :src="image" :data-src="image" @tap="previewImage">
 				</image>
@@ -16,7 +16,7 @@
 		<block v-for="(video,index) in videoList" :key="index">
 			<view class="uni-uploader__file">
 				<view class="icon-cuo" @tap="delectVideo(index)">
-					<image class="close" src="../static/chat/close.png" mode=""></image>
+					<image class="close" src="../static/home/guanbi.png" mode=""></image>
 				</view>
 				<video :src="video" class="video"></video>
 			</view>
@@ -234,8 +234,8 @@
 
 			.icon-cuo {
 				position: absolute;
-				right: -20rpx;
-				top: -20rpx;
+				right: 0rpx;
+				top: 0rpx;
 				z-index: 2;
 
 				.close {

@@ -13,7 +13,7 @@
 			</view>
 		</view>
 		<view class="right">
-			<button class="add">+加入</button>
+			<button class="add" @click="handleJoin">+加入</button>
 		</view>
 	</view>
 </template>
@@ -23,6 +23,11 @@
 		data() {
 			return {
 				value: 100
+			}
+		},
+		methods: {
+			handleJoin() {
+				this.$emit('joinCommunity')
 			}
 		}
 	}
