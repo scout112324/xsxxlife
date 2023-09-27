@@ -180,6 +180,15 @@
 			}
 		},
 		{
+			"path": "pages/index/service/modules/houseTransferPublish/houseTransferPublish",
+			"style": {
+				"navigationBarTitleText": "房屋转让",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
 			"path": "pages/index/service/lookForPeople",
 			"style": {
 				"navigationBarTitleText": "寻人寻物",
@@ -196,7 +205,14 @@
 				"navigationBarBackgroundColor": "#FBE64D",
 				"navigationBarTextStyle": "black"
 			}
-
+		}, {
+			"path": "pages/index/service/modules/lookForPeoplePublish/lookForPeoplePublish",
+			"style": {
+				"navigationBarTitleText": "发布寻物",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+			}
 		},
 		{
 			"path": "pages/index/service/idleTransaction",
@@ -225,6 +241,15 @@
 				"navigationBarTextStyle": "black"
 			}
 
+		}, {
+			"path": "pages/index/service/modules/intraCityPublish/intraCityPublish",
+			"style": {
+				"navigationBarTitleText": "同城活动",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+			}
+
 		},
 		{
 			"path": "pages/index/service/largeShipmentClearance",
@@ -243,8 +268,17 @@
 				"navigationBarBackgroundColor": "#FBE64D",
 				"navigationBarTextStyle": "black"
 			}
-
 		}, {
+			"path": "pages/index/service/modules/largeShipmentPublish/largeShipmentPublish",
+			"style": {
+				"navigationBarTitleText": "大件清运",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+			}
+
+		},
+		{
 			"path": "pages/user/collection/collection",
 			"style": {
 				"navigationBarTitleText": "收藏列表",

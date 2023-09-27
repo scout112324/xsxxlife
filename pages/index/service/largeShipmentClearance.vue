@@ -61,7 +61,7 @@
 			},
 			handlePublishClick() {
 				uni.navigateTo({
-					// url: "/pages/unused/addUnused/addUnused"
+					url: "/pages/index/service/modules/largeShipmentPublish/largeShipmentPublish"
 				})
 			}
 		}

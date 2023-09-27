@@ -52,7 +52,11 @@
 					url: "/pages/index/index"
 				})
 			},
-			handlePublishClick() {},
+			handlePublishClick() {
+				uni.navigateTo({
+					url: "/pages/index/service/modules/intraCityPublish/intraCityPublish"
+				})
+			},
 			jumpIntraCityDetail() {
 				uni.navigateTo({
 					url: "/pages/index/service/modules/intraCityDetail/intraCityDetail"
