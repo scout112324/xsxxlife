@@ -4,18 +4,23 @@
 			<view class="u-nav-slot" slot="left">
 				<view class="address">
 					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
-					<view class="select-address" @click="handleAddress">
-						<text>{{ cityname }}</text>
+					<view class="select-address">
+						<uni-data-picker popup-title="请选择所在地区" :localdata="dataTree" v-model="classes"
+							@change="onchange" @nodeclick="onnodeclick" @popupopened="onpopupopened"
+							@popupclosed="onpopupclosed" :clear-icon="false">
+						</uni-data-picker>
 						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
 					</view>
+					<!-- <view class="select-address" @click="handleAddress">
+						<text>{{ cityname }}</text>
+						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
+					</view> -->
 				</view>
 			</view>
 		</u-navbar>
 		<view class="occupy"></view>
 		<view class="content-page">
 			<view class="notice">
-				<!-- <image class="jiebao" src="../../static/home/jiebao.png" mode=""></image> -->
-				<!-- <text class="content">发布闲置后支持线上线下交易啦～</text> -->
 				<u-notice-bar :text="text"></u-notice-bar>
 			</view>
 			<view class="service">
@@ -120,6 +125,40 @@
 						icon: "../../static/home/dajianqingyun.png"
 					}
 				],
+
+				classes: '1-2',
+				dataTree: [{
+						text: "一年级",
+						value: "1-0",
+						children: [{
+								text: "1.1班",
+								value: "1-1"
+							},
+							{
+								text: "1.2班",
+								value: "1-2"
+							}
+						]
+					},
+					{
+						text: "二年级",
+						value: "2-0",
+						children: [{
+								text: "2.1班",
+								value: "2-1"
+							},
+							{
+								text: "2.2班",
+								value: "2-2"
+							}
+						]
+					},
+					{
+						text: "三年级",
+						value: "3-0",
+						disable: true
+					}
+				]
 			}
 		},
 		onShow() {
@@ -129,18 +168,30 @@
 		},
 		onHide() {},
 		methods: {
+			onnodeclick(e) {
+				console.log(e);
+			},
+			onpopupopened(e) {
+				console.log('popupopened');
+			},
+			onpopupclosed(e) {
+				console.log('popupclosed');
+			},
+			onchange(e) {
+				console.log('onchange:', e);
+			},
 			// 点击更多跳转到闲置列表
 			handleMoreClick() {
 				uni.switchTab({
 					url: "/pages/unused/index"
 				})
 			},
-			handleAddress() {
-				uni.navigateTo({
-						url: "/pages/index/area/area"
-					}),
-					this.changeCity = true
-			},
+			// handleAddress() {
+			// 	uni.navigateTo({
+			// 			url: "/pages/index/area/area"
+			// 		}),
+			// 	this.changeCity = true
+			// },
 			// 点击不同的服务切换到不同的服务界面
 			handleClickService(name) {
 				switch (name) {
@@ -173,9 +224,6 @@
 						uni.switchTab({
 							url: "/pages/unused/index"
 						})
-						// uni.navigateTo({
-						// 	url: "/pages/index/service/idleTransaction"
-						// })
 						break;
 					case "同城活动":
 						uni.navigateTo({
@@ -207,25 +255,40 @@
 			.dingwei {
 				width: 30rpx;
 				height: 34rpx;
-				margin-right: 4rpx;
 			}
 
 			.select-address {
 				display: flex;
-				justify-content: space-between;
 				align-items: center;
+
+				::v-deep .input-value-border {
+					border: none;
+					font-size: 30rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #232624;
+				}
+
+				::v-deep .arrow-area {
+					display: none;
+				}
+
+				// display: flex;
+				// justify-content: space-between;
+				// align-items: center;
 
 				.xiala {
 					width: 16rpx;
 					height: 9rpx;
-					margin-left: 9rpx;
 				}
 			}
 		}
+
 		.occupy {
 			height: 50rpx;
 			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
 		}
+
 		.content-page {
 			margin-top: -50rpx;
 			background-color: #F1F1F2;
@@ -240,31 +303,17 @@
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 16rpx;
-				
+
 				::v-deep .u-notice-bar {
 					background: #FFFFFF !important;
-					box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0,0,0,0.04);
+					box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 					border-radius: 16rpx;
-					
+
 					font-size: 26rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
 					color: #855C15;
 				}
-
-				// .jiebao {
-				// 	width: 40rpx;
-				// 	height: 32rpx;
-				// 	margin: 0 10rpx 0 18rpx;
-				// }
-
-				// .content {
-				// 	font-size: 26rpx;
-				// 	font-family: PingFangSC-Regular, PingFang SC;
-				// 	font-weight: 400;
-				// 	color: #855C15;
-				// 	line-height: 26rpx;
-				// }
 			}
 
 			.service {
@@ -290,6 +339,7 @@
 						height: 60rpx;
 						margin-bottom: 17rpx;
 					}
+
 					.free {
 						position: absolute;
 						right: 15rpx;
@@ -300,7 +350,7 @@
 						border-radius: 8rpx;
 						border: 1rpx solid #FFFFFF;
 						text-align: center;
-						
+
 						font-size: 22rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
@@ -344,9 +394,7 @@
 					}
 				}
 
-				.life-list {
-					
-				}
+				.life-list {}
 			}
 
 			.attachment-community {
@@ -370,7 +418,7 @@
 				}
 
 				.community-list {
-					margin-top: 30rpx;	
+					margin-top: 30rpx;
 				}
 			}
 		}
