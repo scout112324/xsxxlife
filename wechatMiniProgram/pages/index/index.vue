@@ -70,18 +70,31 @@
 <script>
 	import infoItem from "@/components/info_item.vue"
 	import communityItem from "@/components/community_item.vue"
-	import {
-		setting
-	} from "@/api/index/index.js"
+	// import {
+	// 	setting
+	// } from "@/api/index/index.js"
 	export default {
 		components: {
 			infoItem,
 			communityItem
 		},
-		onLoad() {
-			setting().then(res => {
-				console.log(res)
+		created() {
+			uni.getLocation({
+				type: 'gcj02',
+				success(res) {
+					console.log(res)
+					uni.setStorageSync('latitude', res.latitude);
+					uni.setStorageSync('longitude', res.longitude);
+				},
+				fail(e) {
+					// empty
+				}
 			})
+		},
+		onLoad() {
+			// setting().then(res => {
+			// 	console.log(res)
+			// })
 		},
 		data() {
 			return {
@@ -330,7 +343,8 @@
 				flex-wrap: wrap;
 				align-items: center;
 				margin: 20rpx 0;
-				height: 498rpx;
+				padding: 30rpx 20rpx 0 20rpx;
+				// height: 498rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
@@ -339,8 +353,9 @@
 					display: flex;
 					flex-direction: column;
 					align-items: center;
-					width: 25%;
+					width: 20%;
 					position: relative;
+					margin-bottom: 33rpx;
 
 					.icon {
 						width: 68rpx;
