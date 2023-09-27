@@ -1,6 +1,7 @@
-import user from './user.js'
-
+import app from './app'
+import user from './user'
 
 export {
-	user
+  app,
+  user
 }

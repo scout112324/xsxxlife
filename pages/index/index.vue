@@ -70,10 +70,18 @@
 <script>
 	import infoItem from "@/components/info_item.vue"
 	import communityItem from "@/components/community_item.vue"
+	import {
+		setting
+	} from "@/api/index/index.js"
 	export default {
 		components: {
 			infoItem,
 			communityItem
+		},
+		onLoad() {
+			setting().then(res => {
+				console.log(res)
+			})
 		},
 		data() {
 			return {
