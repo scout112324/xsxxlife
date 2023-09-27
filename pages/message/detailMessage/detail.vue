@@ -1,6 +1,9 @@
 <template>
 	<view class="detail-page">
 		<view class="container">
+			<view class="title">
+				全面实现不动产统一登记意味着什么？和你我有什么关系？！
+			</view>
 			<view class="header">
 				<view class="user-info">
 					<image class="avatar" src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png"
@@ -15,12 +18,13 @@
 					</view>
 				</view>
 				<view class="share">
-					<u-button icon="share-square" text="分享" @click="handleShareClick"></u-button>
+					<uni-button type="primary" class="uni-btn" @click="handleShareClick">
+						<image src="../../../static/components/zhuanfa.png" mode="aspectFit"
+							style="width: 25rpx; height: 25rpx;margin-right: 8rpx; ">
+						</image>
+						分享
+					</uni-button>
 				</view>
-			</view>
-			<view class="price">
-				<text class="unit">¥</text>
-				<text class="num">279000</text>
 			</view>
 			<view class="content">
 				出闲置全新！感兴趣的朋友看过来或者在线直接联系，Apple/IPhone15一台，国行版内128G，手机无任何维修记录，没有任何划痕！
@@ -59,7 +63,12 @@
 				</view>
 			</view>
 			<view class="communicate">
-				<u-button icon="share-square" text="联系TA" @click="handleCommuniteClick"></u-button>
+				<uni-button type="primary" class="uni-btn" @click="handleCommuniteClick">
+					<image src="../../../static/home/lianxi.png" mode="aspectFit"
+						style="width: 34rpx; height: 31rpx;margin-right: 8rpx; ">
+					</image>
+					联系TA
+				</uni-button>
 			</view>
 		</view>
 	</view>
@@ -86,10 +95,18 @@
 <style lang="scss" scoped>
 	.detail-page {
 		background-color: #F3F6F5;
+		font-family: PingFangSC-Medium, PingFang SC;
 
 		.container {
 			background-color: #ffffff;
 			padding: 46rpx 30rpx 20rpx 30rpx;
+
+			.title {
+				font-size: 38rpx;
+				font-weight: 500;
+				color: #222222;
+				margin-bottom: 32rpx;
+			}
 
 			.header {
 				display: flex;
@@ -111,7 +128,6 @@
 
 						.nickname {
 							font-size: 30rpx;
-							font-family: PingFangSC-Medium, PingFang SC;
 							font-weight: 500;
 							color: #232624;
 							line-height: 42rpx;
@@ -130,32 +146,16 @@
 				}
 
 				.share {
-					::v-deep .u-button {
-						width: 116rpx;
+					::v-deep .uni-btn {
 						height: 59rpx;
 						background: #FFD100;
 						border-radius: 30rpx;
-						border: 0 solid rgba(255, 209, 0, 0.31);
+
+						padding: 14rpx 25rpx;
+						box-sizing: border-box;
+						display: flex;
+						align-items: center;
 					}
-
-					::v-deep .u-button__text {
-						font-size: 26rpx !important;
-						font-family: PingFangSC-Medium, PingFang SC;
-						font-weight: 500 !important;
-						color: #232624;
-					}
-				}
-			}
-
-			.price {
-				padding-top: 25rpx;
-				font-size: 26rpx;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
-				color: #D30303;
-
-				.num {
-					font-size: 46rpx;
 				}
 			}
 
@@ -167,10 +167,12 @@
 				line-height: 44rpx;
 				margin: 25rpx 0;
 			}
+
 			.product-image {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+
 				.image {
 					width: 689rpx;
 					height: 659rpx;
@@ -179,55 +181,56 @@
 				}
 			}
 		}
+
 		.comments {
 			background-color: #ffffff;
 		}
+
 		.footer {
 			background-color: #ffffff;
 			padding: 0 34rpx;
 			margin-top: 24rpx;
 			height: 157rpx;
-			
+
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			border-top: 1px solid #D8D8D;
-			
+
 			.btns {
 				display: flex;
 				align-items: center;
+
 				.item {
 					display: flex;
 					align-items: center;
 					margin-right: 43rpx;
+
 					.icon {
 						width: 33rpx;
 						height: 35rpx;
 					}
+
 					.num {
 						margin-left: 15rpx;
 						font-size: 24rpx;
-						font-family: PingFangSC-Medium, PingFang SC;
 						font-weight: 500;
 						color: #232624;
 						line-height: 33rpx;
 					}
 				}
 			}
+
 			.communicate {
-				::v-deep .u-button {
-					width: 224rpx;
+				::v-deep .uni-btn {
 					height: 74rpx;
 					background: #FFD100;
 					border-radius: 46rpx;
-					border: 0 solid rgba(255, 209, 0, 0.31);
-				}
-				
-				::v-deep .u-button__text {
-					font-size: 30rpx;
-					font-family: PingFangSC-Medium, PingFang SC;
-					font-weight: 500;
-					color: #232624;
+
+					padding: 14rpx 25rpx;
+					box-sizing: border-box;
+					display: flex;
+					align-items: center;
 				}
 			}
 		}

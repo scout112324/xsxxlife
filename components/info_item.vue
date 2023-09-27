@@ -15,7 +15,7 @@
 						上海市静安区
 					</view>
 				</view>
-				<view class="price">
+				<view class="price" v-if="showPrice">
 					<text class="unit">￥</text>
 					<text>279000</text>
 				</view>
@@ -59,7 +59,11 @@
 <script>
 	export default {
 		props: {
-			pageType: String
+			pageType: String,
+			showPrice: {
+				type: Boolean,
+				default: true
+			}
 		},
 		data() {
 			return {}

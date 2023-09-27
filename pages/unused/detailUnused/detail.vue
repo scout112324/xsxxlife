@@ -15,7 +15,12 @@
 					</view>
 				</view>
 				<view class="share">
-					<u-button icon="share-square" text="分享" @click="handleShareClick"></u-button>
+					<uni-button type="primary" class="uni-btn" @click="handleShareClick">
+						<image src="../../../static/components/zhuanfa.png" mode="aspectFit"
+							style="width: 25rpx; height: 25rpx;margin-right: 8rpx; ">
+						</image>
+						分享
+					</uni-button>
 				</view>
 			</view>
 			<view class="price">
@@ -59,7 +64,7 @@
 				</view>
 			</view>
 			<view class="communicate">
-				<u-button icon="share-square" text="立即下单" @click="handleCommuniteClick"></u-button>
+				<u-button text="立即下单" @click="handleCommuniteClick"></u-button>
 			</view>
 		</view>
 	</view>
@@ -130,19 +135,15 @@
 				}
 
 				.share {
-					::v-deep .u-button {
-						width: 116rpx;
+					::v-deep .uni-btn {
 						height: 59rpx;
 						background: #FFD100;
 						border-radius: 30rpx;
-						border: 0 solid rgba(255, 209, 0, 0.31);
-					}
-
-					::v-deep .u-button__text {
-						font-size: 26rpx !important;
-						font-family: PingFangSC-Medium, PingFang SC;
-						font-weight: 500 !important;
-						color: #232624;
+					
+						padding: 14rpx 25rpx;
+						box-sizing: border-box;
+						display: flex;
+						align-items: center;
 					}
 				}
 			}

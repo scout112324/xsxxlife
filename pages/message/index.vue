@@ -8,10 +8,11 @@
 			</uni-easyinput>
 		</view>
 		<view class="unused-list">
-			<infoItem :pageType="pageType" @handleJumpMessageDetail="handleJumpMessageDetail"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
+			<infoItem :pageType="pageType" @handleJumpMessageDetail="handleJumpMessageDetail" :showPrice="showPrice">
+			</infoItem>
+			<infoItem :pageType="pageType" :showPrice="showPrice"></infoItem>
+			<infoItem :pageType="pageType" :showPrice="showPrice"></infoItem>
+			<infoItem :pageType="pageType" :showPrice="showPrice"></infoItem>
 		</view>
 	</view>
 </template>
@@ -34,6 +35,7 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
+				showPrice: false
 			}
 		},
 		methods: {
