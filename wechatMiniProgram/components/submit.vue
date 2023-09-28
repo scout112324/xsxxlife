@@ -2,9 +2,9 @@
 	<view>
 		<view class="submit">
 			<view class="submit-chat">
-				<view class="bt-img" @tap="records">
+				<!-- <view class="bt-img" @tap="records">
 					<image :src="toc"></image>
-				</view>
+				</view> -->
 				<!-- 文本框 -->
 				<textarea auto-height="true" class="chat-send btn" :class="{displaynone:isrecord}" @input="inputs"
 					@focus="focus" v-model="msg" :show-confirm-bar="false"></textarea>

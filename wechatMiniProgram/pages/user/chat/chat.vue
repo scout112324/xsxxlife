@@ -341,42 +341,6 @@
 					border-radius: 20rpx;
 				}
 
-				.msg-map {
-					background: #fff;
-					width: 464rpx;
-					height: 284rpx;
-					overflow: hidden;
-
-					.map-name {
-						font-size: 32rpx;
-						color: rgba(39, 40, 50, 1);
-						line-height: 44rpx;
-						padding: 18rpx 24rpx 0 24rpx;
-						//下面四行是单行文字的样式
-						display: -webkit-box;
-						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 1;
-						overflow: hidden;
-					}
-
-					.map-address {
-						font-size: 24rpx;
-						color: rgba(39, 40, 50, 0.4);
-						padding: 0 24rpx;
-						//下面四行是单行文字的样式
-						display: -webkit-box;
-						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 1;
-						overflow: hidden;
-					}
-
-					.map {
-						padding-top: 8rpx;
-						width: 464rpx;
-						height: 190rpx;
-					}
-				}
-
 				.voice {
 					// width: 200rpx;
 					min-width: 100rpx;
