@@ -284,135 +284,132 @@
 
 <style lang="scss" scoped>
 	.content {
-		height: 100%;
-	}
-
-	.content {
-		height: 100%;
+		height: 100vh;
 		background-color: rgba(244, 244, 244, 1);
-	}
 
-	.chat {
-		height: 100%;
+		.chat {
+			height: 100%;
 
-		.chat-main {
-			padding-left: 32rpx;
-			padding-right: 32rpx;
-			padding-top: 20rpx;
-			// padding-bottom: 120rpx;  //获取动态高度
-			display: flex;
-			flex-direction: column;
-		}
-
-		.chat-ls {
-			.chat-time {
-				font-size: 24rpx;
-				color: rgba(39, 40, 50, 0.3);
-				line-height: 34rpx;
-				padding: 10rpx 0rpx;
-				text-align: center;
-			}
-
-			.msg-m {
+			.chat-main {
+				height: 100%;
+				padding-left: 32rpx;
+				padding-right: 32rpx;
+				padding-top: 20rpx;
+				// padding-bottom: 120rpx;  //获取动态高度
 				display: flex;
-				padding: 20rpx 0;
-
-				.user-img {
-					flex: none;
-					width: 51rpx;
-					height: 52rpx;
-					border-radius: 26rpx;
-				}
-
-				.message {
-					flex: none;
-					max-width: 480rpx;
-				}
-
-				.msg-text {
-					font-size: 32rpx;
-					color: rgba(39, 40, 50, 1);
-					line-height: 44rpx;
-					padding: 18rpx 24rpx;
-				}
-
-				.msg-img {
-					max-width: 400rpx;
-					border-radius: 20rpx;
-				}
-
-				.voice {
-					// width: 200rpx;
-					min-width: 100rpx;
-					max-width: 400rpx;
-				}
-
-				.voice-img {
-					width: 28rpx;
-					height: 36rpx;
-				}
+				flex-direction: column;
 			}
 
-			.msg-left {
-				flex-direction: row;
-
-				.msg-text {
-					margin-left: 16rpx;
-					background-color: #fff;
-					border-radius: 0rpx 20rpx 20rpx 20rpx;
+			.chat-ls {
+				.chat-time {
+					font-size: 24rpx;
+					color: rgba(39, 40, 50, 0.3);
+					line-height: 34rpx;
+					padding: 10rpx 0rpx;
+					text-align: center;
 				}
 
-				.ms-img {
-					margin-left: 16rpx;
+				.msg-m {
+					display: flex;
+					padding: 20rpx 0;
+
+					.user-img {
+						flex: none;
+						width: 51rpx;
+						height: 52rpx;
+						border-radius: 26rpx;
+					}
+
+					.message {
+						flex: none;
+						max-width: 480rpx;
+					}
+
+					.msg-text {
+						font-size: 32rpx;
+						color: rgba(39, 40, 50, 1);
+						line-height: 44rpx;
+						padding: 18rpx 24rpx;
+					}
+
+					.msg-img {
+						max-width: 400rpx;
+						border-radius: 20rpx;
+					}
+
+					.voice {
+						// width: 200rpx;
+						min-width: 100rpx;
+						max-width: 400rpx;
+					}
+
+					.voice-img {
+						width: 28rpx;
+						height: 36rpx;
+					}
 				}
 
-				.msh-map {
-					margin-left: 16rpx;
-					border-radius: 0rpx 20rpx 20rpx 20rpx;
+				.msg-left {
+					flex-direction: row;
+
+					.msg-text {
+						margin-left: 16rpx;
+						background-color: #fff;
+						border-radius: 0rpx 20rpx 20rpx 20rpx;
+					}
+
+					.ms-img {
+						margin-left: 16rpx;
+					}
+
+					.msh-map {
+						margin-left: 16rpx;
+						border-radius: 0rpx 20rpx 20rpx 20rpx;
+					}
+
+					.voice {
+						text-align: right;
+
+					}
+
+					.voice-img {
+						float: left;
+						transform: rotate(180deg);
+						width: 28rpx;
+						height: 36rpx;
+						padding-bottom: 4rpx;
+					}
 				}
 
-				.voice {
-					text-align: right;
+				.msg-right {
+					flex-direction: row-reverse;
 
-				}
+					.msg-text {
+						margin-right: 16rpx;
+						background-color: rgba(255, 228, 49, 0.8);
+						border-radius: 20rpx 0rpx 20rpx 20rpx;
+					}
 
-				.voice-img {
-					float: left;
-					transform: rotate(180deg);
-					width: 28rpx;
-					height: 36rpx;
-					padding-bottom: 4rpx;
-				}
-			}
+					.ms-img {
+						margin-right: 16rpx;
+					}
 
-			.msg-right {
-				flex-direction: row-reverse;
+					.msh-map {
+						margin-left: 16rpx;
+						border-radius: 20rpx 0rpx 20rpx 20rpx;
+					}
 
-				.msg-text {
-					margin-right: 16rpx;
-					background-color: rgba(255, 228, 49, 0.8);
-					border-radius: 20rpx 0rpx 20rpx 20rpx;
-				}
+					.voice {
+						text-align: left;
 
-				.ms-img {
-					margin-right: 16rpx;
-				}
+					}
 
-				.msh-map {
-					margin-left: 16rpx;
-					border-radius: 20rpx 0rpx 20rpx 20rpx;
-				}
-
-				.voice {
-					text-align: left;
-
-				}
-
-				.voice-img {
-					float: right;
-					padding: 4rpx;
-					width: 28rpx;
-					height: 36rpx;
+					.voice-img {
+						float: right;
+						padding: 4rpx;
+						width: 28rpx;
+						height: 36rpx;
+					}
 				}
 			}
 		}
