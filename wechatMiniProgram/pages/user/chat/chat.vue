@@ -29,8 +29,11 @@
 						<view class="message" v-if="item.TextType == 0">
 							<view class="msg-text">{{item.sendText}}</view>
 						</view>
-						<view class="message" v-if="item.TextType == 1" @tap="previewImg(item.sendText)">
-							<image :src="item.sendText" class="msg-img" mode="widthFix"></image>
+						<view class="message" v-if="item.TextType == 1">
+							<image v-if="item.sendText.fileType=='image'" :src="item.sendText.tempFilePath"
+								class="msg-img" mode="widthFix" @tap="previewImg(item.sendText)"></image>
+							<video v-if="item.sendText.fileType=='video'" :src="item.sendText.tempFilePath"
+								class="msg-img" mode="widthFix"></video>
 						</view>
 						<view class="message" v-if="item.TextType == 2" @tap="playVoice(item.sendText.voice)">
 							<!-- 音频 -->
@@ -211,13 +214,14 @@
 			},
 			// 进行图片的预览
 			previewImg(e) {
+				console.log('imgMsg', e, this.imgMsg)
 				let index = 0;
 				for (let i = 0; i < this.imgMsg.length; i++) {
-					if (this.imgMsg[i] == e) {
+					if (this.imgMsg[i] == e.tempFilePath) {
 						index = i;
 					}
 				}
-				// console.log("index", index)
+				console.log("index", index)
 				// 预览图片
 				uni.previewImage({
 					current: index,
@@ -236,9 +240,7 @@
 			//音频播放
 			playVoice(e) {
 				innerAudioContext.src = e;
-				innerAudioContext.onPlay(() => {
-					// console.log('开始播放');
-				});
+				innerAudioContext.onPlay(() => {});
 			},
 			//接受输入内容
 			inputs(e) {
@@ -260,14 +262,12 @@
 				this.$nextTick(function() {
 					this.scrollToView = 'msg' + (this.unshiftmsg.length - 1)
 				})
-				if (e.type == 1) {
-					this.imgMsg.push(e.message);
+				if (e.type == 1 && e.message.fileType == 'image') {
+					this.imgMsg.push(e.message.tempFilePath);
 				}
-				// console.log(e)
 			},
 			//输入框高度
 			heights(e) {
-				console.log("高度:", e)
 				this.inputh = e * 2;
 				this.goBottom();
 			},

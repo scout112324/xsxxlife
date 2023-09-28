@@ -36,16 +36,16 @@
 			<view class="more" :class="{displaynone:!ismore}">
 				<view class="more-list" @tap="sendImg('album')">
 					<image src="../static/chat/photo.png"></image>
-					<view class="more-list-title">图片</view>
+					<view class="more-list-title">图库</view>
 				</view>
 				<view class="more-list" @tap="sendImg('camera')">
 					<image src="../static/chat/camera.png"></image>
-					<view class="more-list-title">拍照</view>
+					<view class="more-list-title">拍摄</view>
 				</view>
-				<view class="more-list">
+				<!-- <view class="more-list" @tap="sendImg('video')">
 					<image src="../static/chat/video.png"></image>
 					<view class="more-list-title">视频</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<view class="voice-bg" :class="{displaynone:!voicebg}">
@@ -218,14 +218,14 @@
 				} else {
 					count = 1;
 				}
-				uni.chooseImage({
+				uni.chooseMedia({
 					count: count, //默认9
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: [e], //从相册选择
 					// success: function (res) { //用function的方式会找不到send方法
 					success: (res) => {
-						console.log(JSON.stringify(res.tempFilePaths));
-						const filePaths = res.tempFilePaths;
+						console.log(res)
+						const filePaths = res.tempFiles;
 						for (let i = 0; i < filePaths.length; i++) {
 							this.send(filePaths[i], 1)
 						}
