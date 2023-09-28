@@ -134,7 +134,7 @@
 			inputs(e) {
 				var chatm = e.detail.value;
 				var pos = chatm.indexOf('\n');
-				console.log(chatm.length)
+				// console.log(chatm.length)
 				// 检索字符串没有数据，返回-1
 				// if (pos != -1 && chatm.length > 1) {
 				// this.$emit('inputs', this.msg);
@@ -159,7 +159,7 @@
 				setTimeout(() => {
 					this.getElementHeight()
 				}, 10)
-				console.log('keyboardheightchange', e.detail.height)
+				// console.log('keyboardheightchange', e.detail.height)
 			},
 			// 输入框聚焦
 			focus() {
@@ -224,7 +224,7 @@
 					sourceType: [e], //从相册选择
 					// success: function (res) { //用function的方式会找不到send方法
 					success: (res) => {
-						console.log(res)
+						// console.log(res)
 						const filePaths = res.tempFiles;
 						for (let i = 0; i < filePaths.length; i++) {
 							this.send(filePaths[i], 1)
@@ -235,15 +235,15 @@
 			//音频处理
 			//开始录音
 			touchstart(e) {
-				console.log("开始录音")
-				console.log("点击产生数据", e)
+				// console.log("开始录音")
+				// console.log("点击产生数据", e)
 				this.pageY = e.changedTouches[0].pageY;
 				this.voicebg = true;
 				let i = 1;
 				this.timer = setInterval(() => {
 					this.vlength = i;
 					i++;
-					console.log("计时器开始工作,第几秒", i)
+					// console.log("计时器开始工作,第几秒", i)
 					//结束计时
 					if (i > 60) {
 						clearInterval(this.timer);
@@ -262,7 +262,7 @@
 			},
 			// 结束录音
 			touchend() {
-				console.log("结束录音")
+				// console.log("结束录音")
 				clearInterval(this.timer);
 				recorderManager.stop();
 				// recorderManager.onStop(function(res) {
@@ -277,7 +277,7 @@
 					// //时长归位
 					this.vlength = 0;
 					this.voicebg = false;
-					console.log('recorder stop' + JSON.stringify(res));
+					// console.log('recorder stop' + JSON.stringify(res));
 					// self.voicePath = res.tempFilePath;
 				});
 			},

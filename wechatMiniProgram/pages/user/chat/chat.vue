@@ -214,14 +214,14 @@
 			},
 			// 进行图片的预览
 			previewImg(e) {
-				console.log('imgMsg', e, this.imgMsg)
+				// console.log('imgMsg', e, this.imgMsg)
 				let index = 0;
 				for (let i = 0; i < this.imgMsg.length; i++) {
 					if (this.imgMsg[i] == e.tempFilePath) {
 						index = i;
 					}
 				}
-				console.log("index", index)
+				// console.log("index", index)
 				// 预览图片
 				uni.previewImage({
 					current: index,
