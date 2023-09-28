@@ -7,7 +7,8 @@
 				</view> -->
 				<!-- 文本框 -->
 				<textarea auto-height="true" class="chat-send btn" :class="{displaynone:isrecord}" @input="inputs"
-					@focus="focus" v-model="msg" :show-confirm-bar="false"></textarea>
+					@focus="focus" @keyboardheightchange="keyboardheightchange" v-model="msg" :show-confirm-bar="false"
+					:adjust-position="false"></textarea>
 				<view class="record btn" :class="{displaynone:!isrecord}" @touchstart="touchstart" @touchend="touchend"
 					@touchmove="touchmove">
 					按住说话
@@ -20,6 +21,7 @@
 				</view>
 				<button class="send-message" @tap="messageSend" v-else>发送</button>
 			</view>
+			<view class="occupy" :style="{height: `${keyboardHeight}px`}"></view>
 			<!-- 表情 -->
 			<view class="emoji" :class="{displaynone:!isemoji}">
 				<view class="emoji-send">
@@ -76,7 +78,8 @@
 				toc: require('../static/chat/voice.png'),
 				timer: '', //计时器
 				vlength: 0,
-				showCamera: true
+				showCamera: true,
+				keyboardHeight: 0
 			};
 		},
 		components: {
@@ -113,6 +116,7 @@
 				//切换的时候关闭其功能
 				this.ismore = false
 				this.isrecord = false;
+				this.keyboardHeight = 0;
 				this.toc = require("../static/chat/voice.png");
 				//切换高度
 				setTimeout(() => {
@@ -149,6 +153,13 @@
 					this.send(this.msg, 0)
 				}
 
+			},
+			keyboardheightchange(e) {
+				this.keyboardHeight = e.detail.height
+				setTimeout(() => {
+					this.getElementHeight()
+				}, 10)
+				console.log('keyboardheightchange', e.detail.height)
 			},
 			// 输入框聚焦
 			focus() {
@@ -189,6 +200,7 @@
 			},
 			//更多功能
 			more() {
+				this.keyboardHeight = 0
 				this.ismore = !this.ismore;
 				//切换的时候关闭其他界面
 				this.isemoji = false
@@ -293,7 +305,6 @@
 		position: fixed;
 		bottom: 0;
 		z-index: 100;
-		// padding-bottom: var(--status-bar-height);
 		padding-bottom: env(safe-area-inset-bottom);
 	}
 

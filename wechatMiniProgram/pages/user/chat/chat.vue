@@ -2,7 +2,7 @@
 	<view class="content">
 		<!-- 聊天内容 -->
 		<scroll-view class="chat" scroll-y="true" scroll-with-animation="true" :scroll-into-view="scrollToView">
-			<view class="chat-main" :style="{paddingBottom:inputh+'px'}">
+			<view class="chat-main" :style="{paddingBottom:inputh+'rpx'}">
 				<view class="chat-ls" v-for="(item,index) in unshiftmsg" :key="index" :id="'msg'+ index">
 					<view class="chat-time" v-if="item.createTime != ''">{{changeTime(item.createTime)}}</view>
 					<view class="msg-m msg-left" v-if="item.sendName ==  friendName">
@@ -177,7 +177,7 @@
 				imgMsg: [],
 				scrollToView: '',
 				oldTime: new Date(),
-				inputh: '60'
+				inputh: '120'
 			}
 		},
 		onShow() {
@@ -268,7 +268,7 @@
 			//输入框高度
 			heights(e) {
 				console.log("高度:", e)
-				this.inputh = e;
+				this.inputh = e * 2;
 				this.goBottom();
 			},
 			// 滚动到底部
