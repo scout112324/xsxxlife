@@ -291,7 +291,6 @@
 			height: 100%;
 
 			.chat-main {
-				height: 100%;
 				padding-left: 32rpx;
 				padding-right: 32rpx;
 				padding-top: 20rpx;
