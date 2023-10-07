@@ -5,12 +5,10 @@
 		</u-navbar>
 		<view class="user-info">
 			<view class="user">
-				<image class="avatar"
-					src="https://tse4-mm.cn.bing.net/th/id/OIP-C.vNfhdk-LRUEgI7aMQdSwYgAAAA?pid=ImgDet&rs=1" mode="">
-				</image>
-				<view class="nickname">
-					ketty perry
-				</view>
+				<button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
+					<image class="avatar" :src="avatarUrl"></image>
+				</button>
+				<input type="nickname" class="nickname" placeholder="请输入昵称" />
 			</view>
 		</view>
 		<view class="user-list">
@@ -44,6 +42,7 @@
 	export default {
 		data() {
 			return {
+				avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -97,6 +96,12 @@
 
 		},
 		methods: {
+			onChooseAvatar(e) {
+				const {
+					avatarUrl
+				} = e.detail
+				this.avatarUrl = avatarUrl
+			},
 			handleJumpDetail(name) {
 				switch (name) {
 					case '收藏列表':
@@ -173,12 +178,26 @@
 				display: flex;
 				align-items: center;
 
-				.avatar {
-					width: 96rpx;
-					height: 96rpx;
-					border-radius: 48rpx;
-					border: 1rpx solid #FFD100;
-					margin: 0 30rpx;
+				.avatar-wrapper {
+					display: flex;
+					align-items: center;
+					background-color: transparent;
+					padding-left: 0;
+					padding-right: 0;
+					margin-left: 0;
+					margin-right: 0;
+
+					&::after {
+						border: none;
+					}
+
+					.avatar {
+						width: 96rpx;
+						height: 96rpx;
+						border-radius: 48rpx;
+						border: 1rpx solid #FFD100;
+						margin: 0 30rpx;
+					}
 				}
 
 				.nickname {
