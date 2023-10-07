@@ -1,6 +1,6 @@
 <template>
 	<view class="home-page">
-		<u-navbar title="线上线下" :bgColor="bgColor" placeholder leftIcon="" :titleStyle="titleStyle">
+		<u-navbar title="线上线下" placeholder leftIcon="" :titleStyle="titleStyle">
 			<view class="u-nav-slot" slot="left">
 				<view class="address">
 					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
@@ -112,7 +112,6 @@
 		},
 		data() {
 			return {
-				bgColor: "#FAE54D",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -288,6 +287,10 @@
 <style lang="scss" scoped>
 	.home-page {
 
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
 
 		.address {
 			display: flex;

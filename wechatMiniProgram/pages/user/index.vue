@@ -1,6 +1,6 @@
 <template>
 	<view class="user-page">
-		<u-navbar title="我的" :bgColor="bgColor" leftIcon="" :titleStyle="titleStyle" placeholder>
+		<u-navbar title="我的" leftIcon="" :titleStyle="titleStyle" placeholder>
 			<view class="u-nav-slot" slot="left"></view>
 		</u-navbar>
 		<view class="user-info">
@@ -44,7 +44,6 @@
 	export default {
 		data() {
 			return {
-				bgColor: "#FBE94E",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -152,6 +151,11 @@
 	.user-page {
 		background-color: #F3F6F5;
 		height: 100vh;
+
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
 
 		.user-info {
 			height: 92rpx;

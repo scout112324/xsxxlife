@@ -1,6 +1,6 @@
 <template>
 	<view class="activity-page">
-		<u-navbar title="我的活动" :bgColor="bgColor" :titleStyle="titleStyle" placeholder>
+		<u-navbar title="我的活动" :titleStyle="titleStyle" placeholder>
 			<view class="u-nav-slot" slot="left">
 				<u-icon name="arrow-left" size="18" @click="handleBack"></u-icon>
 			</view>
@@ -59,7 +59,6 @@
 		data() {
 			return {
 				keyword: "",
-				bgColor: "#FBE94E",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -88,6 +87,11 @@
 	.activity-page {
 		background-color: #F3F6F5;
 		height: 100vh;
+
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
 
 		.activity-container {
 			background-color: #F3F6F5;

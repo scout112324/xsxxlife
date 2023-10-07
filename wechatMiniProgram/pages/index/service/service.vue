@@ -1,6 +1,6 @@
 <template>
 	<view class="service-page" :style="{'height':screenHeight}">
-		<u-navbar title="综合服务" :bgColor="bgColor" :titleStyle="titleStyle" placeholder>
+		<u-navbar title="综合服务" :titleStyle="titleStyle" placeholder>
 			<view class="u-nav-slot" slot="left">
 				<u-icon name="arrow-left" size="18" @click="handleBack"></u-icon>
 			</view>
@@ -28,11 +28,10 @@
 <script>
 	export default {
 		onReady() {
-			this.screenHeight = uni.getSystemInfoSync().screenHeight*2 - 100+'rpx'
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 100 + 'rpx'
 		},
 		data() {
 			return {
-				bgColor: "#FBE94E",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -90,6 +89,11 @@
 <style lang="scss" scoped>
 	.service-page {
 		background-color: #F3F6F5;
+
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
 
 		.occupy {
 			height: 50rpx;
@@ -153,13 +157,14 @@
 				}
 			}
 		}
-		
+
 		.others {
 			text-align: center;
 			font-size: 28rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #4D504F;
+
 			.communicate {
 				color: #3B8DDA;
 				border-bottom: 1px solid #3B8DDA;

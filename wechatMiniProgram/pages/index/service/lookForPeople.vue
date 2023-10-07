@@ -1,6 +1,6 @@
 <template>
 	<view class="look-for-page">
-		<u-navbar title="寻人寻物" :bgColor="bgColor" :titleStyle="titleStyle" placeholder>
+		<u-navbar title="寻人寻物" :titleStyle="titleStyle" placeholder>
 			<view class="u-nav-slot" slot="left">
 				<u-icon name="arrow-left" size="18" @click="handleBack"></u-icon>
 			</view>
@@ -39,7 +39,6 @@
 				keyword: "",
 				screenHeight: 0,
 				pageType: "peopleTransfer",
-				bgColor: "#FBE94E",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -72,6 +71,11 @@
 	.look-for-page {
 		background-color: #F3F6F5;
 		height: 100vh;
+
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
 
 		.unused-container {
 			height: 110rpx;

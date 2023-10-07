@@ -1,6 +1,6 @@
 <template>
 	<view class="community-page">
-		<u-navbar title="附近社群" :bgColor="bgColor" :titleStyle="titleStyle" placeholder>
+		<u-navbar title="附近社群" :titleStyle="titleStyle" placeholder>
 			<view class="u-nav-slot" slot="left">
 				<u-icon name="arrow-left" size="18" @click="handleBack"></u-icon>
 			</view>
@@ -44,7 +44,6 @@
 		},
 		data() {
 			return {
-				bgColor: "#FBE94E",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -73,6 +72,11 @@
 	.community-page {
 		background-color: #F3F6F5;
 		font-family: PingFangSC-Regular, PingFang SC;
+
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
 
 		.community-container {
 			height: 92rpx;

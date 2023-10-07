@@ -1,6 +1,6 @@
 <template>
 	<view class="unused-page">
-		<u-navbar title="闲置" :bgColor="bgColor" leftIcon="" :titleStyle="titleStyle" placeholder>
+		<u-navbar title="闲置" leftIcon="" :titleStyle="titleStyle" placeholder>
 			<view class="u-nav-slot" slot="left"></view>
 		</u-navbar>
 		<view class="unused-container">
@@ -37,7 +37,6 @@
 				keyword: "",
 				screenHeight: 0,
 				pageType: "unused",
-				bgColor: "#FBE94E",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -66,6 +65,11 @@
 		background-color: #F3F6F5;
 		height: 100vh;
 
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
+
 		.unused-container {
 			height: 110rpx;
 			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
@@ -77,8 +81,9 @@
 				height: 72rpx;
 				width: 694rpx;
 				margin: 0 28rpx;
-				
+
 			}
+
 			::v-deep .is-input-border {
 				border-radius: 36rpx;
 			}

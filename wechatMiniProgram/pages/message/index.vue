@@ -1,6 +1,6 @@
 <template>
 	<view class="message-page">
-		<u-navbar title="资讯" :bgColor="bgColor" leftIcon="" :titleStyle="titleStyle" placeholder>
+		<u-navbar title="资讯" leftIcon="" :titleStyle="titleStyle" placeholder>
 			<view class="u-nav-slot" slot="left"></view>
 		</u-navbar>
 		<view class="unused-container">
@@ -30,7 +30,6 @@
 			return {
 				keyword: "",
 				pageType: "message",
-				bgColor: "#FBE94E",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -53,6 +52,11 @@
 <style lang="scss" scoped>
 	.message-page {
 		background-color: #F3F6F5;
+
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
 
 		.unused-container {
 			height: 110rpx;
