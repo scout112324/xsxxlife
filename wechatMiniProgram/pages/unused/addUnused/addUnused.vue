@@ -9,7 +9,7 @@
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem></caremaItem>
+					<caremaItem :cameraNumber="cameraNumber"></caremaItem>
 					<!-- <u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1"
 						multiple :maxCount="9" previewFullImage>
 						<view class="image-container">
@@ -65,6 +65,7 @@
 		},
 		data() {
 			return {
+				cameraNumber: 9,
 				textContent: "",
 				// imgList: [],
 				showType: false,

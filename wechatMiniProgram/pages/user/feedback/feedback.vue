@@ -24,7 +24,7 @@
 				<uni-forms-item label="联系方式">
 					<uni-easyinput v-model="form.phone" placeholder="请输入联系方式~" />
 				</uni-forms-item>
-				<uni-forms-item label="客服联系微信" class="copy-phone" label-width="180rpx">
+				<uni-forms-item label="客服联系微信" class="copy-phone" label-width="200rpx">
 					<view class="phone">
 						18909878909
 					</view>

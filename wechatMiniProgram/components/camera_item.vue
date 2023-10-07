@@ -39,6 +39,12 @@
 		['camera', 'album']
 	]
 	export default {
+		props: {
+			cameraNumber: {
+				type: Number,
+				default: 3
+			}
+		},
 		data() {
 			return {
 				imageList: [
@@ -65,7 +71,7 @@
 			}
 		},
 		onReady() {
-			if (this.imageList.length + this.videoList.length >= 3) {
+			if (this.imageList.length + this.videoList.length >= this.cameraNumber) {
 				this.VideoOfImagesShow = false
 			} else {
 				this.VideoOfImagesShow = true
@@ -94,7 +100,7 @@
 			chooseImages() {
 				// 上传图片
 				uni.chooseImage({
-					count: 3, //默认9
+					count: this.cameraNumber, //默认9
 					// sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album', 'camera'], //从相册选择
 					success: (res) => {
@@ -115,7 +121,8 @@
 									.filePath);
 								this.imageList = this.imageList.concat(imgUrls.result
 									.filePath); //微信
-								if (this.imageList.length + this.videoList.length >= 3) {
+								if (this.imageList.length + this.videoList.length >= this
+									.cameraNumber) {
 									this.VideoOfImagesShow = false;
 								} else {
 									this.VideoOfImagesShow = true;
@@ -149,7 +156,8 @@
 									.filePath);
 								this.videoList = this.videoList.concat(videoUrls.result
 									.filePath); //微信
-								if (this.videoList.length + this.imageList.length >= 3) {
+								if (this.videoList.length + this.imageList.length >= this
+									.cameraNumber) {
 									this.VideoOfImagesShow = false
 								} else {
 									this.VideoOfImagesShow = true
@@ -175,7 +183,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							this.imageList.splice(index, 1)
-							if (this.imageList.length + this.videoList.length >= 3) {
+							if (this.imageList.length + this.videoList.length >= this.cameraNumber) {
 								this.VideoOfImagesShow = false
 							} else {
 								this.VideoOfImagesShow = true
@@ -192,7 +200,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							this.videoList.splice(index, 1)
-							if (this.imageList.length + this.videoList.length >= 3) {
+							if (this.imageList.length + this.videoList.length >= this.cameraNumber) {
 								this.VideoOfImagesShow = false
 							} else {
 								this.VideoOfImagesShow = true
@@ -207,24 +215,26 @@
 
 <style lang="scss" scoped>
 	.uni-uploader__files {
-		height: 212rpx;
 		border-radius: 20rpx;
 
 		display: flex;
-		align-items: center;
-		flex-wrap: nowrap;
+		flex-wrap: wrap;
 
 		.uni-uploader__file,
 		.uni-uploader__input-box,
 		.uni-uploader__input {
 			position: relative;
-			width: 212rpx;
-			height: 100%;
+			width: 206rpx;
+			height: 212rpx;
 			box-sizing: border-box;
 
-			&:nth-child(2) {
+			&:nth-child(2),
+			&:nth-child(5),
+			&:nth-child(8) {
 				margin: 0 20rpx;
 			}
+
+			margin-bottom: 20rpx;
 
 			.uni-uploader__img,
 			.video {
@@ -246,7 +256,7 @@
 		}
 
 		.uni-uploader__input {
-			width: 212rpx !important;
+			width: 206rpx !important;
 			height: 212rpx !important;
 			background: #F1F1F1;
 			border-radius: 20rpx !important;
