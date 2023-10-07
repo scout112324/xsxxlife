@@ -47,7 +47,7 @@
 					<image class="image" src="../static/components/pinglun.png" mode=""></image>
 					<text class="num">999</text>
 				</view>
-				<view class="item">
+				<view class="item" @click.stop>
 					<button class="share" open-type="share">
 						<image class="image" src="../static/components/zhuanfa.png" mode=""></image>
 						<text class="num">999</text>

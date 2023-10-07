@@ -11,7 +11,7 @@
 					888-888-8888
 				</view>
 				<view class="btn">
-					<button class="tel-call">呼叫</button>
+					<button class="tel-call" @click="handlePhoneCall('18203696838')">呼叫</button>
 				</view>
 			</view>
 			<view class="communicate">
@@ -20,7 +20,9 @@
 					888-888-8888
 				</view>
 				<view class="btn">
-					<button class="tel-call">复制</button>
+					<uni-button type="primary" class="tel-call uni-btn" @tap="handleCopy('18909878909')">
+						复制
+					</uni-button>
 				</view>
 			</view>
 		</view>
@@ -35,7 +37,37 @@
 			}
 		},
 		methods: {
-
+			// 拨打电话
+			handlePhoneCall(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber: phoneNumber,
+					success: (e) => {
+						console.log(e)
+					},
+					fail: (e) => {
+						console.log(e)
+					}
+				});
+			},
+			// 复制
+			handleCopy(value) {
+				//提示模板
+				uni.showModal({
+					content: value, //模板中提示的内容
+					confirmText: '复制内容',
+					showCancel: false,
+					success: () => { //点击复制内容的后调函数
+						uni.setClipboardData({
+							data: value, //要被复制的内容
+							success: () => { //复制成功的回调函数
+								uni.showToast({ //提示
+									title: '复制成功'
+								})
+							}
+						});
+					}
+				});
+			}
 		}
 	}
 </script>
@@ -98,6 +130,10 @@
 						font-size: 26rpx;
 						font-weight: 400;
 						color: #232624;
+					}
+
+					::v-deep .uni-btn {
+						padding: 8rpx 43rpx;
 					}
 				}
 			}

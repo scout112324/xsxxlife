@@ -69,7 +69,13 @@
 			// 拨打电话
 			handlePhoneCall(phoneNumber) {
 				uni.makePhoneCall({
-					phoneNumber: phoneNumber
+					phoneNumber: phoneNumber,
+					success: (e) => {
+						console.log(e)
+					},
+					fail: (e) => {
+						console.log(e)
+					}
 				});
 			}
 		}
