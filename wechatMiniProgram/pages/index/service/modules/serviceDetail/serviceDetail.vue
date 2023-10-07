@@ -27,10 +27,10 @@
 				<view class="phone">
 					<image class="icon" src="../../../../../static/home/dianhua.png" mode=""></image>
 					<view class="number">
-						8888-8888-8888
+						18203696838
 					</view>
 					<view class="btn">
-						<button class="tel-call">点击拨打</button>
+						<button class="tel-call" @click="handlePhoneCall('18203696838')">点击拨打</button>
 					</view>
 				</view>
 				<view class="address">
@@ -66,6 +66,12 @@
 					url: "/pages/index/service/service"
 				})
 			},
+			// 拨打电话
+			handlePhoneCall(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber: phoneNumber
+				});
+			}
 		}
 	}
 </script>
