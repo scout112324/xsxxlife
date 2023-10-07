@@ -48,8 +48,10 @@
 					<text class="num">999</text>
 				</view>
 				<view class="item">
-					<image class="image" src="../static/components/zhuanfa.png" mode=""></image>
-					<text class="num">999</text>
+					<button class="share" open-type="share">
+						<image class="image" src="../static/components/zhuanfa.png" mode=""></image>
+						<text class="num">999</text>
+					</button>
 				</view>
 			</view>
 		</view>
@@ -82,6 +84,14 @@
 					this.$emit('handleJumpLargeDetail')
 				}
 			}
+		},
+		// 分享到页面
+		onShareAppMessage() {
+			console.log("分享当前页面")
+		},
+		// 分享到朋友圈
+		onShareTimeline() {
+			console.log("分享到朋友圈")
 		}
 	}
 </script>
@@ -197,6 +207,31 @@
 						font-weight: 500;
 						color: #232624;
 						line-height: 33rpx;
+					}
+
+					.share {
+						display: flex;
+						align-items: center;
+						background-color: transparent;
+						padding: 0;
+
+						&::after {
+							border: none;
+						}
+
+						.image {
+							width: 40rpx;
+							height: 40rpx;
+							margin-right: 12rpx;
+						}
+
+						.num {
+							font-size: 24rpx;
+							font-family: PingFangSC-Medium, PingFang SC;
+							font-weight: 500;
+							color: #232624;
+							line-height: 33rpx;
+						}
 					}
 				}
 			}

@@ -58,12 +58,26 @@
 					<view class="more"></view>
 				</view>
 				<view class="community-list">
-					<community-item></community-item>
+					<community-item @joinCommunity="joinCommunity"></community-item>
 					<community-item></community-item>
 					<community-item></community-item>
 				</view>
 			</view>
 		</view>
+		<u-modal :show="show" width="630rpx" @confirm="handleConfirm">
+			<view class="slot-content">
+				<view class="content">
+					<image class="community" src="../../static/chat/avatar.png" mode=""></image>
+					<view class="title">
+						上海本地生活圈
+					</view>
+					<image class="code" src="../../static/chat/avatar.png" mode=""></image>
+					<view class="code-info">
+						该二维码将在2023年9月20日失效
+					</view>
+				</view>
+			</view>
+		</u-modal>
 	</view>
 </template>
 
@@ -179,7 +193,8 @@
 						value: "3-0",
 						disable: true
 					}
-				]
+				],
+				show: false
 			}
 		},
 		onShow() {
@@ -189,6 +204,12 @@
 		},
 		onHide() {},
 		methods: {
+			joinCommunity() {
+				this.show = true
+			},
+			handleConfirm() {
+				this.show = false
+			},
 			onnodeclick(e) {
 				console.log(e);
 			},
@@ -442,6 +463,42 @@
 
 				.community-list {
 					margin-top: 30rpx;
+				}
+			}
+		}
+
+		.slot-content {
+
+			.content {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				.community {
+					width: 128rpx;
+					height: 128rpx;
+					border-radius: 16rpx;
+				}
+
+				.title {
+					font-size: 34rpx;
+					font-weight: 500;
+					color: #232624;
+					line-height: 48rpx;
+					margin-top: 19rpx;
+				}
+
+				.code {
+					width: 350rpx;
+					height: 350rpx;
+					margin: 40rpx 0 35rpx 0;
+					background: #D8D8D8;
+				}
+
+				.code-info {
+					font-size: 22rpx;
+					font-weight: 400;
+					color: #707070;
 				}
 			}
 		}
