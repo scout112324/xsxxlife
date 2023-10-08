@@ -40,12 +40,12 @@
 		<u-modal :show="show" :title="title" showCancelButton confirmColor="#FFD100" width="650rpx"
 			@cancel="handleCancle" @confirm="handleConfirm">
 			<view class="slot-content">
-				<u--form labelWidth="180rpx" labelPosition="left" :model="model" :rules="rules" ref="uForm">
-					<u-form-item label="姓名:" prop="userInfo.name">
-						<u--input v-model="model.userInfo.name" border="bottom"></u--input>
+				<u--form labelWidth="180rpx" labelPosition="left" :model="userInfo" :rules="rules" ref="uForm">
+					<u-form-item label="姓名:" prop="name">
+						<u--input v-model="userInfo.name" border="bottom"></u--input>
 					</u-form-item>
-					<u-form-item label="支付宝账号:" prop="userInfo.account">
-						<u--input v-model="model.userInfo.account" border="bottom"></u--input>
+					<u-form-item label="支付宝账号:" prop="account">
+						<u--input v-model="userInfo.account" border="bottom"></u--input>
 					</u-form-item>
 				</u--form>
 			</view>
@@ -112,30 +112,36 @@
 				checked: false,
 				show: false,
 				title: '提现',
-				model: {
-					userInfo: {
-						name: 'uView UI',
-						account: '',
-					},
+				userInfo: {
+					name: '',
+					account: '',
 				},
 				rules: {
-					'userInfo.name': {
+					name: {
 						type: 'string',
 						required: true,
 						message: '请填写姓名',
 						trigger: ['blur', 'change']
 					},
-					'userInfo.account': {
-						type: 'string',
-						required: true,
-						message: '请填写支付宝账号',
-						trigger: ['blur', 'change']
-					},
+					account: [{
+							required: true,
+							message: '请输入支付宝账号',
+							trigger: ['change', 'blur'],
+						},
+						{
+							validator: (rule, value, callback) => {
+								return uni.$u.test.mobile(value) || uni.$u.test.email(value);
+							},
+							message: '支付宝账号不正确',
+							trigger: ['change', 'blur'],
+						}
+					]
 				},
 			}
 		},
-		created() {
-
+		onReady() {
+			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
+			this.$refs.uForm.setRules(this.rules)
 		},
 		methods: {
 			onChooseAvatar(e) {
@@ -200,7 +206,11 @@
 			// 确认
 			handleConfirm() {
 				this.$refs.uForm.validate().then(res => {
-					console.log(this.model)
+					console.log(this.userInfo)
+					this.userInfo = {
+						name: "",
+						account: ""
+					}
 					this.show = false
 				}).catch(errors => {
 					console.log('校验失败')
