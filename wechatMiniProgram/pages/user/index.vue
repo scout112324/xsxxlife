@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="user-list">
-			<view class="user-item" v-for="item in userData" :key="item.id">
+			<view class="user-item" v-for="item in userData" :key="item.id" @click="handleJumpDetail(item.name)">
 				<view class="icon">
 					<image class="icon-image" :src="item.icon" mode=""></image>
 				</view>
@@ -25,16 +25,31 @@
 							<uni-icons type="forward" size="22"></uni-icons>
 						</button>
 					</view>
-					<view class="right" @click="handleJumpDetail(item.name)" v-else>
+					<view class="right" v-else>
 						<view class="new" v-if="item.name=='收藏列表'">
 							NEW
+						</view>
+						<view class="money" v-if="item.name=='点击提现'">
+							100￥
 						</view>
 						<uni-icons type="forward" size="22"></uni-icons>
 					</view>
 				</view>
 			</view>
 		</view>
-
+		<u-modal :show="show" :title="title" showCancelButton confirmColor="#FFD100" width="650rpx"
+			@cancel="handleCancle" @confirm="handleConfirm">
+			<view class="slot-content">
+				<u--form labelWidth="180rpx" labelPosition="left" :model="model" :rules="rules" ref="uForm">
+					<u-form-item label="姓名:" prop="userInfo.name">
+						<u--input v-model="model.userInfo.name" border="bottom"></u--input>
+					</u-form-item>
+					<u-form-item label="支付宝账号:" prop="userInfo.account">
+						<u--input v-model="model.userInfo.account" border="bottom"></u--input>
+					</u-form-item>
+				</u--form>
+			</view>
+		</u-modal>
 	</view>
 </template>
 
@@ -87,9 +102,36 @@
 						id: 8,
 						name: "意见反馈",
 						icon: "../../static/user/yijian.png"
+					},
+					{
+						id: 9,
+						name: "点击提现",
+						icon: "../../static/user/tixian.png"
 					}
 				],
-				checked: false
+				checked: false,
+				show: false,
+				title: '提现',
+				model: {
+					userInfo: {
+						name: 'uView UI',
+						account: '',
+					},
+				},
+				rules: {
+					'userInfo.name': {
+						type: 'string',
+						required: true,
+						message: '请填写姓名',
+						trigger: ['blur', 'change']
+					},
+					'userInfo.account': {
+						type: 'string',
+						required: true,
+						message: '请填写支付宝账号',
+						trigger: ['blur', 'change']
+					},
+				},
 			}
 		},
 		created() {
@@ -144,9 +186,25 @@
 							url: "/pages/user/feedback/feedback"
 						})
 						break
+					case '点击提现':
+						this.show = true
+						break
 					default:
 						return
 				}
+			},
+			// 关闭弹框
+			handleCancle() {
+				this.show = false
+			},
+			// 确认
+			handleConfirm() {
+				this.$refs.uForm.validate().then(res => {
+					console.log(this.model)
+					this.show = false
+				}).catch(errors => {
+					console.log('校验失败')
+				})
 			}
 		}
 	}
@@ -321,5 +379,9 @@
 				}
 			}
 		}
+	}
+
+	::v-deep .u-modal__title {
+		padding: 20rpx 0 !important;
 	}
 </style>
