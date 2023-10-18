@@ -24,7 +24,7 @@
 					<u-form-item label="联系电话" prop="phone" borderBottom>
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写你的手机号码"></u--input>
 					</u-form-item>
-					<u-form-item label="联系电话" prop="address" borderBottom>
+					<u-form-item label="房屋地址" prop="address" borderBottom>
 						<u--input v-model="userInfo.address" border="none" placeholder="请填写地址"></u--input>
 					</u-form-item>
 				</u--form>
