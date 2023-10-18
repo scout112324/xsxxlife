@@ -26,24 +26,24 @@
 				</view>
 			</view>
 			<view class="message">
-				<u--form labelPosition="left" :model="model1" :rules="rules" ref="uForm" labelWidth="240rpx">
-					<u-form-item label="闲置类型" prop="userInfo.type" borderBottom @click="showType = true;">
-						<u--input v-model="model1.userInfo.type" disabled disabledColor="#ffffff" placeholder="请选择"
+				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
+					<u-form-item label="闲置类型" prop="type" borderBottom @click="showType = true;">
+						<u--input v-model="userInfo.type" disabled disabledColor="#ffffff" placeholder="请选择"
 							border="none"></u--input>
 						<u-icon slot="right" name="arrow-right"></u-icon>
 					</u-form-item>
-					<u-form-item label="产品价格" prop="userInfo.price" borderBottom>
-						<u--input v-model="model1.userInfo.price" border="none" placeholder="请填写产品价格"></u--input>
+					<u-form-item label="产品价格" prop="price" borderBottom>
+						<u--input v-model="userInfo.price" border="none" placeholder="请填写产品价格"></u--input>
 					</u-form-item>
-					<u-form-item label="选择交易方式" prop="userInfo.way" borderBottom labelPosition="top">
-						<u-checkbox-group v-model="checkboxValue" @change="checkboxChange">
+					<u-form-item label="选择交易方式" prop="way" borderBottom labelPosition="top">
+						<u-checkbox-group v-model="userInfo.way" @change="checkboxChange">
 							<u-checkbox :customStyle="{marginRight: '16rpx'}" v-for="(item, index) in checkboxList"
 								:key="index" :label="item.name" :name="item.name">
 							</u-checkbox>
 						</u-checkbox-group>
 					</u-form-item>
-					<u-form-item label="手机号" prop="userInfo.phone" borderBottom>
-						<u--input v-model="model1.userInfo.phone" border="none" placeholder="请填写你的手机号码"></u--input>
+					<u-form-item label="手机号" prop="phone" borderBottom>
+						<u--input v-model="userInfo.phone" border="none" placeholder="请填写你的手机号码"></u--input>
 					</u-form-item>
 				</u--form>
 				<u-action-sheet :show="showType" :actions="actions" title="请选择闲置类型" @close="showType = false"
@@ -69,12 +69,11 @@
 				textContent: "",
 				// imgList: [],
 				showType: false,
-				model1: {
-					userInfo: {
-						price: '',
-						phone: '',
-						type: '',
-					},
+				userInfo: {
+					price: '',
+					way: [],
+					phone: '',
+					type: '',
 				},
 				actions: [{
 						name: '男',
@@ -83,7 +82,6 @@
 						name: '女',
 					}
 				],
-				checkboxValue: [],
 				checkboxList: [{
 						name: '通过平台',
 						disabled: false
@@ -94,13 +92,13 @@
 					}
 				],
 				rules: {
-					'userInfo.price': {
+					price: [{
 						required: true,
 						message: '请填写产品价格',
 						// blur和change事件触发检验
 						trigger: ['blur', 'change'],
-					},
-					'userInfo.phone': [{
+					}],
+					phone: [{
 							required: true,
 							message: '请输入手机号',
 							trigger: ['change', 'blur'],
@@ -117,13 +115,19 @@
 							trigger: ['change', 'blur'],
 						}
 					],
-					'userInfo.type': {
+					way: [{
+						type: 'array',
+						required: true,
+						message: '请至少选择一个交易类型',
+						trigger: 'change'
+					}],
+					type: [{
 						type: 'string',
 						max: 1,
 						required: true,
 						message: '请选择闲置类型',
 						trigger: ['blur', 'change']
-					},
+					}],
 				},
 				radio: '',
 				switchVal: false
@@ -161,11 +165,17 @@
 			// },
 			// 发布
 			handlePublish() {
-				console.log("fabu")
+				this.$refs.uForm.validate().then(valid => {
+					if (valid) {
+						console.log("fabu")
+					} else {
+						console.log('验证失败');
+					}
+				})
 			},
 			typeSelect(e) {
-				this.model1.userInfo.type = e.name
-				this.$refs.uForm.validateField('userInfo.type')
+				this.userInfo.type = e.name
+				this.$refs.uForm.validateField('type')
 			},
 			checkboxChange(n) {
 				console.log('change', n);
@@ -264,12 +274,11 @@
 			}
 
 			.message {
-				height: 479rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
 				margin: 20rpx 0;
-				padding: 0 30rpx;
+				padding: 0 30rpx 20rpx 30rpx;
 
 				::v-deep .u-form-item__body__right {
 					margin: 10rpx 0;
