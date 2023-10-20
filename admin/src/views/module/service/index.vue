@@ -84,7 +84,6 @@
           v-hasPermi="['system:user:remove']"
         >删除</el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
@@ -115,7 +114,7 @@
         width="160"
         class-name="small-padding fixed-width"
       >
-        <template slot-scope="scope" v-if="scope.row.userId !== 1">
+        <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
