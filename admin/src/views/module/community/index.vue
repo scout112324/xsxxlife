@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="42px">
-      <el-form-item label="标题" prop="diaTitle">
+      <el-form-item label="标题" prop="title">
         <el-input
-          v-model="queryParams.diaTitle"
+          v-model="queryParams.title"
           placeholder="请输入社群名称"
           clearable
           style="width: 240px"
@@ -79,7 +79,7 @@
 
     <div class="footer">
       <el-pagination
-        v-show="allTotal>0"
+        v-show="total>0"
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -87,7 +87,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="queryParams.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :allTotal="allTotal"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -102,7 +102,6 @@
           <el-upload
             :action="uploadAction"
             list-type="picture-card"
-            :file-list="uploadFiles"
             :auto-upload="true"
             :show-file-list="false"
             :headers="uploadHeader"
@@ -121,6 +120,23 @@
         </el-form-item>
         <el-form-item label="介绍" prop="introduce">
           <el-input v-model="form.introduce" placeholder="请介绍群类型"/>
+        </el-form-item>
+        <el-form-item label="二维码地址" prop="qrCode">
+          <el-upload
+            :action="uploadAction"
+            list-type="picture-card"
+            :auto-upload="true"
+            :show-file-list="false"
+            :headers="uploadHeader"
+            :on-success="qrCodeUploadSuccess"
+          >
+            <img
+              v-if="form.qrCode"
+              :src="form.qrCode"
+              class="list-img"
+            />
+            <i v-if="!form.qrCode" class="el-icon-plus"></i>
+          </el-upload>
         </el-form-item>
         <el-form-item label="是否展示" v-if="noticeId">
           <el-radio-group v-model="form.isShow">
@@ -162,10 +178,10 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        diaTitle: ''
+        title: ''
       },
       // 总条数
-      allTotal: 0,
+      total: 0,
       // 表单校验
       rules: {},
       noticeId: '',
@@ -181,8 +197,7 @@ export default {
       ],
       // 上传地址
       uploadAction: process.env.VUE_APP_SERVER_URL + '/web/icon/upload',
-      // 上传文件列表
-      uploadFiles: [],
+
       uploadHeader: { 'Authorization': getToken() },
       // 图片根目录
       imagePath: ''
@@ -197,8 +212,9 @@ export default {
       this.loading = true
       crowdList(this.queryParams).then(response => {
           if (response.code === 200) {
+            console.log(response)
             this.crowdList = response.rows
-            this.allTotal = response.total
+            this.total = response.total
             this.loading = false
           }
         }
@@ -238,26 +254,28 @@ export default {
         title: '',
         total: 0,
         introduce: '',
-        isShow: 0
+        isShow: 0,
+        url: "",
+        qrCode: ""
       }
-      this.uploadFiles = []
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()
       this.open = true
-      this.diaTitle = '添加公告'
+      this.diaTitle = '添加社群'
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.open = true
-      this.diaTitle = '修改公告'
+      this.diaTitle = '修改社群'
       this.noticeId = row.id
       this.$set(this.form, 'title', row.title)
       this.$set(this.form, 'total', row.total)
       this.$set(this.form, 'introduce', row.introduce)
       this.$set(this.form, 'isShow', String(row.isShow))
       this.$set(this.form, 'url', row.url)
+      this.$set(this.form, 'qrCode', row.qrCode)
     },
     /** 提交按钮 */
     submitForm() {
@@ -268,7 +286,8 @@ export default {
           total: this.form.total,
           introduce: this.form.introduce,
           isShow: this.form.isShow,
-          url: this.form.url
+          url: this.form.url,
+          qrCode: this.form.qrCode
         }
         updateCrowd(params).then(response => {
           if (response.code === 200) {
@@ -282,7 +301,6 @@ export default {
       } else {
         this.$refs['form'].validate(valid => {
           if (valid) {
-            console.log(this.form)
             addCrowd(this.form).then(response => {
               this.$modal.msgSuccess('新增成功')
               this.open = false
@@ -314,6 +332,9 @@ export default {
     },
     handleUploadSuccess(file) {
       this.$set(this.form, 'url', file.data.url)
+    },
+    qrCodeUploadSuccess(file) {
+      this.$set(this.form, 'qrCode', file.data.url)
     }
   }
 }
