@@ -93,7 +93,7 @@
     </div>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog class="common-dialog" :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body destroy-on-close>
+    <el-dialog class="common-dialog" :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入标题"/>
