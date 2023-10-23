@@ -12,7 +12,6 @@
         </el-button>
       </el-col>
     </el-row>
-
     <el-table v-loading="loading" :data="noticeList">
       <el-table-column type="index" width="50" align="center"></el-table-column>
       <el-table-column show-overflow-tooltip label="内容" align="center" key="content" prop="content" />
@@ -76,7 +75,7 @@
         <el-form-item label="内容">
           <el-input v-model="form.content" placeholder="请输入用户昵称"/>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="状态" v-if="noticeId">
           <el-radio-group v-model="form.status">
             <el-radio
               v-for="status in statusOption"
@@ -95,11 +94,7 @@
   </div>
 </template>
 <script>
-import {
-  changeUserStatus,
-} from "@/api/system/user";
-
-import {addNotice, noticeList, updateNotice, deleteNotice} from "@/api/system/setting"
+import {addNotice, noticeList, updateNotice, deleteNotice} from "@/api/setting/setting"
 
 export default {
   name: "Announce",
@@ -128,11 +123,11 @@ export default {
       statusOption: [
         {
           label: '启用',
-          value: 0
+          value: "0"
         },
         {
           label: '禁用',
-          value: 1
+          value: "1"
         }
       ]
     };
@@ -155,9 +150,10 @@ export default {
     },
     // 状态修改
     handleStatusChange(row) {
-      let text = row.status === "0" ? "启用" : "停用";
-      this.$modal.confirm('确认要"' + text + '""' + row.userName + '"用户吗？').then(function () {
-        return changeUserStatus(row.userId, row.status);
+      console.log(row.status)
+      let text = row.status == "0" ? "启用" : "禁用";
+      this.$modal.confirm('确认要' + text + '公告吗？').then(function () {
+        return updateNotice({id:row.id,content:row.content,status: row.status});
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");
       }).catch(function () {
@@ -184,12 +180,11 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      console.log(row)
       this.open = true;
       this.title = "修改公告";
       this.noticeId = row.id
-      this.form.content = row.content
-      this.form.status = row.status
+      this.$set(this.form, 'content', row.content)
+      this.$set(this.form, 'status', String(row.status))
     },
     /** 提交按钮 */
     submitForm() {
