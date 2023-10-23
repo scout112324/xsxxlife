@@ -235,7 +235,7 @@ export default {
       let text = row.isShow == '0' ? '展示' : '不展示'
       this.$modal.confirm('确认要' + text + '在首页吗？').then(function() {
         return updateCrowd(
-          { id: row.id, title: row.title, total: row.total, introduce: row.introduce, isShow: row.isShow }
+          { id: row.id, title: row.title, total: row.total, introduce: row.introduce, url: row.url, qrCode: row.qrCode, isShow: row.isShow }
         )
       }).then(() => {
         this.$modal.msgSuccess(text + '成功')

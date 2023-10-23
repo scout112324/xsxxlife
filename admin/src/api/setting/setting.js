@@ -35,3 +35,39 @@ export function deleteNotice(query) {
     params: query
   })
 }
+
+// 查询icon列表
+export function iconList(query) {
+  return request({
+    url: '/web/icon/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 新增icon
+export function addIcon(data) {
+  return request({
+    url: '/web/icon/add',
+    method: 'post',
+    data: data
+  })
+}
+
+// 编辑icon
+export function updateIcon(data) {
+  return request({
+    url: '/web/icon/update',
+    method: 'post',
+    data: data
+  })
+}
+
+// 删除icon
+export function deleteIcon(query) {
+  return request({
+    url: '/web/icon/delete',
+    method: 'get',
+    params: query
+  })
+}
