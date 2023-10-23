@@ -1,5 +1,20 @@
 <template>
   <div class="container">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="42px">
+      <el-form-item label="标题" prop="diaTitle">
+        <el-input
+          v-model="queryParams.diaTitle"
+          placeholder="请输入社群名称"
+          clearable
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -12,22 +27,29 @@
         </el-button>
       </el-col>
     </el-row>
-    <el-table v-loading="loading" :data="noticeList">
+    <el-table v-loading="loading" :data="crowdList">
       <el-table-column type="index" width="50" align="center"></el-table-column>
-      <el-table-column show-overflow-tooltip label="内容" align="center" key="content" prop="content" />
-      <el-table-column label="状态" align="center" key="status">
+      <el-table-column show-overflow-tooltip label="标题" align="center" prop="title"/>
+      <el-table-column label="图片" align="center" width="200">
+        <template slot-scope="scope">
+          <img class="list-img" :src="scope.row.url">
+        </template>
+      </el-table-column>
+      <el-table-column label="人数" align="center" prop="total"/>
+      <el-table-column show-overflow-tooltip label="介绍" align="center" prop="introduce"/>
+      <el-table-column label="二维码地址" align="center" width="200">
+        <template slot-scope="scope">
+          <img class="list-img" :src="scope.row.qrCode">
+        </template>
+      </el-table-column>
+      <el-table-column label="是否展示" align="center">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.status"
+            v-model="scope.row.isShow"
             :active-value="0"
             :inactive-value="1"
             @change="handleStatusChange(scope.row)"
           ></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -57,7 +79,7 @@
 
     <div class="footer">
       <el-pagination
-        v-show="total>0"
+        v-show="allTotal>0"
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -65,23 +87,29 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="queryParams.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
+        :allTotal="allTotal">
       </el-pagination>
     </div>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="内容">
-          <el-input v-model="form.content" placeholder="请输入用户昵称"/>
+        <el-form-item label="标题">
+          <el-input v-model="form.title" placeholder="请输入标题"/>
         </el-form-item>
-        <el-form-item label="状态" v-if="noticeId">
-          <el-radio-group v-model="form.status">
+        <el-form-item label="人数">
+          <el-input v-model="form.total" placeholder="请输入总人数"/>
+        </el-form-item>
+        <el-form-item label="介绍">
+          <el-input v-model="form.introduce" placeholder="请介绍群类型"/>
+        </el-form-item>
+        <el-form-item label="是否展示" v-if="noticeId">
+          <el-radio-group v-model="form.isShow">
             <el-radio
-              v-for="status in statusOption"
-              :key="status.value"
-              :label="status.value"
-            >{{ status.label }}
+              v-for="isShow in isShowOption"
+              :key="isShow.value"
+              :label="isShow.value"
+            >{{ isShow.label }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
@@ -94,7 +122,7 @@
   </div>
 </template>
 <script>
-import {addNotice, noticeList, updateNotice, deleteNotice} from "@/api/setting/setting"
+import {addCrowd, crowdList, updateCrowd, deleteCrowd} from "@/api/module/community"
 
 export default {
   name: "Announce",
@@ -103,9 +131,9 @@ export default {
       // 遮罩层
       loading: true,
       // 公告表格数据
-      noticeList: [],
+      crowdList: [],
       // 弹出层标题
-      title: "",
+      diaTitle: "",
       // 是否显示弹出层
       open: false,
       // 表单参数
@@ -114,22 +142,23 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        diaTitle: ""
       },
       // 总条数
-      total: 0,
+      allTotal: 0,
       // 表单校验
       rules: {},
       noticeId: "",
-      statusOption: [
+      isShowOption: [
         {
-          label: '启用',
+          label: '展示',
           value: "0"
         },
         {
-          label: '禁用',
+          label: '不展示',
           value: "1"
         }
-      ]
+      ],
     };
   },
   created() {
@@ -139,25 +168,36 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.loading = true;
-      noticeList(this.queryParams).then(response => {
+      crowdList(this.queryParams).then(response => {
           if (response.code === 200) {
-            this.noticeList = response.rows
-            this.total = response.total
+            this.crowdList = response.rows
+            this.allTotal = response.total
             this.loading = false;
           }
         }
       );
     },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
     // 状态修改
     handleStatusChange(row) {
-      console.log(row.status)
-      let text = row.status == "0" ? "启用" : "禁用";
-      this.$modal.confirm('确认要' + text + '公告吗？').then(function () {
-        return updateNotice({id:row.id,content:row.content,status: row.status});
+      let text = row.isShow == "0" ? "展示" : "不展示";
+      this.$modal.confirm('确认要' + text + '在首页吗？').then(function () {
+        return updateCrowd(
+          {id: row.id, title: row.title, total: row.total,introduce: row.introduce, isShow: row.isShow}
+        );
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");
       }).catch(function () {
-        row.status = row.status === "0" ? "1" : "0";
+        row.isShow = row.isShow === "0" ? "1" : "0";
       });
     },
     // 取消按钮
@@ -168,34 +208,40 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        content: "",
-        status: 0,
+        title: "",
+        total: 0,
+        introduce: "",
+        isShow: 0,
       };
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加公告";
+      this.diaTitle = "添加公告";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.open = true;
-      this.title = "修改公告";
+      this.diaTitle = "修改公告";
       this.noticeId = row.id
-      this.$set(this.form, 'content', row.content)
-      this.$set(this.form, 'status', String(row.status))
+      this.$set(this.form, 'title', row.title)
+      this.$set(this.form, 'total', row.total)
+      this.$set(this.form, 'introduce', row.introduce)
+      this.$set(this.form, 'isShow', String(row.isShow))
     },
     /** 提交按钮 */
     submitForm() {
       if (this.noticeId) {
         const params = {
           id: this.noticeId,
-          content: this.form.content,
-          status: this.form.status
+          title: this.form.title,
+          total: this.form.total,
+          introduce: this.form.introduce,
+          isShow: this.form.isShow
         }
         console.log(params)
-        updateNotice(params).then(response => {
+        updateCrowd(params).then(response => {
           if (response.code === 200) {
             this.$modal.msgSuccess("修改成功");
             this.open = false;
@@ -207,7 +253,7 @@ export default {
         this.$refs["form"].validate(valid => {
           if (valid) {
             console.log(this.form)
-            addNotice(this.form).then(response => {
+            addCrowd(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -219,7 +265,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       this.$modal.confirm('是否确认删除公告').then(function () {
-        return deleteNotice({id: row.id});
+        return deleteCrowd({id: row.id});
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -242,6 +288,12 @@ export default {
 <style lang="scss" scoped>
 .container {
   padding: 20px;
+
+  .list-img {
+    width: 100px;
+    height: 100px;
+  }
+
   .footer {
     text-align: right;
     margin: 20px;
