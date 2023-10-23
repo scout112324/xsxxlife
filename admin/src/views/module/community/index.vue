@@ -87,20 +87,39 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="queryParams.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :allTotal="allTotal">
+        :allTotal="allTotal"
+      >
       </el-pagination>
     </div>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog class="common-dialog" :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body destroy-on-close>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="标题">
+        <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入标题"/>
         </el-form-item>
-        <el-form-item label="人数">
+        <el-form-item label="图片" prop="url">
+          <el-upload
+            :action="uploadAction"
+            list-type="picture-card"
+            :file-list="uploadFiles"
+            :auto-upload="true"
+            :show-file-list="false"
+            :headers="uploadHeader"
+            :on-success="handleUploadSuccess"
+          >
+            <img
+              v-if="form.url"
+              :src="form.url"
+              class="list-img"
+            />
+            <i v-if="!form.url" class="el-icon-plus"></i>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="人数" prop="total">
           <el-input v-model="form.total" placeholder="请输入总人数"/>
         </el-form-item>
-        <el-form-item label="介绍">
+        <el-form-item label="介绍" prop="introduce">
           <el-input v-model="form.introduce" placeholder="请介绍群类型"/>
         </el-form-item>
         <el-form-item label="是否展示" v-if="noticeId">
@@ -122,10 +141,11 @@
   </div>
 </template>
 <script>
-import {addCrowd, crowdList, updateCrowd, deleteCrowd} from "@/api/module/community"
+import { addCrowd, crowdList, updateCrowd, deleteCrowd } from '@/api/module/community'
+import { getToken } from '@/utils/auth'
 
 export default {
-  name: "Announce",
+  name: 'Announce',
   data() {
     return {
       // 遮罩层
@@ -133,7 +153,7 @@ export default {
       // 公告表格数据
       crowdList: [],
       // 弹出层标题
-      diaTitle: "",
+      diaTitle: '',
       // 是否显示弹出层
       open: false,
       // 表单参数
@@ -142,93 +162,102 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        diaTitle: ""
+        diaTitle: ''
       },
       // 总条数
       allTotal: 0,
       // 表单校验
       rules: {},
-      noticeId: "",
+      noticeId: '',
       isShowOption: [
         {
           label: '展示',
-          value: "0"
+          value: '0'
         },
         {
           label: '不展示',
-          value: "1"
+          value: '1'
         }
       ],
-    };
+      // 上传地址
+      uploadAction: process.env.VUE_APP_SERVER_URL + '/web/icon/upload',
+      // 上传文件列表
+      uploadFiles: [],
+      uploadHeader: { 'Authorization': getToken() },
+      // 图片根目录
+      imagePath: ''
+    }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     /** 查询用户列表 */
     getList() {
-      this.loading = true;
+      this.loading = true
       crowdList(this.queryParams).then(response => {
           if (response.code === 200) {
             this.crowdList = response.rows
             this.allTotal = response.total
-            this.loading = false;
+            this.loading = false
           }
         }
-      );
+      )
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+      this.queryParams.pageNum = 1
+      this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
+      this.resetForm('queryForm')
+      this.handleQuery()
     },
     // 状态修改
     handleStatusChange(row) {
-      let text = row.isShow == "0" ? "展示" : "不展示";
-      this.$modal.confirm('确认要' + text + '在首页吗？').then(function () {
+      let text = row.isShow == '0' ? '展示' : '不展示'
+      this.$modal.confirm('确认要' + text + '在首页吗？').then(function() {
         return updateCrowd(
-          {id: row.id, title: row.title, total: row.total,introduce: row.introduce, isShow: row.isShow}
-        );
+          { id: row.id, title: row.title, total: row.total, introduce: row.introduce, isShow: row.isShow }
+        )
       }).then(() => {
-        this.$modal.msgSuccess(text + "成功");
-      }).catch(function () {
-        row.isShow = row.isShow === "0" ? "1" : "0";
-      });
+        this.$modal.msgSuccess(text + '成功')
+      }).catch(function() {
+        row.isShow = row.isShow === '0' ? '1' : '0'
+      })
     },
     // 取消按钮
     cancel() {
-      this.open = false;
-      this.reset();
+      this.open = false
+      this.reset()
     },
     // 表单重置
     reset() {
       this.form = {
-        title: "",
+        title: '',
         total: 0,
-        introduce: "",
-        isShow: 0,
-      };
+        introduce: '',
+        isShow: 0
+      }
+      this.uploadFiles = []
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset();
-      this.open = true;
-      this.diaTitle = "添加公告";
+      this.reset()
+      this.open = true
+      this.diaTitle = '添加公告'
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.open = true;
-      this.diaTitle = "修改公告";
+      this.open = true
+      this.diaTitle = '修改公告'
       this.noticeId = row.id
       this.$set(this.form, 'title', row.title)
       this.$set(this.form, 'total', row.total)
       this.$set(this.form, 'introduce', row.introduce)
       this.$set(this.form, 'isShow', String(row.isShow))
+      this.$set(this.form, 'url', row.url)
     },
     /** 提交按钮 */
     submitForm() {
@@ -238,39 +267,40 @@ export default {
           title: this.form.title,
           total: this.form.total,
           introduce: this.form.introduce,
-          isShow: this.form.isShow
+          isShow: this.form.isShow,
+          url: this.form.url
         }
-        console.log(params)
         updateCrowd(params).then(response => {
           if (response.code === 200) {
-            this.$modal.msgSuccess("修改成功");
-            this.open = false;
-            this.getList();
-            this.reset();
+            this.$modal.msgSuccess('修改成功')
+            this.open = false
+            this.noticeId = ""
+            this.getList()
+            this.reset()
           }
         })
       } else {
-        this.$refs["form"].validate(valid => {
+        this.$refs['form'].validate(valid => {
           if (valid) {
             console.log(this.form)
             addCrowd(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
+              this.$modal.msgSuccess('新增成功')
+              this.open = false
+              this.getList()
+            })
           }
-        });
+        })
       }
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$modal.confirm('是否确认删除公告').then(function () {
-        return deleteCrowd({id: row.id});
+      this.$modal.confirm('是否确认删除公告').then(function() {
+        return deleteCrowd({ id: row.id })
       }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.getList()
+        this.$modal.msgSuccess('删除成功')
       }).catch(() => {
-      });
+      })
     },
     // 页码发生变化
     handleSizeChange(val) {
@@ -281,6 +311,9 @@ export default {
     handleCurrentChange(val) {
       this.queryParams.pageNum = val
       this.getList()
+    },
+    handleUploadSuccess(file) {
+      this.$set(this.form, 'url', file.data.url)
     }
   }
 }
@@ -297,6 +330,20 @@ export default {
   .footer {
     text-align: right;
     margin: 20px;
+  }
+}
+</style>
+<style scoped lang="scss">
+.common-dialog {
+  ::v-deep .el-upload--picture-card {
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+  }
+
+  .list-img {
+    width: 100px;
+    height: 100px;
   }
 }
 </style>

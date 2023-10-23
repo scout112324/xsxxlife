@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin/vue.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/api/index/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/api/index/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/pages/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/pages/index/index.vue" afterDir="false" />
-    </list>
+    <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,19 +22,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../总和-线上线下小程序-0927" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/chenweiwei/Desktop/myproject/online-and-offline",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -50,6 +40,7 @@
       <option name="presentableId" value="Default" />
       <updated>1695796687325</updated>
       <workItem from="1695796688572" duration="3077000" />
+      <workItem from="1698061126689" duration="271000" />
     </task>
     <servers />
   </component>

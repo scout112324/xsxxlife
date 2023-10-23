@@ -199,6 +199,7 @@ export default {
           if (response.code === 200) {
             this.$modal.msgSuccess("修改成功");
             this.open = false;
+            this.noticeId = ""
             this.getList();
             this.reset();
           }
