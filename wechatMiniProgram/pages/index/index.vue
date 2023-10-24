@@ -25,13 +25,7 @@
 					<view class="title">
 						{{item.name}}
 					</view>
-				</view>
-				<view class="item" @click="handleClickService('闲置交易')">
-					<image class="icon" src="../../static/home/mianfeixianzhijiaoyi.png" mode=""></image>
-					<view class="title">
-						闲置专区
-					</view>
-					<view class="free">
+					<view class="free" v-if="item.name=='闲置专区'">
 						免费
 					</view>
 				</view>
@@ -141,6 +135,11 @@
 						id: 8,
 						name: "大件清运",
 						icon: "../../static/home/dajianqingyun.png"
+					},
+					{
+						id: 9,
+						name: "闲置专区",
+						icon: "../../static/home/mianfeixianzhijiaoyi.png"
 					}
 				],
 
@@ -297,6 +296,11 @@
 						})
 						break;
 					case "闲置交易":
+						uni.switchTab({
+							url: "/pages/unused/index"
+						})
+						break;
+					case "闲置专区":
 						uni.switchTab({
 							url: "/pages/unused/index"
 						})
