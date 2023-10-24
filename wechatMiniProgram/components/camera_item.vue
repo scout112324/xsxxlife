@@ -110,7 +110,6 @@
 							url: uploadFiles().url,
 							method: "POST",
 							header: {
-								'openId': uni.getStorageSync('openId'),
 								'Content-Type': 'multipart/form-data'
 							},
 							filePath: igmFile[0],
@@ -147,7 +146,7 @@
 							url: uploadFiles().url,
 							method: "POST",
 							header: {
-								'openId': uni.getStorageSync('openId')
+								// 'openId': uni.getStorageSync('openId')
 							},
 							filePath: videoFile,
 							name: 'file',

@@ -18,7 +18,8 @@ const $http = new request({
   defaultUploadUrl: 'clientApi/file/upload',
   // 设置请求头（如果使用报错跨域问题，可能是content-type请求类型和后台那边设置的不一致）
   header: {
-    'content-type': 'application/json;charset=utf-8'
+    'content-type': 'application/json;charset=utf-8',
+	'openId': uni.getStorageSync('openId')
   },
   // 请求超时时间, 单位ms（默认300000）
   timeout: 300000,

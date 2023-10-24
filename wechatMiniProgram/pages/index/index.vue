@@ -82,7 +82,8 @@
 	import communityItem from "@/components/community_item.vue"
 	import {
 		login,
-		getNotice
+		getNotice,
+		tabList
 	} from '@/api/index/index.js'
 	export default {
 		components: {
@@ -98,6 +99,9 @@
 				},
 				cityname: "上海市",
 				text: ["发布闲置后支持线上线下交易啦～", "111"],
+				tabListInfo: [],
+
+
 				serviceData: [{
 						id: 1,
 						name: "综合服务",
@@ -184,7 +188,7 @@
 			} else {
 				this.goLogin()
 			}
-			
+
 			if (this.$store.state.changeCity) {
 				this.cityname = this.$store.state.storeCityName
 			}
@@ -205,6 +209,7 @@
 			})
 			// 获取公告数据
 			this.getNoticeData()
+			this.getTabList()
 		},
 		methods: {
 			// 微信授权登录
@@ -225,10 +230,17 @@
 			},
 			// 获取公告
 			getNoticeData() {
-				getNotice().then(res=>{
-					if(res.code===200) {
+				getNotice().then(res => {
+					if (res.code === 200) {
 						this.text = res.data
-						console.log(res)
+					}
+				})
+			},
+			// 获取跳转路径和图标
+			getTabList() {
+				tabList().then(res => {
+					if (res.code === 200) {
+						this.tabListInfo = res.data
 					}
 				})
 			},
