@@ -39,7 +39,9 @@
 					</view>
 				</view>
 				<view class="life-list">
-					<info-item></info-item>
+					<view class="lift-item" v-for="item in unusedList" :key="item.id">
+						<info-item :itemData="item"></info-item>
+					</view>
 				</view>
 			</view>
 			<view class="attachment-community">
@@ -95,8 +97,6 @@
 				cityname: "上海市",
 				text: ["发布闲置后支持线上线下交易啦～", "111"],
 				tabListInfo: [],
-
-
 				serviceData: [{
 						id: 1,
 						name: "综合服务",
@@ -177,7 +177,8 @@
 						disable: true
 					}
 				],
-				show: false
+				show: false,
+				unusedList: []
 			}
 		},
 		onShow() {
@@ -250,7 +251,7 @@
 			getUnusedList() {
 				getUnused().then(res => {
 					if (res.code === 200) {
-						console.log(res)
+						this.unusedList = res.data
 					}
 				})
 			},

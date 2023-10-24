@@ -1,7 +1,9 @@
 <template>
 	<view class="item" @click="handleClick">
 		<view class="avatar">
-			<image class="image"
+			<image v-if="itemData.photo" class="image" :src="itemData.photo" mode="">
+			</image>
+			<image v-else class="image"
 				src="https://tse4-mm.cn.bing.net/th/id/OIP-C.u1D8WJbUIIXMV2w-qa4r5wAAAA?pid=ImgDet&rs=1" mode="">
 			</image>
 		</view>
@@ -9,19 +11,19 @@
 			<view class="header">
 				<view class="left">
 					<view class="nickname">
-						Jummy
+						{{itemData.nickname}}
 					</view>
 					<view class="address">
-						上海市静安区
+						{{itemData.place}}
 					</view>
 				</view>
 				<view class="price" v-if="showPrice">
 					<text class="unit">￥</text>
-					<text>279000</text>
+					<text>{{itemData.price}}</text>
 				</view>
 			</view>
 			<view class="content">
-				出闲置全新Apple/IPhone15一台，国行版内存128G，手机无任何维修记录，没有任何划痕！
+				{{itemData.content}}
 			</view>
 			<view class="image-list">
 				<image class="good"
@@ -36,21 +38,25 @@
 			</view>
 			<view class="footer">
 				<view class="item">
-					<image class="image" src="../static/components/dianzan.png" mode=""></image>
-					<text class="num">999</text>
+					<image v-if="itemData.support" class="image" src="../static/components/dianzan_set.png" mode="">
+					</image>
+					<image v-else class="image" src="../static/components/dianzan.png" mode=""></image>
+					<text class="num">{{itemData.supportCount}}</text>
 				</view>
 				<view class="item">
-					<image class="image" src="../static/components/shoucang_set.png" mode=""></image>
-					<text class="num">999</text>
+					<image v-if="itemData.star" class="image" src="../static/components/shoucang_set.png" mode="">
+					</image>
+					<image v-else class="image" src="../static/components/shoucang_set.png" mode=""></image>
+					<text class="num">{{itemData.starCount}}</text>
 				</view>
 				<view class="item">
 					<image class="image" src="../static/components/pinglun.png" mode=""></image>
-					<text class="num">999</text>
+					<text class="num">{{itemData.commentCount}}</text>
 				</view>
 				<view class="item" @click.stop>
 					<button class="share" open-type="share">
 						<image class="image" src="../static/components/zhuanfa.png" mode=""></image>
-						<text class="num">999</text>
+						<text class="num">{{itemData.giveCount}}</text>
 					</button>
 				</view>
 			</view>
@@ -65,6 +71,10 @@
 			showPrice: {
 				type: Boolean,
 				default: true
+			},
+			itemData: {
+				type: Object,
+				default: () => {}
 			}
 		},
 		data() {
