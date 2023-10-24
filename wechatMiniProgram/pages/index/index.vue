@@ -77,7 +77,8 @@
 	import {
 		login,
 		getNotice,
-		tabList
+		tabList,
+		getUnused
 	} from '@/api/index/index.js'
 	export default {
 		components: {
@@ -209,6 +210,8 @@
 			// 获取公告数据
 			this.getNoticeData()
 			this.getTabList()
+			// 获取闲置列表
+			this.getUnusedList()
 		},
 		methods: {
 			// 微信授权登录
@@ -240,6 +243,14 @@
 				tabList().then(res => {
 					if (res.code === 200) {
 						this.tabListInfo = res.data
+					}
+				})
+			},
+			// 获取闲置物品
+			getUnusedList() {
+				getUnused().then(res => {
+					if (res.code === 200) {
+						console.log(res)
 					}
 				})
 			},

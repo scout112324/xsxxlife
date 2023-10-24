@@ -3,7 +3,8 @@ import request from "@/utils/request/index.js"
 const api = {
 	login: 'app/user/login',
 	getNotice: 'app/home/getNotice',
-	tabList: 'app/home/tab'
+	tabList: 'app/home/tab',
+	getUnused: 'app/home/getUnused',
 }
 
 // 登录
@@ -19,4 +20,9 @@ export const getNotice = (param, option) => {
 // 获取tab跳转路径及图标
 export const tabList = (param, option) => {
 	return request.get(api.tabList, param)
+}
+
+// 获取闲置物品
+export const getUnused = (param, option) => {
+	return request.get(api.getUnused, param)
 }

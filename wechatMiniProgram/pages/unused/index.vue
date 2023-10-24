@@ -21,6 +21,7 @@
 
 <script>
 	import infoItem from "@/components/info_item.vue"
+	
 	export default {
 		options: {
 			styleIsolation: 'shared',
@@ -42,6 +43,8 @@
 					color: "#131313"
 				},
 			}
+		},
+		created() {
 		},
 		methods: {
 			// 搜索
