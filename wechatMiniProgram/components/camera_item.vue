@@ -113,7 +113,7 @@
 								'Content-Type': 'multipart/form-data'
 							},
 							filePath: igmFile[0],
-							name: 'file',
+							name: 'files',
 							success: (res) => {
 								console.log('chooseImage',res)
 								let imgUrls = JSON.parse(res.data); //微信和头条支持
@@ -149,7 +149,7 @@
 								// 'openId': uni.getStorageSync('openId')
 							},
 							filePath: videoFile,
-							name: 'file',
+							name: 'files',
 							success: (res) => {
 								console.log('chooseVideo',res)
 								let videoUrls = JSON.parse(res.data) //微信和头条支持

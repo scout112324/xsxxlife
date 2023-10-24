@@ -27,11 +27,11 @@
 			</view>
 			<view class="message">
 				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
-					<u-form-item label="闲置类型" prop="type" borderBottom @click="showType = true;">
+					<!-- <u-form-item label="闲置类型" prop="type" borderBottom @click="showType = true;">
 						<u--input v-model="userInfo.type" disabled disabledColor="#ffffff" placeholder="请选择"
 							border="none"></u--input>
 						<u-icon slot="right" name="arrow-right"></u-icon>
-					</u-form-item>
+					</u-form-item> -->
 					<u-form-item label="产品价格" prop="price" borderBottom>
 						<u--input v-model="userInfo.price" border="none" placeholder="请填写产品价格"></u--input>
 					</u-form-item>
