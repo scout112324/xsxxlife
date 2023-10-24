@@ -84,15 +84,16 @@
 <script>
 	import infoItem from "@/components/info_item.vue"
 	import communityItem from "@/components/community_item.vue"
-	// import {
-	// 	setting
-	// } from "@/api/index/index.js"
+	import {
+		login
+	} from '@/api/index/index.js'
 	export default {
 		components: {
 			infoItem,
 			communityItem
 		},
 		created() {
+			// 获取位置信息
 			uni.getLocation({
 				type: 'gcj02',
 				success(res) {
@@ -105,11 +106,7 @@
 				}
 			})
 		},
-		onLoad() {
-			// setting().then(res => {
-			// 	console.log(res)
-			// })
-		},
+		onLoad() {},
 		data() {
 			return {
 				titleStyle: {
@@ -197,12 +194,36 @@
 			}
 		},
 		onShow() {
+			// 微信授权登录
+			let openId = uni.getStorageSync('openId')
+			if (openId) {
+				return
+			} else {
+				this.goLogin()
+			}
+			
 			if (this.$store.state.changeCity) {
 				this.cityname = this.$store.state.storeCityName
 			}
 		},
 		onHide() {},
 		methods: {
+			// 微信授权登录
+			goLogin() {
+				uni.login({
+					provider: 'weixin',
+					success(res) {
+						let code = res.code
+						login({
+							code: code
+						}).then(res => {
+							if (res.code === 200) {
+								uni.setStorageSync('openId', res.data)
+							}
+						})
+					}
+				})
+			},
 			joinCommunity() {
 				this.show = true
 			},
