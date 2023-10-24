@@ -33,6 +33,9 @@
 </template>
 
 <script>
+	import {
+		uploadFiles
+	} from "@/api/upload.js"
 	let sourceType = [
 		['camera'],
 		['album'],
@@ -83,12 +86,10 @@
 		},
 		methods: {
 			chooseVideoImage() {
-				console.log("选择文件类型")
 				uni.showActionSheet({
 					title: "选择上传类型",
 					itemList: ['图片', '视频'],
 					success: (res) => {
-						console.log(res)
 						if (res.tapIndex == 0) {
 							this.chooseImages()
 						} else {
@@ -104,18 +105,18 @@
 					// sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album', 'camera'], //从相册选择
 					success: (res) => {
-						console.log(res)
 						let igmFile = res.tempFilePaths;
 						uni.uploadFile({
-							url: this.config.fileUrl,
+							url: uploadFiles().url,
 							method: "POST",
 							header: {
-								'Authorization': 'bearer ' + uni.getStorageSync('token'),
+								'openId': uni.getStorageSync('openId'),
 								'Content-Type': 'multipart/form-data'
 							},
 							filePath: igmFile[0],
 							name: 'file',
 							success: (res) => {
+								console.log('chooseImage',res)
 								let imgUrls = JSON.parse(res.data); //微信和头条支持
 								this.imagesUrlPath = this.imagesUrlPath.concat(imgUrls.result
 									.filePath);
@@ -143,14 +144,15 @@
 						console.log(responent)
 						let videoFile = responent.tempFilePath;
 						uni.uploadFile({
-							url: this.config.fileUrl,
+							url: uploadFiles().url,
 							method: "POST",
 							header: {
-								'Authorization': 'bearer ' + uni.getStorageSync('token')
+								'openId': uni.getStorageSync('openId')
 							},
 							filePath: videoFile,
 							name: 'file',
 							success: (res) => {
+								console.log('chooseVideo',res)
 								let videoUrls = JSON.parse(res.data) //微信和头条支持
 								this.imagesUrlPath = this.imagesUrlPath.concat(videoUrls.result
 									.filePath);
@@ -193,7 +195,6 @@
 				})
 			},
 			delectVideo(index) {
-				console.log(index)
 				uni.showModal({
 					title: "提示",
 					content: "是否要删除此视频",
