@@ -11,17 +11,13 @@
 						</uni-data-picker>
 						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
 					</view>
-					<!-- <view class="select-address" @click="handleAddress">
-						<text>{{ cityname }}</text>
-						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
-					</view> -->
 				</view>
 			</view>
 		</u-navbar>
 		<view class="occupy"></view>
 		<view class="content-page">
 			<view class="notice">
-				<u-notice-bar :text="text"></u-notice-bar>
+				<u-notice-bar :text="text" :step="true"></u-notice-bar>
 			</view>
 			<view class="service">
 				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item.name)">
@@ -85,26 +81,13 @@
 	import infoItem from "@/components/info_item.vue"
 	import communityItem from "@/components/community_item.vue"
 	import {
-		login
+		login,
+		getNotice
 	} from '@/api/index/index.js'
 	export default {
 		components: {
 			infoItem,
 			communityItem
-		},
-		created() {
-			// 获取位置信息
-			uni.getLocation({
-				type: 'gcj02',
-				success(res) {
-					console.log(res)
-					uni.setStorageSync('latitude', res.latitude);
-					uni.setStorageSync('longitude', res.longitude);
-				},
-				fail(e) {
-					// empty
-				}
-			})
 		},
 		onLoad() {},
 		data() {
@@ -114,7 +97,7 @@
 					color: "#131313"
 				},
 				cityname: "上海市",
-				text: "发布闲置后支持线上线下交易啦～",
+				text: ["发布闲置后支持线上线下交易啦～", "111"],
 				serviceData: [{
 						id: 1,
 						name: "综合服务",
@@ -207,6 +190,22 @@
 			}
 		},
 		onHide() {},
+		created() {
+			// 获取位置信息
+			uni.getLocation({
+				type: 'gcj02',
+				success(res) {
+					console.log(res)
+					uni.setStorageSync('latitude', res.latitude);
+					uni.setStorageSync('longitude', res.longitude);
+				},
+				fail(e) {
+					// empty
+				}
+			})
+			// 获取公告数据
+			this.getNoticeData()
+		},
 		methods: {
 			// 微信授权登录
 			goLogin() {
@@ -221,6 +220,15 @@
 								uni.setStorageSync('openId', res.data)
 							}
 						})
+					}
+				})
+			},
+			// 获取公告
+			getNoticeData() {
+				getNotice().then(res=>{
+					if(res.code===200) {
+						this.text = res.data
+						console.log(res)
 					}
 				})
 			},
@@ -248,12 +256,6 @@
 					url: "/pages/unused/index"
 				})
 			},
-			// handleAddress() {
-			// 	uni.navigateTo({
-			// 			url: "/pages/index/area/area"
-			// 		}),
-			// 	this.changeCity = true
-			// },
 			// 点击不同的服务切换到不同的服务界面
 			handleClickService(name) {
 				switch (name) {
