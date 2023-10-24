@@ -5,6 +5,7 @@ const api = {
 	getNotice: 'app/home/getNotice',
 	tabList: 'app/home/tab',
 	getUnused: 'app/home/getUnused',
+	getCrowd: 'app/home/getCrowd',
 }
 
 // 登录
@@ -25,4 +26,9 @@ export const tabList = (param, option) => {
 // 获取闲置物品
 export const getUnused = (param, option) => {
 	return request.get(api.getUnused, param)
+}
+
+// 获取附近社群
+export const getCrowd = (param, option) => {
+	return request.get(api.getCrowd, param)
 }

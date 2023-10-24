@@ -50,23 +50,23 @@
 					<view class="more"></view>
 				</view>
 				<view class="community-list">
-					<community-item @joinCommunity="joinCommunity"></community-item>
-					<community-item></community-item>
-					<community-item></community-item>
+					<block v-for="item in communityList" :key="item.id">
+						<community-item :itemData="item" @joinCommunity="joinCommunity"></community-item>
+					</block>
 				</view>
 			</view>
 		</view>
 		<u-modal :show="show" width="630rpx" @confirm="handleConfirm">
 			<view class="slot-content">
 				<view class="content">
-					<image class="community" src="../../static/chat/avatar.png" mode=""></image>
+					<image class="community" :src="communityInfo.url" mode=""></image>
 					<view class="title">
-						上海本地生活圈
+						{{communityInfo.title}}
 					</view>
-					<image class="code" src="../../static/chat/avatar.png" mode=""></image>
-					<view class="code-info">
+					<image class="code" :src="communityInfo.qrCode" mode=""></image>
+					<!-- <view class="code-info">
 						该二维码将在2023年9月20日失效
-					</view>
+					</view> -->
 				</view>
 			</view>
 		</u-modal>
@@ -80,7 +80,8 @@
 		login,
 		getNotice,
 		tabList,
-		getUnused
+		getUnused,
+		getCrowd
 	} from '@/api/index/index.js'
 	export default {
 		components: {
@@ -178,7 +179,9 @@
 					}
 				],
 				show: false,
-				unusedList: []
+				unusedList: [],
+				communityList: [],
+				communityInfo: {}
 			}
 		},
 		onShow() {
@@ -213,6 +216,7 @@
 			this.getTabList()
 			// 获取闲置列表
 			this.getUnusedList()
+			this.getCrowdList()
 		},
 		methods: {
 			// 微信授权登录
@@ -255,7 +259,17 @@
 					}
 				})
 			},
-			joinCommunity() {
+			// 获取附近社群
+			getCrowdList() {
+				getCrowd().then(res=>{
+					if(res.code===200) {
+						this.communityList = res.data
+					}
+				})
+			},
+			// 点击加入社群
+			joinCommunity(item) {
+				this.communityInfo = item
 				this.show = true
 			},
 			handleConfirm() {
@@ -459,7 +473,6 @@
 			}
 
 			.life-circle {
-				height: 601rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
@@ -491,13 +504,10 @@
 						}
 					}
 				}
-
-				.life-list {}
 			}
 
 			.attachment-community {
 				margin-top: 20rpx;
-				height: 711rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 16rpx;

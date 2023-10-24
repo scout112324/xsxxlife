@@ -1,33 +1,40 @@
 <template>
 	<view class="community-item">
-		<uni-badge class="uni-badge-left-margin" :text="value" absolute="rightTop" size="small">
-			<view class="left"></view>
+		<uni-badge class="uni-badge-left-margin" :text="itemData.total" absolute="rightTop" size="small">
+			<image v-if="itemData.url" class="image" :src="itemData.url" mode=""></image>
+			<image v-else class="image" mode=""></image>
 		</uni-badge>
 
 		<view class="center">
 			<view class="name">
-				上海本地社区生活圈
+				{{itemData.title}}
 			</view>
 			<view class="detail">
-				哲哲小王-上海市 已加入生活圈
+				{{itemData.introduce}}
 			</view>
 		</view>
 		<view class="right">
-			<button class="add" @click="handleJoin">+加入</button>
+			<button class="add" @click="handleJoin(itemData)">+加入</button>
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
+		props: {
+			itemData: {
+				type: Object,
+				default: () => {}
+			}
+		},
 		data() {
 			return {
 				value: 100
 			}
 		},
 		methods: {
-			handleJoin() {
-				this.$emit('joinCommunity')
+			handleJoin(item) {
+				this.$emit('joinCommunity',item)
 			}
 		}
 	}
@@ -45,13 +52,12 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-
-		.left {
+		
+		.image {
 			width: 96rpx;
 			height: 96rpx;
-			background: #DADBDC;
 			border-radius: 16rpx;
-
+			background-color: #DADBDC;
 		}
 
 		.center {
