@@ -6,30 +6,24 @@
 			</view>
 		</u-navbar>
 		<view class="community-container">
-			<view class="community-list">
-				<community-item @joinCommunity="joinCommunity"></community-item>
-				<community-item></community-item>
-				<community-item></community-item>
-				<community-item></community-item>
-				<community-item></community-item>
-				<community-item></community-item>
-				<community-item></community-item>
-				<community-item></community-item>
-				<community-item></community-item>
-				<community-item></community-item>
-			</view>
+			
+		</view>
+		<view class="community-list">
+			<block v-for="item in communityList" :key="item.id">
+				<community-item :itemData="item" @joinCommunity="joinCommunity"></community-item>
+			</block>
 		</view>
 		<u-modal :show="show" width="630rpx" @confirm="handleConfirm">
 			<view class="slot-content">
 				<view class="content">
-					<image class="community" src="../../../static/chat/avatar.png" mode=""></image>
+					<image class="community" :src="communityInfo.url" mode=""></image>
 					<view class="title">
-						上海本地生活圈
+						{{communityInfo.title}}
 					</view>
-					<image class="code" src="../../../static/chat/avatar.png" mode=""></image>
-					<view class="code-info">
+					<image class="code" :src="communityInfo.qrCode" mode=""></image>
+					<!-- <view class="code-info">
 						该二维码将在2023年9月20日失效
-					</view>
+					</view> -->
 				</view>
 			</view>
 		</u-modal>
@@ -38,6 +32,9 @@
 
 <script>
 	import communityItem from "@/components/community_item.vue"
+	import {
+		getCrowd
+	} from "@/api/index/index.js"
 	export default {
 		components: {
 			communityItem
@@ -49,8 +46,13 @@
 					color: "#131313"
 				},
 				show: false,
-				content: 'test'
+				content: 'test',
+				communityList: [],
+				communityInfo: {}
 			}
+		},
+		created() {
+			this.getCrowdList()
 		},
 		methods: {
 			handleBack() {
@@ -58,12 +60,23 @@
 					url: "/pages/index/index"
 				})
 			},
-			joinCommunity() {
+			joinCommunity(item) {
+				this.communityInfo = item
 				this.show = true
 			},
 			handleConfirm() {
 				this.show = false
-			}
+			},
+			// 获取附近社群
+			getCrowdList() {
+				getCrowd({
+					isShow: false
+				}).then(res => {
+					if (res.code === 200) {
+						this.communityList = res.data
+					}
+				})
+			},
 		}
 	}
 </script>
@@ -79,21 +92,17 @@
 		}
 
 		.community-container {
-			height: 92rpx;
-			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
-			border-bottom-left-radius: 30rpx;
-			border-bottom-right-radius: 30rpx;
+			height: 85rpx;
+			background: #FFFDF3;
 			box-sizing: border-box;
 
-			.community-list {
-				margin: 0rpx 15rpx;
-				height: 1150rpx;
-				overflow-y: auto;
-				background: #FFFFFF;
-				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
-				border-radius: 20rpx;
-				padding: 10rpx 20rpx;
-			}
+			
+		}
+		.community-list {
+			overflow-y: auto;
+			background: #FFFFFF;
+			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
+			padding: 0rpx 20rpx;
 		}
 
 		.slot-content {

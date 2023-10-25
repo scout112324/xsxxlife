@@ -261,7 +261,7 @@
 			},
 			// 获取附近社群
 			getCrowdList() {
-				getCrowd().then(res=>{
+				getCrowd({isShow: true}).then(res=>{
 					if(res.code===200) {
 						this.communityList = res.data
 					}
