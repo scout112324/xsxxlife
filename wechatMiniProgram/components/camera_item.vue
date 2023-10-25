@@ -1,6 +1,5 @@
 <template>
 	<view class="uni-uploader__files">
-
 		<!-- 图片 -->
 		<block v-for="(image,index) in imageList" :key="index">
 			<view class="uni-uploader__file">
@@ -47,6 +46,10 @@
 			cameraNumber: {
 				type: Number,
 				default: 3
+			},
+			pageType: {
+				type: String,
+				default: ""
 			}
 		},
 		data() {
@@ -72,6 +75,7 @@
 				],
 				cameraIndex: 0,
 				VideoOfImagesShow: true,
+				fileList: []
 			}
 		},
 		onReady() {
@@ -128,8 +132,9 @@
 						if (imgData.code === 200) {
 							let imgUrl = imgData.data.url
 							this.imageList.push(imgUrl); //微信
-							if (this.imageList.length + this.videoList.length >= this
-								.cameraNumber) {
+							this.fileList = this.imageList.concat(this.videoList)
+							this.$emit('handleUploadFile',this.fileList)
+							if (this.fileList.length >= this.cameraNumber) {
 								this.VideoOfImagesShow = false;
 							} else {
 								this.VideoOfImagesShow = true;
@@ -160,11 +165,14 @@
 								if (videoData.code === 200) {
 									let videoUrl = videoData.data.url
 									this.videoList.push(videoUrl); //微信
-									if (this.videoList.length + this.imageList.length >= this
-										.cameraNumber) {
+									this.fileList = this.imageList.concat(this.videoList)
+									if (this.fileList.length >= this.cameraNumber) {
 										this.VideoOfImagesShow = false
 									} else {
 										this.VideoOfImagesShow = true
+									}
+									if(this.pageType=='unused') {
+										this.$emit('handleUploadFile',this.fileList)
 									}
 								}
 							}

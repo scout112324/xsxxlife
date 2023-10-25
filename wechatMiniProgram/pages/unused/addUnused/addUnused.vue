@@ -4,24 +4,16 @@
 			<view class="wrap-card">
 				<scroll-view scroll-y class="scroll_view">
 					<textarea adjust-position='false' auto-height @keyboardheightchange="keyboardheightchange"
-						class="con-text" maxlength='-1' v-model="textContent"
-						placeholder="请用几句话描述一下你要发布的内容…"></textarea>
+						class="con-text" maxlength='-1' v-model="content" placeholder="请用几句话描述一下你要发布的内容…"></textarea>
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :cameraNumber="cameraNumber"></caremaItem>
-					<!-- <u-upload ref="upload" :fileList="imgList" @afterRead="handUpload" @delete="deletePic" name="1"
-						multiple :maxCount="9" previewFullImage>
-						<view class="image-container">
-							<image src="../../../static/unused/tupian.png" mode="" style="width: 80rpx;height: 80rpx;">
-							</image>
-							<text class="title">添加图片/视频</text>
-						</view>
-					</u-upload> -->
+					<caremaItem :pageType="pageType" :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile">
+					</caremaItem>
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../static/home/dingwei.png" mode=""></image>
-					<text class="address-name">上海市静安区</text>
+					<u--input class="address-name" placeholder="请输入地址" border="none" v-model="place"></u--input>
 					<image class="tiaozhuan" src="../../../static/unused/tiaozhuan.png" mode=""></image>
 				</view>
 			</view>
@@ -32,13 +24,13 @@
 							border="none"></u--input>
 						<u-icon slot="right" name="arrow-right"></u-icon>
 					</u-form-item> -->
-					<u-form-item label="产品价格" prop="price" borderBottom>
-						<u--input v-model="userInfo.price" border="none" placeholder="请填写产品价格"></u--input>
+					<u-form-item label="产品价格" prop="realPrice" borderBottom>
+						<u--input v-model="userInfo.realPrice" border="none" placeholder="请填写产品价格"></u--input>
 					</u-form-item>
-					<u-form-item label="选择交易方式" prop="way" borderBottom labelPosition="top">
-						<u-checkbox-group v-model="userInfo.way" @change="checkboxChange">
+					<u-form-item label="选择交易方式" prop="saleType" borderBottom labelPosition="top">
+						<u-checkbox-group v-model="userInfo.saleType">
 							<u-checkbox :customStyle="{marginRight: '16rpx'}" v-for="(item, index) in checkboxList"
-								:key="index" :label="item.name" :name="item.name">
+								:key="index" :label="item.name" :name="item.value">
 							</u-checkbox>
 						</u-checkbox-group>
 					</u-form-item>
@@ -46,9 +38,9 @@
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写你的手机号码"></u--input>
 					</u-form-item>
 				</u--form>
-				<u-action-sheet :show="showType" :actions="actions" title="请选择闲置类型" @close="showType = false"
+				<!-- <u-action-sheet :show="showType" :actions="actions" title="请选择闲置类型" @close="showType = false"
 					@select="typeSelect">
-				</u-action-sheet>
+				</u-action-sheet> -->
 			</view>
 		</view>
 		<view class="publish">
@@ -59,21 +51,28 @@
 
 <script>
 	import caremaItem from "@/components/camera_item.vue"
+	import {
+		addUnused
+	} from "@/api/unused/index.js"
+
 	export default {
 		components: {
 			caremaItem
 		},
 		data() {
 			return {
+				pageType: "unused",
 				cameraNumber: 9,
-				textContent: "",
+				content: "",
+				picture: [],
 				// imgList: [],
 				showType: false,
+				place: "",
 				userInfo: {
-					price: '',
-					way: [],
+					realPrice: '',
+					saleType: [],
 					phone: '',
-					type: '',
+					// type: '',
 				},
 				actions: [{
 						name: '男',
@@ -84,15 +83,15 @@
 				],
 				checkboxList: [{
 						name: '通过平台',
-						disabled: false
+						value: 0
 					},
 					{
 						name: '线下个人交易',
-						disabled: false
+						value: 1
 					}
 				],
 				rules: {
-					price: [{
+					realPrice: [{
 						required: true,
 						message: '请填写产品价格',
 						// blur和change事件触发检验
@@ -115,19 +114,19 @@
 							trigger: ['change', 'blur'],
 						}
 					],
-					way: [{
+					saleType: [{
 						type: 'array',
 						required: true,
 						message: '请至少选择一个交易类型',
 						trigger: 'change'
 					}],
-					type: [{
-						type: 'string',
-						max: 1,
-						required: true,
-						message: '请选择闲置类型',
-						trigger: ['blur', 'change']
-					}],
+					// type: [{
+					// 	type: 'string',
+					// 	max: 1,
+					// 	required: true,
+					// 	message: '请选择闲置类型',
+					// 	trigger: ['blur', 'change']
+					// }],
 				},
 				radio: '',
 				switchVal: false
@@ -141,45 +140,43 @@
 			keyboardheightchange(event) {
 				this.bottomHeight = event.detail.height
 			},
-			// 手动上传
-			// handUpload(event) {
-			// 	// if(event.file && event.file.length>0) {
-			// 	// 	event.file.forEach(item=>{
-			// 	// 		this.imgList.push(item.url)
-			// 	// 	})
-			// 	// }
-			// 	// console.log(event)
-			// 	// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-			// 	let chooseList = [].concat(event.file) // 当前选中列表
-			// 	// 将选中的文件添加到文件列表
-			// 	chooseList.map((item) => {
-			// 		this.imgList.push({
-			// 			...item,
-			// 			status: '',
-			// 			message: ''
-			// 		})
-			// 	})
-			// },
-			// deletePic(event) {
-			// 	this.imgList.splice(event.index, 1);
-			// },
+			// 文件上传
+			handleUploadFile(file) {
+				this.picture = file
+			},
 			// 发布
 			handlePublish() {
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						console.log("fabu")
+						let param = {
+							realPrice: this.userInfo.realPrice,
+							saleType: this.userInfo.saleType.toString(),
+							place: this.place,
+							content: this.content,
+							picture: this.picture.toString(),
+							phone: this.userInfo.phone
+						}
+						addUnused(param).then(res => {
+							if(res.code===200) {
+								uni.showToast({
+									title: '发布成功',
+									icon: 'success',
+									duration: 2000
+								}) 
+								// uni.switchTab({
+								// 	url: "/pages/unused/index"
+								// })
+							}
+						})
 					} else {
 						console.log('验证失败');
 					}
 				})
 			},
-			typeSelect(e) {
-				this.userInfo.type = e.name
-				this.$refs.uForm.validateField('type')
-			},
-			checkboxChange(n) {
-				console.log('change', n);
-			}
+			// typeSelect(e) {
+			// 	this.userInfo.type = e.name
+			// 	this.$refs.uForm.validateField('type')
+			// },
 		}
 	}
 </script>
@@ -241,7 +238,7 @@
 				}
 
 				.address {
-					width: 209rpx;
+					width: 300rpx;
 					height: 46rpx;
 					background: #F1F1F1;
 					border-radius: 20rpx;

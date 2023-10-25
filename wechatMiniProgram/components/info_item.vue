@@ -11,21 +11,21 @@
 			<view class="header">
 				<view class="left">
 					<view class="nickname">
-						{{itemData.nickname}}
+						{{itemData.nickname || '暂无'}}
 					</view>
 					<view class="address">
-						{{itemData.place}}
+						{{itemData.place || '暂无'}}
 					</view>
 				</view>
 				<view class="price" v-if="showPrice">
 					<text class="unit">￥</text>
-					<text>{{itemData.price}}</text>
+					<text>{{itemData.price || '暂无'}}</text>
 				</view>
 			</view>
 			<view class="content">
-				{{itemData.content}}
+				{{itemData.content || '暂无'}}
 			</view>
-			<view class="image-list" v-if="pictureList.length>0">
+			<view class="image-list" v-if="pictureList && pictureList.length>0">
 				<block v-for="(item,index) in pictureList" :key="index">
 					<image v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
 						class="good" :src="item" mode="">
@@ -82,9 +82,9 @@
 			}
 		},
 		created() {
-			this.pictureList =
-				this.itemData.picture.split(',').length > 2 ? this.itemData.picture.split(',').slice(0, 3) :
-				this.itemData.picture.split(',')
+			this.pictureList = this.itemData?.picture.split(',').length > 2 ?
+				this.itemData?.picture.split(',').slice(0, 3) :
+				this.itemData?.picture.split(',')
 			console.log(this.pictureList)
 		},
 		methods: {
