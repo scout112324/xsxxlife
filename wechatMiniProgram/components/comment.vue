@@ -4,7 +4,7 @@
 			共4条评论
 		</view>
 		<view class="comment-content">
-			<input class="uni-input" placeholder="感兴趣的话可以留下你的评论呦～" :value="commentValue" @input="clearInput" />
+			<!-- <input v-if="showInput" class="uni-input" placeholder="感兴趣的话可以留下你的评论呦～" @focus="handleFocus" /> -->
 		</view>
 		<view class="user-info">
 			<image class="avatar"
@@ -54,11 +54,14 @@
 	export default {
 		data() {
 			return {
-				commentValue: ""
+				// showInput: true
 			}
 		},
 		methods: {
-			clearInput() {}
+			handleFocus() {
+				// this.showInput = false
+				this.$emit('focusInput')
+			}
 		}
 	}
 </script>
@@ -112,7 +115,7 @@
 				font-weight: 500;
 				color: #949494;
 				line-height: 37rpx;
-				
+
 
 				.address {
 					font-size: 18rpx;

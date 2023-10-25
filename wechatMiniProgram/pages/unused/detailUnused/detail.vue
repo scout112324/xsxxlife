@@ -38,8 +38,9 @@
 			</view>
 		</view>
 		<view class="comments">
-			<comment></comment>
+			<comment ref="commentRef" @focusInput="focusInput"></comment>
 		</view>
+		<commentInput @inputs="inputs" v-if="showCommentInput"></commentInput>
 		<view class="footer">
 			<view class="btns">
 				<view class="item" @click="handleSupport(itemData)">
@@ -59,7 +60,7 @@
 						{{itemData.starCount || 0}}
 					</view>
 				</view>
-				<view class="item">
+				<view class="item" @click="handleComment">
 					<image class="icon" src="../../../static/components/pinglun.png" mode=""></image>
 					<view class="num">
 						{{itemData.commentCount || 0}}
@@ -75,6 +76,7 @@
 
 <script>
 	import comment from "@/components/comment.vue"
+	import commentInput from "@/components/commentInput.vue"
 	import {
 		addSupport,
 		cancelSupport,
@@ -85,17 +87,28 @@
 	} from "@/api/common.js"
 	export default {
 		components: {
-			comment
+			comment,
+			commentInput
 		},
 		onLoad(options) {
 			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
 		},
 		data() {
 			return {
-				itemData: {}
+				itemData: {},
+				showCommentInput: false
 			}
 		},
 		methods: {
+			handleComment() {
+				this.$refs.commentRef.handleFocus()
+			},
+			inputs(e) {
+				console.log(e)
+			},
+			focusInput() {
+				this.showCommentInput = true
+			},
 			handleShareClick() {},
 			handleCommuniteClick() {},
 			// 点赞
