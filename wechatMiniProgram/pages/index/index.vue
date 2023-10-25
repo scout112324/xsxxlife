@@ -41,7 +41,7 @@
 				<view class="life-list">
 					<view class="lift-item" v-for="item in unusedList" :key="item.id">
 						<info-item :pageType="pageType" :itemData="item" @unusedChangeStatus="unusedChangeStatus"
-							@handleJumpDetail="handleJumpDetail"></info-item>
+							@handleJumpDetail="handleJumpDetail(item)"></info-item>
 					</view>
 				</view>
 			</view>
@@ -89,7 +89,12 @@
 			infoItem,
 			communityItem
 		},
-		onLoad() {},
+		onLoad() {
+			uni.$on('changeUnused', this.getUnusedList)
+		},
+		onUnload() {
+			uni.$off('changeUnused')
+		},
 		data() {
 			return {
 				titleStyle: {
@@ -198,7 +203,6 @@
 				this.cityname = this.$store.state.storeCityName
 			}
 		},
-		onHide() {},
 		created() {
 			// 获取位置信息
 			uni.getLocation({
@@ -225,9 +229,10 @@
 			unusedChangeStatus() {
 				this.getUnusedList()
 			},
-			handleJumpDetail() {
+			handleJumpDetail(item) {
 				uni.navigateTo({
-					url: "/pages/unused/detailUnused/detail"
+					url: `/pages/unused/detailUnused/detail?itemData=${encodeURIComponent(JSON.stringify(item))
+}`
 				})
 			},
 			// 微信授权登录

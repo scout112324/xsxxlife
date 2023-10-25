@@ -3,14 +3,15 @@
 		<view class="container">
 			<view class="header">
 				<view class="user-info">
-					<image class="avatar" src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png"
-						mode=""></image>
+					<image v-if="itemData.photo" class="avatar" :src="itemData.photo" mode=""></image>
+					<image v-else class="avatar"
+						src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png" mode=""></image>
 					<view class="info">
 						<view class="nickname">
-							Ketty Perry
+							{{itemData.nickname}}
 						</view>
 						<view class="address">
-							上海市静安区
+							{{itemData.place}}
 						</view>
 					</view>
 				</view>
@@ -25,10 +26,10 @@
 			</view>
 			<view class="price">
 				<text class="unit">¥</text>
-				<text class="num">279000</text>
+				<text class="num">{{itemData.price}}</text>
 			</view>
 			<view class="content">
-				出闲置全新！感兴趣的朋友看过来或者在线直接联系，Apple/IPhone15一台，国行版内128G，手机无任何维修记录，没有任何划痕！
+				{{itemData.content}}
 			</view>
 			<view class="product-image">
 				<image class="image"
@@ -44,22 +45,27 @@
 		</view>
 		<view class="footer">
 			<view class="btns">
-				<view class="item">
-					<image class="icon" src="../../../static/components/dianzan.png" mode=""></image>
+				<view class="item" @click="handleSupport(itemData)">
+					<image v-if="itemData.support" class="icon" src="../../../static/components/dianzan_set.png"
+						mode="">
+					</image>
+					<image v-else class="icon" src="../../../static/components/dianzan.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.supportCount}}
 					</view>
 				</view>
-				<view class="item">
-					<image class="icon" src="../../../static/components/shoucang_set.png" mode=""></image>
+				<view class="item" @click="handleStar(itemData)">
+					<image v-if="itemData.star" class="icon" src="../../../static/components/shoucang_set.png" mode="">
+					</image>
+					<image v-else class="icon" src="../../../static/components/shoucang.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.starCount}}
 					</view>
 				</view>
 				<view class="item">
 					<image class="icon" src="../../../static/components/pinglun.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.commentCount}}
 					</view>
 				</view>
 			</view>
@@ -72,19 +78,98 @@
 
 <script>
 	import comment from "@/components/comment.vue"
+	import {
+		addSupport,
+		cancelSupport,
+		addStar,
+		cancelStar,
+		addComment,
+		addGive
+	} from "@/api/common.js"
 	export default {
 		components: {
 			comment
 		},
+		onLoad(options) {
+			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+		},
 		data() {
 			return {
-
+				itemData: {}
 			}
 		},
 		methods: {
 			handleShareClick() {},
-			handleCommuniteClick() {}
-		}
+			handleCommuniteClick() {},
+			// 点赞
+			handleSupport(item) {
+				this.supportParams = {
+					type: 3,
+					moduleId: item.id
+				}
+				if (!!item.support) {
+					cancelSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeUnused')
+							this.itemData.support = !this.itemData.support
+							this.itemData.supportCount -= 1
+							uni.showToast({
+								title: '取消点赞',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeUnused')
+							this.itemData.support = !this.itemData.support
+							this.itemData.supportCount += 1
+							uni.showToast({
+								title: '点赞成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
+			// 收藏
+			handleStar(item) {
+				this.starParams = {
+					type: 3,
+					moduleId: item.id
+				}
+				if (!!item.star) {
+					cancelStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeUnused')
+							this.itemData.star = !this.itemData.star
+							this.itemData.starCount -= 1
+							uni.showToast({
+								title: '取消收藏',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeUnused')
+							this.itemData.star = !this.itemData.star
+							this.itemData.starCount += 1
+							uni.showToast({
+								title: '收藏成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
+		},
 	}
 </script>
 
@@ -139,7 +224,7 @@
 						height: 59rpx;
 						background: #FFD100;
 						border-radius: 30rpx;
-					
+
 						padding: 14rpx 25rpx;
 						box-sizing: border-box;
 						display: flex;
@@ -168,10 +253,12 @@
 				line-height: 44rpx;
 				margin: 25rpx 0;
 			}
+
 			.product-image {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+
 				.image {
 					width: 689rpx;
 					height: 659rpx;
@@ -180,31 +267,36 @@
 				}
 			}
 		}
+
 		.comments {
 			background-color: #ffffff;
 		}
+
 		.footer {
 			background-color: #ffffff;
 			padding: 0 34rpx;
 			margin-top: 24rpx;
 			height: 157rpx;
-			
+
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			border-top: 1px solid #D8D8D;
-			
+
 			.btns {
 				display: flex;
 				align-items: center;
+
 				.item {
 					display: flex;
 					align-items: center;
 					margin-right: 43rpx;
+
 					.icon {
 						width: 33rpx;
 						height: 35rpx;
 					}
+
 					.num {
 						margin-left: 15rpx;
 						font-size: 24rpx;
@@ -215,6 +307,7 @@
 					}
 				}
 			}
+
 			.communicate {
 				::v-deep .u-button {
 					width: 224rpx;
@@ -223,7 +316,7 @@
 					border-radius: 46rpx;
 					border: 0 solid rgba(255, 209, 0, 0.31);
 				}
-				
+
 				::v-deep .u-button__text {
 					font-size: 30rpx;
 					font-family: PingFangSC-Medium, PingFang SC;
