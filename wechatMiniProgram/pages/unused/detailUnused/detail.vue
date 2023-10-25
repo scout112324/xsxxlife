@@ -8,10 +8,10 @@
 						src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png" mode=""></image>
 					<view class="info">
 						<view class="nickname">
-							{{itemData.nickname}}
+							{{itemData.nickname || '暂无'}}
 						</view>
 						<view class="address">
-							{{itemData.place}}
+							{{itemData.place || '暂无'}}
 						</view>
 					</view>
 				</view>
@@ -26,15 +26,12 @@
 			</view>
 			<view class="price">
 				<text class="unit">¥</text>
-				<text class="num">{{itemData.price}}</text>
+				<text class="num">{{itemData.price || '暂无'}}</text>
 			</view>
 			<view class="content">
-				{{itemData.content}}
+				{{itemData.content || '暂无'}}
 			</view>
 			<view class="product-image">
-				<image class="image"
-					src="https://tse1-mm.cn.bing.net/th/id/OIP-C.PutJRYbN20MeTUKQCLFAZQHaHa?pid=ImgDet&rs=1" mode="">
-				</image>
 				<image class="image"
 					src="https://tse1-mm.cn.bing.net/th/id/OIP-C.PutJRYbN20MeTUKQCLFAZQHaHa?pid=ImgDet&rs=1" mode="">
 				</image>
@@ -51,7 +48,7 @@
 					</image>
 					<image v-else class="icon" src="../../../static/components/dianzan.png" mode=""></image>
 					<view class="num">
-						{{itemData.supportCount}}
+						{{itemData.supportCount || 0}}
 					</view>
 				</view>
 				<view class="item" @click="handleStar(itemData)">
@@ -59,13 +56,13 @@
 					</image>
 					<image v-else class="icon" src="../../../static/components/shoucang.png" mode=""></image>
 					<view class="num">
-						{{itemData.starCount}}
+						{{itemData.starCount || 0}}
 					</view>
 				</view>
 				<view class="item">
 					<image class="icon" src="../../../static/components/pinglun.png" mode=""></image>
 					<view class="num">
-						{{itemData.commentCount}}
+						{{itemData.commentCount || 0}}
 					</view>
 				</view>
 			</view>
