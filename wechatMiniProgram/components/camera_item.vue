@@ -107,31 +107,36 @@
 					sourceType: ['album', 'camera'], //从相册选择
 					success: (res) => {
 						let igmFile = res.tempFilePaths;
-						uni.uploadFile({
-							url: uploadFiles().url,
-							method: "POST",
-							header: {
-								'Content-Type': 'multipart/form-data'
-							},
-							filePath: igmFile[0],
-							name: 'files',
-							success: (res) => {
-								console.log('chooseImage',res)
-								let imgUrls = JSON.parse(res.data); //微信和头条支持
-								this.imagesUrlPath = this.imagesUrlPath.concat(imgUrls.result
-									.filePath);
-								this.imageList = this.imageList.concat(imgUrls.result
-									.filePath); //微信
-								if (this.imageList.length + this.videoList.length >= this
-									.cameraNumber) {
-									this.VideoOfImagesShow = false;
-								} else {
-									this.VideoOfImagesShow = true;
-								}
-							}
+						igmFile.forEach(item => {
+							return this.uploadImages(item)
 						})
 					},
 				});
+			},
+			uploadImages(imgPath) {
+				uni.uploadFile({
+					url: uploadFiles().url,
+					method: "POST",
+					header: {
+						'Content-Type': 'multipart/form-data',
+						'openId': uni.getStorageSync('openId')
+					},
+					filePath: imgPath,
+					name: 'file',
+					success: (res) => {
+						let imgData = JSON.parse(res.data); //微信和头条支持
+						if (imgData.code === 200) {
+							let imgUrl = imgData.data.url
+							this.imageList.push(imgUrl); //微信
+							if (this.imageList.length + this.videoList.length >= this
+								.cameraNumber) {
+								this.VideoOfImagesShow = false;
+							} else {
+								this.VideoOfImagesShow = true;
+							}
+						}
+					}
+				})
 			},
 			chooseVideo() {
 				// 上传视频
@@ -150,9 +155,9 @@
 							},
 							filePath: videoFile,
 							name: 'file',
-							success: (res) => {	
+							success: (res) => {
 								let videoData = JSON.parse(res.data) //微信和头条支持
-								if(videoData.code===200) {
+								if (videoData.code === 200) {
 									let videoUrl = videoData.data.url
 									this.videoList.push(videoUrl); //微信
 									if (this.videoList.length + this.imageList.length >= this
@@ -228,7 +233,10 @@
 
 			&:nth-child(2),
 			&:nth-child(5),
-			&:nth-child(8) {
+			&:nth-child(8),
+			&:nth-child(11),
+			&:nth-child(14),
+			&:nth-child(17) {
 				margin: 0 20rpx;
 			}
 
