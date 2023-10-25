@@ -6,7 +6,15 @@
 			</view>
 		</u-navbar>
 		<view class="community-container">
-			
+			<view class="left">
+				<view class="line"></view>
+				<view class="transmit">
+					请在首页切换定位以切换附近社群
+				</view>
+			</view>
+			<view class="right">
+				<button class="right-btn" @click="handleTransmit">去切换</button>
+			</view>
 		</view>
 		<view class="community-list">
 			<block v-for="item in communityList" :key="item.id">
@@ -60,6 +68,11 @@
 					url: "/pages/index/index"
 				})
 			},
+			handleTransmit() {
+				uni.switchTab({
+					url: "/pages/index/index"
+				})
+			},
 			joinCommunity(item) {
 				this.communityInfo = item
 				this.show = true
@@ -95,9 +108,48 @@
 			height: 85rpx;
 			background: #FFFDF3;
 			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 28px;
 
-			
+			.left {
+				display: flex;
+				align-items: center;
+
+				.line {
+					width: 4rpx;
+					height: 29rpx;
+					background: #855C15;
+					margin-right: 14rpx;
+				}
+
+				.transmit {
+					font-size: 28rpx;
+					font-weight: 400;
+					color: #353535;
+				}
+			}
+
+			.right {
+				text-align: right;
+
+				::v-deep .right-btn {
+					width: 137rpx;
+					height: 56rpx;
+					background: #FFD100;
+					border-radius: 26rpx;
+
+					font-size: 28rpx;
+					font-family: PingFangSC-Medium, PingFang SC;
+					font-weight: 500;
+					color: #4D504F;
+					line-height: 52rpx;
+					padding: 0;
+				}
+			}
 		}
+
 		.community-list {
 			overflow-y: auto;
 			background: #FFFFFF;
