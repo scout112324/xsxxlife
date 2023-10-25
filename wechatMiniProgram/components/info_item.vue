@@ -25,16 +25,13 @@
 			<view class="content">
 				{{itemData.content}}
 			</view>
-			<view class="image-list">
-				<image class="good"
-					src="https://tse4-mm.cn.bing.net/th/id/OIP-C.u1D8WJbUIIXMV2w-qa4r5wAAAA?pid=ImgDet&rs=1" mode="">
-				</image>
-				<image class="good"
-					src="https://tse4-mm.cn.bing.net/th/id/OIP-C.u1D8WJbUIIXMV2w-qa4r5wAAAA?pid=ImgDet&rs=1" mode="">
-				</image>
-				<image class="good"
-					src="https://tse4-mm.cn.bing.net/th/id/OIP-C.u1D8WJbUIIXMV2w-qa4r5wAAAA?pid=ImgDet&rs=1" mode="">
-				</image>
+			<view class="image-list" v-if="pictureList.length>0">
+				<block v-for="(item,index) in pictureList" :key="index">
+					<image v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
+						class="good" :src="item" mode="">
+					</image>
+					<video v-else class="good" :src="item" controls></video>
+				</block>
 			</view>
 			<view class="footer">
 				<view class="item">
@@ -46,7 +43,7 @@
 				<view class="item">
 					<image v-if="itemData.star" class="image" src="../static/components/shoucang_set.png" mode="">
 					</image>
-					<image v-else class="image" src="../static/components/shoucang_set.png" mode=""></image>
+					<image v-else class="image" src="../static/components/shoucang.png" mode=""></image>
 					<text class="num">{{itemData.starCount}}</text>
 				</view>
 				<view class="item">
@@ -78,7 +75,17 @@
 			}
 		},
 		data() {
-			return {}
+			return {
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
+				pictureList: [],
+
+			}
+		},
+		created() {
+			this.pictureList =
+				this.itemData.picture.split(',').length > 2 ? this.itemData.picture.split(',').slice(0, 3) :
+				this.itemData.picture.split(',')
+			console.log(this.pictureList)
 		},
 		methods: {
 			handleClick() {
