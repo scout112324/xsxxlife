@@ -86,7 +86,8 @@
 			return {
 				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 				pictureList: [],
-
+				supportParams: {},
+				starParams: {}
 			}
 		},
 		created() {
@@ -112,65 +113,65 @@
 			// 点赞
 			handleSupport(item) {
 				if (this.pageType == 'unused') {
-					let params = {
+					this.supportParams = {
 						type: 3,
 						moduleId: item.id
 					}
-					if (!!item.support) {
-						cancelSupport(params).then(res => {
-							if (res.code === 200) {
-								this.$emit('changeStatus')
-								uni.showToast({
-									title: '取消点赞',
-									icon: 'success',
-									duration: 2000
-								})
-							}
-						})
-					} else {
-						addSupport(params).then(res => {
-							if (res.code === 200) {
-								this.$emit('changeStatus')
-								uni.showToast({
-									title: '点赞成功',
-									icon: 'success',
-									duration: 2000
-								})
-							}
-						})
-					}
+				}
+				if (!!item.support) {
+					cancelSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							this.$emit(`${this.pageType}ChangeStatus`)
+							uni.showToast({
+								title: '取消点赞',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							this.$emit(`${this.pageType}ChangeStatus`)
+							uni.showToast({
+								title: '点赞成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
 				}
 			},
 			// 收藏
 			handleStar(item) {
 				if (this.pageType == 'unused') {
-					let params = {
+					this.starParams = {
 						type: 3,
 						moduleId: item.id
 					}
-					if (!!item.star) {
-						cancelStar(params).then(res => {
-							if (res.code === 200) {
-								this.$emit('changeStatus')
-								uni.showToast({
-									title: '取消收藏',
-									icon: 'success',
-									duration: 2000
-								})
-							}
-						})
-					} else {
-						addStar(params).then(res => {
-							if (res.code === 200) {
-								this.$emit('changeStatus')
-								uni.showToast({
-									title: '收藏成功',
-									icon: 'success',
-									duration: 2000
-								})
-							}
-						})
-					}
+				}
+				if (!!item.star) {
+					cancelStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							this.$emit(`${this.pageType}ChangeStatus`)
+							uni.showToast({
+								title: '取消收藏',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							this.$emit(`${this.pageType}ChangeStatus`)
+							uni.showToast({
+								title: '收藏成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
 				}
 			}
 		},

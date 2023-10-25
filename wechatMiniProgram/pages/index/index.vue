@@ -40,7 +40,8 @@
 				</view>
 				<view class="life-list">
 					<view class="lift-item" v-for="item in unusedList" :key="item.id">
-						<info-item :pageType="pageType" :itemData="item" @changeStatus="changeStatus"></info-item>
+						<info-item :pageType="pageType" :itemData="item" @unusedChangeStatus="unusedChangeStatus"
+							@handleJumpDetail="handleJumpDetail"></info-item>
 					</view>
 				</view>
 			</view>
@@ -221,8 +222,13 @@
 		},
 		methods: {
 			// 点赞,收藏状态改变
-			changeStatus() {
+			unusedChangeStatus() {
 				this.getUnusedList()
+			},
+			handleJumpDetail() {
+				uni.navigateTo({
+					url: "/pages/unused/detailUnused/detail"
+				})
 			},
 			// 微信授权登录
 			goLogin() {
