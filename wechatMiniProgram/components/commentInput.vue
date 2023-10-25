@@ -3,8 +3,9 @@
 		<view class="submit">
 			<view class="submit-chat">
 				<!-- 文本框 -->
-				<textarea class="chat-send btn" @focus="focus" auto-focus @keyboardheightchange="keyboardheightchange"
-					v-model="msg" :show-confirm-bar="false" :adjust-position="false"></textarea>
+				<textarea class="chat-send btn" @blur="blur" @focus="focus" auto-focus
+					@keyboardheightchange="keyboardheightchange" v-model="msg" :show-confirm-bar="false"
+					:adjust-position="false"></textarea>
 				<button class="send-message" @tap="messageSend">发送</button>
 			</view>
 			<view class="occupy" :style="{height: `${keyboardHeight}px`}"></view>
@@ -24,6 +25,9 @@
 			this.getElementHeight()
 		},
 		methods: {
+			blur() {
+				this.$emit('inputs')
+			},
 			//获取高度方法
 			getElementHeight() {
 				const query = uni.createSelectorQuery().in(this);
@@ -45,8 +49,7 @@
 			},
 			// 消息发送
 			messageSend() {
-				console.log(this.msg)
-				this.$emit('inputs', date);
+				this.$emit('inputs', this.msg);
 			},
 		}
 	};

@@ -104,6 +104,7 @@
 				this.$refs.commentRef.handleFocus()
 			},
 			inputs(e) {
+				this.showCommentInput = false
 				console.log(e)
 			},
 			focusInput() {
