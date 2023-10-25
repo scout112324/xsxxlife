@@ -34,7 +34,8 @@
 
 <script>
 	import {
-		uploadFiles
+		uploadFiles,
+		uploadBatchFiles
 	} from "@/api/upload.js"
 	let sourceType = [
 		['camera'],
@@ -140,30 +141,27 @@
 					camera: this.cameraList[this.cameraIndex].value,
 					sourceType: ['album'],
 					success: (responent) => {
-						console.log(responent)
 						let videoFile = responent.tempFilePath;
 						uni.uploadFile({
 							url: uploadFiles().url,
 							method: "POST",
 							header: {
-								// 'openId': uni.getStorageSync('openId')
+								'openId': uni.getStorageSync('openId')
 							},
 							filePath: videoFile,
-							name: 'files',
-							success: (res) => {
-								console.log('chooseVideo',res)
-								let videoUrls = JSON.parse(res.data) //微信和头条支持
-								this.imagesUrlPath = this.imagesUrlPath.concat(videoUrls.result
-									.filePath);
-								this.videoList = this.videoList.concat(videoUrls.result
-									.filePath); //微信
-								if (this.videoList.length + this.imageList.length >= this
-									.cameraNumber) {
-									this.VideoOfImagesShow = false
-								} else {
-									this.VideoOfImagesShow = true
+							name: 'file',
+							success: (res) => {	
+								let videoData = JSON.parse(res.data) //微信和头条支持
+								if(videoData.code===200) {
+									let videoUrl = videoData.data.url
+									this.videoList.push(videoUrl); //微信
+									if (this.videoList.length + this.imageList.length >= this
+										.cameraNumber) {
+										this.VideoOfImagesShow = false
+									} else {
+										this.VideoOfImagesShow = true
+									}
 								}
-
 							}
 						})
 					}
