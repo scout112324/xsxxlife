@@ -40,7 +40,7 @@
 				</view>
 				<view class="life-list">
 					<view class="lift-item" v-for="item in unusedList" :key="item.id">
-						<info-item :itemData="item"></info-item>
+						<info-item :pageType="pageType" :itemData="item" @changeStatus="changeStatus"></info-item>
 					</view>
 				</view>
 			</view>
@@ -181,7 +181,8 @@
 				show: false,
 				unusedList: [],
 				communityList: [],
-				communityInfo: {}
+				communityInfo: {},
+				pageType: "unused"
 			}
 		},
 		onShow() {
@@ -192,7 +193,6 @@
 			} else {
 				this.goLogin()
 			}
-
 			if (this.$store.state.changeCity) {
 				this.cityname = this.$store.state.storeCityName
 			}
@@ -216,9 +216,14 @@
 			this.getTabList()
 			// 获取闲置列表
 			this.getUnusedList()
+			// 获取附近社群
 			this.getCrowdList()
 		},
 		methods: {
+			// 点赞,收藏状态改变
+			changeStatus() {
+				this.getUnusedList()
+			},
 			// 微信授权登录
 			goLogin() {
 				uni.login({
@@ -261,8 +266,10 @@
 			},
 			// 获取附近社群
 			getCrowdList() {
-				getCrowd({isShow: true}).then(res=>{
-					if(res.code===200) {
+				getCrowd({
+					isShow: true
+				}).then(res => {
+					if (res.code === 200) {
 						this.communityList = res.data
 					}
 				})

@@ -34,13 +34,13 @@
 				</block>
 			</view>
 			<view class="footer">
-				<view class="item">
+				<view class="item" @click.stop="handleSupport(itemData)">
 					<image v-if="itemData.support" class="image" src="../static/components/dianzan_set.png" mode="">
 					</image>
 					<image v-else class="image" src="../static/components/dianzan.png" mode=""></image>
 					<text class="num">{{itemData.supportCount}}</text>
 				</view>
-				<view class="item">
+				<view class="item" @click.stop="handleStar(itemData)">
 					<image v-if="itemData.star" class="image" src="../static/components/shoucang_set.png" mode="">
 					</image>
 					<image v-else class="image" src="../static/components/shoucang.png" mode=""></image>
@@ -62,6 +62,14 @@
 </template>
 
 <script>
+	import {
+		addSupport,
+		cancelSupport,
+		addStar,
+		cancelStar,
+		addComment,
+		addGive
+	} from "@/api/common.js"
 	export default {
 		props: {
 			pageType: String,
@@ -100,6 +108,70 @@
 				} else if (this.pageType == 'largeShipmentTransfer') {
 					this.$emit('handleJumpLargeDetail')
 				}
+			},
+			// 点赞
+			handleSupport(item) {
+				if (this.pageType == 'unused') {
+					let params = {
+						type: 3,
+						moduleId: item.id
+					}
+					if (!!item.support) {
+						cancelSupport(params).then(res => {
+							if (res.code === 200) {
+								this.$emit('changeStatus')
+								uni.showToast({
+									title: '取消点赞',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					} else {
+						addSupport(params).then(res => {
+							if (res.code === 200) {
+								this.$emit('changeStatus')
+								uni.showToast({
+									title: '点赞成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					}
+				}
+			},
+			// 收藏
+			handleStar(item) {
+				if (this.pageType == 'unused') {
+					let params = {
+						type: 3,
+						moduleId: item.id
+					}
+					if (!!item.star) {
+						cancelStar(params).then(res => {
+							if (res.code === 200) {
+								this.$emit('changeStatus')
+								uni.showToast({
+									title: '取消收藏',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					} else {
+						addStar(params).then(res => {
+							if (res.code === 200) {
+								this.$emit('changeStatus')
+								uni.showToast({
+									title: '收藏成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					}
+				}
 			}
 		},
 		// 分享到页面
@@ -109,7 +181,7 @@
 		// 分享到朋友圈
 		onShareTimeline() {
 			console.log("分享到朋友圈")
-		}
+		},
 	}
 </script>
 
