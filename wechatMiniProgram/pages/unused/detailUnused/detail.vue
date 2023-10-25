@@ -37,8 +37,9 @@
 				</image>
 			</view>
 		</view>
-		<view class="comments">
-			<comment ref="commentRef" @focusInput="focusInput"></comment>
+		<view class="comments" v-if="itemData.id">
+			<comment :pageType="pageType" :moduleId="itemData.id" ref="commentRef" @focusInput="focusInput">
+			</comment>
 		</view>
 		<commentInput @inputs="inputs" v-if="showCommentInput"></commentInput>
 		<view class="footer">
@@ -96,7 +97,8 @@
 		data() {
 			return {
 				itemData: {},
-				showCommentInput: false
+				showCommentInput: false,
+				pageType: "unused",
 			}
 		},
 		methods: {

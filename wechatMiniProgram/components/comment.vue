@@ -1,66 +1,118 @@
 <template>
 	<view class="parent">
 		<view class="comment-num">
-			共4条评论
+			共{{total}}条评论
 		</view>
 		<view class="comment-content">
 			<!-- <input v-if="showInput" class="uni-input" placeholder="感兴趣的话可以留下你的评论呦～" @focus="handleFocus" /> -->
 		</view>
-		<view class="user-info">
-			<image class="avatar"
-				src="https://bpic.588ku.com/element_origin_min_pic/20/11/04/6b53830d8c8582ddc0f6fc2eabf67cac.jpg"
-				mode=""></image>
-			<view class="name">
-				大美
-				<text class="address">江苏</text>
-			</view>
-		</view>
-		<view class="content">
-			你好呀，请问租出去了吗？租出去了吗？租出去了吗？租出去了吗？
-		</view>
-		<view class="btn">
-			<view class="time">
-				40分钟前
-			</view>
-			<view class="record">
-				回复
-			</view>
-		</view>
-		<view class="children">
+		<block v-for="(item,index) in parentList" :key="item.id">
 			<view class="user-info">
-				<image class="avatar"
+				<image v-if="item.photo" class="avatar" :src="item.photo" mode=""></image>
+				<image v-else class="avatar"
 					src="https://bpic.588ku.com/element_origin_min_pic/20/11/04/6b53830d8c8582ddc0f6fc2eabf67cac.jpg"
 					mode=""></image>
 				<view class="name">
-					大美
+					{{item.nickname}}
+					<text class="address">{{item.place}}</text>
 				</view>
 			</view>
 			<view class="content">
-				你好呀，请问租出去了吗？租出去了吗？租出去了吗？租出去了吗？
+				{{item.content}}
 			</view>
 			<view class="btn">
-				<view class="time">
+				<!-- <view class="time">
 					40分钟前
-				</view>
+				</view> -->
 				<view class="record">
 					回复
 				</view>
 			</view>
-		</view>
+			<block v-if="activeIndex==index" v-for="childItem in childrenList" :key="childItem.id">
+				<commentChildren :itemData="childItem"></commentChildren>
+			</block>
+			<view class="more" @click="handleMoreComment(item.id,index)">
+				<view class="content">
+					点击展开{{item.count}}条回复
+				</view>
+			</view>
+		</block>
 	</view>
 </template>
 
 <script>
+	import commentChildren from "@/components/commentChildren.vue"
+	import {
+		listComment,
+		childrenListComment
+	} from "@/api/common.js"
 	export default {
-		data() {
-			return {
-				// showInput: true
+		components: {
+			commentChildren
+		},
+		props: {
+			pageType: {
+				type: String,
+				required: true
+			},
+			moduleId: {
+				type: Number,
+				required: true
 			}
 		},
+		data() {
+			return {
+				// showInput: true,
+				pageNum: 1,
+				pageSize: 10,
+				type: 0,
+				total: 0,
+				parentList: [],
+				pageNum1: 1,
+				pageSize1: 10,
+				childrenList: [],
+				activeIndex: 0
+			}
+		},
+		created() {
+			this.getListComment()
+		},
 		methods: {
+			handleMoreComment(id, index) {
+				this.activeIndex = index
+				let params = {
+					id: id,
+					pageNum: this.pageNum1,
+					pageSize1: this.pageSize1
+				}
+				childrenListComment(params).then(res => {
+					if (res.code == 200) {
+						this.childrenList = res.data
+					}
+				})
+			},
 			handleFocus() {
 				// this.showInput = false
 				this.$emit('focusInput')
+			},
+			getListComment() {
+				if (this.pageType == "unused") {
+					this.type = 3
+				}
+				let params = {
+					type: this.type,
+					moduleId: this.moduleId,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				console.log(params, this.moduleId)
+				listComment(params).then(res => {
+					if (res.code == 200) {
+						this.total = res.data.count
+						this.parentList = res.data.list
+						console.log(res.data)
+					}
+				})
 			}
 		}
 	}
@@ -93,8 +145,7 @@
 		}
 	}
 
-	.parent,
-	.children {
+	.parent {
 		margin: 30rpx;
 
 		.user-info {
