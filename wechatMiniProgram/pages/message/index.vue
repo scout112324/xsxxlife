@@ -8,16 +8,19 @@
 			</uni-easyinput>
 		</view>
 		<view class="unused-list">
-			<infoItem :pageType="pageType" @handleJumpMessageDetail="handleJumpMessageDetail" :showPrice="showPrice">
-			</infoItem>
-			<infoItem :pageType="pageType" :showPrice="showPrice"></infoItem>
-			<infoItem :pageType="pageType" :showPrice="showPrice"></infoItem>
-			<infoItem :pageType="pageType" :showPrice="showPrice"></infoItem>
+			<view class="lift-item" v-for="item in messageList" :key="item.id">
+				<info-item :showPrice="showPrice" :pageType="pageType" :itemData="item"
+					@messageChangeStatus="messageChangeStatus"
+					@handleJumpMessageDetail="handleJumpMessageDetail(item)"></info-item>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		listArticle
+	} from "@/api/message/index.js"
 	import infoItem from "@/components/info_item.vue"
 	export default {
 		options: {
@@ -34,15 +37,59 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
-				showPrice: false
+				showPrice: false,
+				messageList: [],
+				pageNum: 1,
+				pageSize: 10
 			}
 		},
+		onLoad() {
+			uni.$on('changeMessage', this.getMessageList)
+		},
+		onUnload() {
+			uni.$off('changeMessage')
+		},
+		onShow() {
+			this.getMessageList()
+		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				setTimeout(() => {
+					this.getMessageList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 1000)
+			},
+			// 获取资讯列表
+			getMessageList() {
+				let params = {
+					search: this.keyword,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				listArticle(params).then(res => {
+					if (res.code == 200) {
+						this.messageList = res.data
+					}
+				})
+			},
 			// 搜索
-			handleConfirm() {},
-			handleJumpMessageDetail() {
+			handleConfirm() {
+				this.getMessageList()
+			},
+			// 点赞,收藏状态改变
+			messageChangeStatus() {
+				this.getMessageList()
+			},
+			handleJumpMessageDetail(item) {
 				uni.navigateTo({
-					url: "/pages/message/detailMessage/detail"
+					url: `/pages/message/detailMessage/detail?itemData=${encodeURIComponent(JSON.stringify(item))
+			}`
 				})
 			},
 		}

@@ -22,8 +22,9 @@
 					<text>{{itemData.price || '暂无'}}</text>
 				</view>
 			</view>
-			<view class="content">
-				{{itemData.content || '暂无'}}
+			<view v-if="itemData.content" class="content" v-html="itemData.content"></view>
+			<view v-else class="content">
+				'暂无'
 			</view>
 			<view class="image-list" v-if="pictureList && pictureList.length>0" @click.stop>
 				<block v-for="(item,index) in pictureList" :key="index">
@@ -117,6 +118,11 @@
 						type: 3,
 						moduleId: item.id
 					}
+				} else if (this.pageType == 'message') {
+					this.supportParams = {
+						type: 6,
+						moduleId: item.id
+					}
 				}
 				if (!!item.support) {
 					cancelSupport(this.supportParams).then(res => {
@@ -147,6 +153,11 @@
 				if (this.pageType == 'unused') {
 					this.starParams = {
 						type: 3,
+						moduleId: item.id
+					}
+				} else if (this.pageType == 'message') {
+					this.starParams = {
+						type: 6,
 						moduleId: item.id
 					}
 				}
