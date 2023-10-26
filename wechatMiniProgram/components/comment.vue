@@ -24,17 +24,19 @@
 				<!-- <view class="time">
 					40分钟前
 				</view> -->
-				<view class="record">
+				<view class="record" @click="handleRecord">
 					回复
 				</view>
 			</view>
 			<block v-if="activeIndex==index" v-for="childItem in childrenList" :key="childItem.id">
 				<commentChildren :itemData="childItem"></commentChildren>
 			</block>
-			<view class="more" @click="handleMoreComment(item.id,index)">
-				<view class="content">
-					点击展开{{item.count}}条回复
+			<view class="more" @click="handleMoreComment(item.id,index)" v-if="item.count!=0">
+				<view class="unfold">
+					共{{item.count}}条回复
 				</view>
+				<uni-icons type="bottom" size="13" v-if="childrenList.length==0"></uni-icons>
+				<uni-icons type="top" size="13" v-else></uni-icons>
 			</view>
 		</block>
 	</view>
@@ -64,32 +66,46 @@
 			return {
 				// showInput: true,
 				pageNum: 1,
-				pageSize: 10,
+				pageSize: 1000,
 				type: 0,
 				total: 0,
 				parentList: [],
 				pageNum1: 1,
-				pageSize1: 10,
+				pageSize1: 1000,
 				childrenList: [],
-				activeIndex: 0
+				activeIndex: 0,
 			}
 		},
 		created() {
 			this.getListComment()
 		},
 		methods: {
+			// 回复
+			handleRecord() {
+				if (this.pageType == "unused") {
+					this.type = 3
+				}
+				let params = {
+					type: this.type,
+					moduleId: this.moduleId,
+				}
+			},
 			handleMoreComment(id, index) {
 				this.activeIndex = index
-				let params = {
-					id: id,
-					pageNum: this.pageNum1,
-					pageSize1: this.pageSize1
-				}
-				childrenListComment(params).then(res => {
-					if (res.code == 200) {
-						this.childrenList = res.data
+				if (this.childrenList.length > 0) {
+					this.childrenList = []
+				} else {
+					let params = {
+						id: id,
+						pageNum: this.pageNum1,
+						pageSize1: this.pageSize1
 					}
-				})
+					childrenListComment(params).then(res => {
+						if (res.code == 200) {
+							this.childrenList = res.data
+						}
+					})
+				}
 			},
 			handleFocus() {
 				// this.showInput = false
@@ -121,10 +137,10 @@
 <style lang="scss" scoped>
 	.parent {
 		padding: 40rpx 0;
+		font-family: PingFangSC-Medium, PingFang SC;
 
 		.comment-num {
 			font-size: 30rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
 			color: #232624;
 			line-height: 42rpx;
@@ -162,7 +178,6 @@
 
 			.name {
 				font-size: 26rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
 				font-weight: 500;
 				color: #949494;
 				line-height: 37rpx;
@@ -170,7 +185,6 @@
 
 				.address {
 					font-size: 18rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
 					color: #949494;
 					line-height: 37rpx;
@@ -208,6 +222,18 @@
 			.record {
 				color: #FFBD3C;
 				margin-left: 20rpx;
+			}
+		}
+
+		.more {
+			display: flex;
+			align-items: center;
+
+			.unfold {
+				margin-left: 72rpx;
+				font-size: 26rpx;
+				color: #949494;
+				line-height: 37rpx;
 			}
 		}
 	}
