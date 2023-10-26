@@ -7,7 +7,7 @@
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<view class="unused-list">
+		<view class="unused-list" :style="{'height':screenHeight}">
 			<view class="lift-item" v-for="item in messageList" :key="item.id">
 				<info-item :showPrice="showPrice" :pageType="pageType" :itemData="item"
 					@messageChangeStatus="messageChangeStatus"
@@ -29,9 +29,14 @@
 		components: {
 			infoItem
 		},
+		onReady() {
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 510 + 'rpx'
+			console.log(this.screenHeight)
+		},
 		data() {
 			return {
 				keyword: "",
+				screenHeight: 0,
 				pageType: "message",
 				titleStyle: {
 					fontWeight: 500,
