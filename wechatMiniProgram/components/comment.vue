@@ -1,7 +1,7 @@
 <template>
 	<view class="parent">
 		<view class="comment-num">
-			共{{total}}条评论
+			共{{total || 0}}条评论
 		</view>
 		<view class="comment-content">
 			<!-- <input v-if="showInput" class="uni-input" placeholder="感兴趣的话可以留下你的评论呦～" @focus="handleFocus" /> -->

@@ -8,10 +8,10 @@
 			</uni-easyinput>
 		</view>
 		<view class="unused-list" :style="{'height':screenHeight}">
-			<infoItem :pageType="pageType" @handleJumpDetail="handleJumpDetail"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
+			<view class="lift-item" v-for="item in unusedList" :key="item.id">
+				<info-item :pageType="pageType" :itemData="item" @unusedChangeStatus="unusedChangeStatus"
+					@handleJumpDetail="handleJumpDetail(item)"></info-item>
+			</view>
 		</view>
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布闲置" @click="handlePublishClick"></u-button>
@@ -20,8 +20,11 @@
 </template>
 
 <script>
+	import {
+		listUnused
+	} from "@/api/unused/index.js"
 	import infoItem from "@/components/info_item.vue"
-	
+
 	export default {
 		options: {
 			styleIsolation: 'shared',
@@ -42,16 +45,58 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
+				pageNum: 1,
+				pageSize: 10,
+				unusedList: []
 			}
 		},
-		created() {
+		onLoad() {
+			uni.$on('changeUnused', this.getUnusedList)
+		},
+		onUnload() {
+			uni.$off('changeUnused')
+		},
+		onShow() {
+			this.getUnusedList()
+		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
 		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				setTimeout(() => {
+					this.getUnusedList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 1000)
+			},
+			// 获取闲置物品列表
+			getUnusedList() {
+				let params = {
+					search: this.keyword,
+					pageNum: 1,
+					pageSize: 10
+				}
+				listUnused(params).then(res => {
+					if (res.code == 200) {
+						this.unusedList = res.data
+					}
+				})
+			},
 			// 搜索
-			handleConfirm() {},
-			handleJumpDetail() {
+			handleConfirm() {
+				this.getUnusedList()
+			},
+			// 点赞,收藏状态改变
+			unusedChangeStatus() {
+				this.getUnusedList()
+			},
+			handleJumpDetail(item) {
 				uni.navigateTo({
-					url: "/pages/unused/detailUnused/detail"
+					url: `/pages/unused/detailUnused/detail?itemData=${encodeURIComponent(JSON.stringify(item))
+			}`
 				})
 			},
 			handlePublishClick() {

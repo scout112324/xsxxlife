@@ -163,9 +163,9 @@
 									icon: 'success',
 									duration: 2000
 								}) 
-								// uni.switchTab({
-								// 	url: "/pages/unused/index"
-								// })
+								uni.switchTab({
+									url: "/pages/unused/index"
+								})
 							}
 						})
 					} else {
