@@ -99,6 +99,7 @@
 				itemData: {},
 				showCommentInput: false,
 				pageType: "unused",
+				level: 0
 			}
 		},
 		methods: {
@@ -107,10 +108,28 @@
 			},
 			inputs(e) {
 				this.showCommentInput = false
-				console.log(e)
+				if (e) {
+					let params = {
+						type: 3,
+						moduleId: this.itemData.id,
+						content: e,
+						level: this.level
+					}
+					addComment(params).then(res => {
+						if (res.code === 200) {
+							uni.showToast({
+								title: '评论成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+
 			},
-			focusInput() {
+			focusInput(level) {
 				this.showCommentInput = true
+				this.level = level
 			},
 			handleShareClick() {},
 			handleCommuniteClick() {},

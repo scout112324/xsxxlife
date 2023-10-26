@@ -60,7 +60,7 @@
 			moduleId: {
 				type: Number,
 				required: true
-			}
+			},
 		},
 		data() {
 			return {
@@ -82,13 +82,7 @@
 		methods: {
 			// 回复
 			handleRecord() {
-				if (this.pageType == "unused") {
-					this.type = 3
-				}
-				let params = {
-					type: this.type,
-					moduleId: this.moduleId,
-				}
+				this.$emit('focusInput', 0)
 			},
 			handleMoreComment(id, index) {
 				this.activeIndex = index
