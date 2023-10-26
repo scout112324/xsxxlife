@@ -16,7 +16,7 @@
 			<!-- <view class="time">
 				40分钟前
 			</view> -->
-			<view class="record">
+			<view class="record" @click="handleChildrenRecord(itemData.id)">
 				回复
 			</view>
 		</view>
@@ -32,6 +32,11 @@
 		},
 		data() {
 			return {}
+		},
+		methods: {
+			handleChildrenRecord(id) {
+				this.$emit('childrenRecord', id)
+			}
 		}
 	}
 </script>

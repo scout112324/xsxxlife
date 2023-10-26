@@ -29,7 +29,7 @@
 				</view>
 			</view>
 			<block v-if="activeIndex==index" v-for="childItem in childrenList" :key="childItem.id">
-				<commentChildren :itemData="childItem"></commentChildren>
+				<commentChildren :itemData="childItem" @childrenRecord="childrenRecord"></commentChildren>
 			</block>
 			<view class="more" @click="handleMoreComment(item.id,index)" v-if="item.count!=0">
 				<view class="unfold">
@@ -80,6 +80,9 @@
 			this.getListComment()
 		},
 		methods: {
+			childrenRecord(id) {
+				this.$emit('focusInput', 1, id)
+			},
 			// 回复
 			handleRecord() {
 				this.$emit('focusInput', 0)

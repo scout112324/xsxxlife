@@ -99,7 +99,8 @@
 				itemData: {},
 				showCommentInput: false,
 				pageType: "unused",
-				level: 0
+				level: 0,
+				childId: ""
 			}
 		},
 		methods: {
@@ -109,27 +110,47 @@
 			inputs(e) {
 				this.showCommentInput = false
 				if (e) {
-					let params = {
-						type: 3,
-						moduleId: this.itemData.id,
-						content: e,
-						level: this.level
-					}
-					addComment(params).then(res => {
-						if (res.code === 200) {
-							uni.showToast({
-								title: '评论成功',
-								icon: 'success',
-								duration: 2000
-							})
+					if (this.childId) {
+						let params = {
+							type: 3,
+							moduleId: this.itemData.id,
+							content: e,
+							level: this.level,
+							id: this.childId
 						}
-					})
+						addComment(params).then(res => {
+							if (res.code === 200) {
+								uni.showToast({
+									title: '评论成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					} else {
+						let params = {
+							type: 3,
+							moduleId: this.itemData.id,
+							content: e,
+							level: this.level,
+						}
+						addComment(params).then(res => {
+							if (res.code === 200) {
+								uni.showToast({
+									title: '评论成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					}
 				}
 
 			},
-			focusInput(level) {
+			focusInput(level, id) {
 				this.showCommentInput = true
 				this.level = level
+				this.childId = id
 			},
 			handleShareClick() {},
 			handleCommuniteClick() {},
