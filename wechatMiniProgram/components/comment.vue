@@ -111,6 +111,8 @@
 			getListComment() {
 				if (this.pageType == "unused") {
 					this.type = 3
+				} else if (this.pageType == "message") {
+					this.type = 6
 				}
 				let params = {
 					type: this.type,

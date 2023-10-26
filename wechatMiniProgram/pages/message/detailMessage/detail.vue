@@ -2,10 +2,11 @@
 	<view class="detail-page">
 		<view class="container">
 			<view class="title">
-				全面实现不动产统一登记意味着什么？和你我有什么关系？！
+				{{itemData.title}}
 			</view>
 			<view class="header">
-				<view class="user-info">
+				<view class="user-info"></view>
+				<!-- <view class="user-info">
 					<image class="avatar" src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png"
 						mode=""></image>
 					<view class="info">
@@ -16,7 +17,7 @@
 							上海市静安区
 						</view>
 					</view>
-				</view>
+				</view> -->
 				<view class="share">
 					<uni-button type="primary" class="uni-btn" @click="handleShareClick">
 						<image src="../../../static/components/zhuanfa.png" mode="aspectFit"
@@ -26,9 +27,7 @@
 					</uni-button>
 				</view>
 			</view>
-			<view class="content">
-				出闲置全新！感兴趣的朋友看过来或者在线直接联系，Apple/IPhone15一台，国行版内128G，手机无任何维修记录，没有任何划痕！
-			</view>
+			<view class="content" v-html="itemData.content"></view>
 			<view class="product-image">
 				<image class="image"
 					src="https://tse1-mm.cn.bing.net/th/id/OIP-C.PutJRYbN20MeTUKQCLFAZQHaHa?pid=ImgDet&rs=1" mode="">
@@ -38,27 +37,34 @@
 				</image>
 			</view>
 		</view>
-		<view class="comments">
-			<comment></comment>
+		<view class="comments" v-if="itemData.id">
+			<comment :pageType="pageType" :moduleId="itemData.id" ref="commentRef" @focusInput="focusInput">
+			</comment>
 		</view>
+		<commentInput @inputs="inputs" v-if="showCommentInput"></commentInput>
 		<view class="footer">
 			<view class="btns">
-				<view class="item">
-					<image class="icon" src="../../../static/components/dianzan.png" mode=""></image>
+				<view class="item" @click="handleSupport(itemData)">
+					<image v-if="itemData.support" class="icon" src="../../../static/components/dianzan_set.png"
+						mode="">
+					</image>
+					<image v-else class="icon" src="../../../static/components/dianzan.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.supportCount || 0}}
 					</view>
 				</view>
-				<view class="item">
-					<image class="icon" src="../../../static/components/shoucang_set.png" mode=""></image>
+				<view class="item" @click="handleStar(itemData)">
+					<image v-if="itemData.star" class="icon" src="../../../static/components/shoucang_set.png" mode="">
+					</image>
+					<image v-else class="icon" src="../../../static/components/shoucang.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.starCount || 0}}
 					</view>
 				</view>
-				<view class="item">
+				<view class="item" @click="handleComment">
 					<image class="icon" src="../../../static/components/pinglun.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.commentCount || 0}}
 					</view>
 				</view>
 			</view>
@@ -76,18 +82,153 @@
 
 <script>
 	import comment from "@/components/comment.vue"
+	import commentInput from "@/components/commentInput.vue"
+	import {
+		addSupport,
+		cancelSupport,
+		addStar,
+		cancelStar,
+		addComment,
+		addGive
+	} from "@/api/common.js"
 	export default {
 		components: {
-			comment
+			comment,
+			commentInput
+		},
+		onLoad(options) {
+			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
 		},
 		data() {
 			return {
-
+				itemData: {},
+				showCommentInput: false,
+				pageType: "message",
+				level: 0,
+				childId: ""
 			}
 		},
 		methods: {
+			handleComment() {
+				this.$refs.commentRef.handleFocus()
+			},
+			inputs(e) {
+				this.showCommentInput = false
+				if (e) {
+					if (this.childId) {
+						let params = {
+							type: 6,
+							moduleId: this.itemData.id,
+							content: e,
+							level: this.level,
+							id: this.childId
+						}
+						addComment(params).then(res => {
+							if (res.code === 200) {
+								this.$refs.commentRef.getListComment()
+								uni.showToast({
+									title: '评论成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					} else {
+						let params = {
+							type: 6,
+							moduleId: this.itemData.id,
+							content: e,
+							level: this.level,
+						}
+						addComment(params).then(res => {
+							if (res.code === 200) {
+								this.$refs.commentRef.getListComment()
+								uni.showToast({
+									title: '评论成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					}
+				}
+
+			},
+			focusInput(level, id) {
+				this.showCommentInput = true
+				this.level = level
+				this.childId = id
+			},
 			handleShareClick() {},
-			handleCommuniteClick() {}
+			handleCommuniteClick() {},
+			// 点赞
+			handleSupport(item) {
+				this.supportParams = {
+					type: 6,
+					moduleId: item.id
+				}
+				if (!!item.support) {
+					cancelSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeMessage')
+							this.itemData.support = !this.itemData.support
+							this.itemData.supportCount -= 1
+							uni.showToast({
+								title: '取消点赞',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeMessage')
+							this.itemData.support = !this.itemData.support
+							this.itemData.supportCount += 1
+							uni.showToast({
+								title: '点赞成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
+			// 收藏
+			handleStar(item) {
+				this.starParams = {
+					type: 6,
+					moduleId: item.id
+				}
+				if (!!item.star) {
+					cancelStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeMessage')
+							this.itemData.star = !this.itemData.star
+							this.itemData.starCount -= 1
+							uni.showToast({
+								title: '取消收藏',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeMessage')
+							this.itemData.star = !this.itemData.star
+							this.itemData.starCount += 1
+							uni.showToast({
+								title: '收藏成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
 		}
 	}
 </script>

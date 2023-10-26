@@ -1,6 +1,6 @@
 <template>
 	<view class="item" @click="handleClick">
-		<view class="avatar">
+		<view class="avatar" v-if="showPrice">
 			<image v-if="itemData.photo" class="image" :src="itemData.photo" mode="">
 			</image>
 			<image v-else class="image"
@@ -8,7 +8,10 @@
 			</image>
 		</view>
 		<view class="info">
-			<view class="header">
+			<view class="title" v-if="!showPrice">
+				{{itemData.title}}
+			</view>
+			<view class="header" v-if="showPrice">
 				<view class="left">
 					<view class="nickname">
 						{{itemData.nickname || '暂无'}}
@@ -17,7 +20,7 @@
 						{{itemData.place || '暂无'}}
 					</view>
 				</view>
-				<view class="price" v-if="showPrice">
+				<view class="price">
 					<text class="unit">￥</text>
 					<text>{{itemData.price || '暂无'}}</text>
 				</view>
@@ -214,6 +217,12 @@
 
 		.info {
 			flex: 1;
+
+			.title {
+				font-size: 38rpx;
+				font-weight: 500;
+				color: #222222;
+			}
 
 			.header {
 				display: flex;
