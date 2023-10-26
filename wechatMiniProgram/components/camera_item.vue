@@ -47,18 +47,15 @@
 				type: Number,
 				default: 3
 			},
-			pageType: {
-				type: String,
-				default: ""
-			}
+			// pageType: {
+			// 	type: String,
+			// 	default: ""
+			// }
 		},
 		data() {
 			return {
-				imageList: [
-					"https://ts1.cn.mm.bing.net/th/id/R-C.efeea7fe9c2700fcff22483246e448db?rik=2GOGPn7eZvqd7A&riu=http%3a%2f%2fpic.zsucai.com%2ffiles%2f2013%2f0830%2fxiaguang4.jpg&ehk=WiVr1cmj4u7RnOhKcAbAFDCbcnEuMDMJc1g9GVQAoj8%3d&risl=&pid=ImgRaw&r=0",
-					"https://ts1.cn.mm.bing.net/th/id/R-C.efeea7fe9c2700fcff22483246e448db?rik=2GOGPn7eZvqd7A&riu=http%3a%2f%2fpic.zsucai.com%2ffiles%2f2013%2f0830%2fxiaguang4.jpg&ehk=WiVr1cmj4u7RnOhKcAbAFDCbcnEuMDMJc1g9GVQAoj8%3d&risl=&pid=ImgRaw&r=0"
-				], //图片
-				videoList: ["http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"], //视频存放
+				imageList: [], //图片
+				videoList: [], //视频存放
 				sourceTypeIndex: 2,
 				checkedValue: true,
 				checkedIndex: 0,
@@ -133,7 +130,7 @@
 							let imgUrl = imgData.data.url
 							this.imageList.push(imgUrl); //微信
 							this.fileList = this.imageList.concat(this.videoList)
-							this.$emit('handleUploadFile',this.fileList)
+							this.$emit('handleUploadFile', this.fileList)
 							if (this.fileList.length >= this.cameraNumber) {
 								this.VideoOfImagesShow = false;
 							} else {
@@ -171,9 +168,7 @@
 									} else {
 										this.VideoOfImagesShow = true
 									}
-									if(this.pageType=='unused') {
-										this.$emit('handleUploadFile',this.fileList)
-									}
+									this.$emit('handleUploadFile', this.fileList)
 								}
 							}
 						})

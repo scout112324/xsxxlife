@@ -1,27 +1,20 @@
 <template>
 	<view class="feedback-page">
 		<view class="content">
-			<uni-forms :model="form" ref="form" label-position="top" label-width="380rpx">
-				<uni-forms-item label="问题分类">
+			<uni-forms :model="form" ref="form" :rules="rules" label-position="top" label-width="380rpx">
+				<uni-forms-item label="问题分类" name="type">
 					<uni-data-checkbox mode="tag" selectedColor="#FFD100" selectedTextColor="#353535"
 						v-model="form.type" multiple :localdata="types" />
 				</uni-forms-item>
-				<uni-forms-item label="详情描述">
+				<uni-forms-item label="详情描述" name="desc">
 					<uni-easyinput type="textarea" :maxlength="200" v-model="form.desc"
 						placeholder="您在哪个页面，遇到了哪些问题，详细描述有利于更快的解决哦～" />
 				</uni-forms-item>
 				<uni-forms-item label="上传问题图片/视频(1/3)">
-					<caremaItem></caremaItem>
-					<!-- <uni-file-picker file-mediatype="all" :value="imgList" multiple limit="3" ref="files" mode="grid"
-						@select="handleSelect" @success="handleSuccess" :auto-upload="false">
-						<view class="image-container">
-							<image src="../../../static/unused/tupian.png" mode="" style="width: 80rpx;height: 80rpx;">
-							</image>
-							<text class="title">添加图片/视频</text>
-						</view>
-					</uni-file-picker> -->
+					<caremaItem :pageType="pageType" :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile">
+					</caremaItem>
 				</uni-forms-item>
-				<uni-forms-item label="联系方式">
+				<uni-forms-item label="联系方式" name="phone">
 					<uni-easyinput v-model="form.phone" placeholder="请输入联系方式~" />
 				</uni-forms-item>
 				<uni-forms-item label="客服联系微信" class="copy-phone" label-width="200rpx">
@@ -45,6 +38,9 @@
 
 <script>
 	import caremaItem from "@/components/camera_item.vue"
+	import {
+		addAdvice
+	} from "@/api/user/index.js"
 	export default {
 		components: {
 			caremaItem
@@ -59,68 +55,80 @@
 					desc: '',
 					phone: ""
 				},
+				rules: {},
 				types: [{
 					text: '附近社群',
-					value: 0
+					value: '附近社群'
 				}, {
 					text: '兼职',
-					value: 1
+					value: '兼职'
 				}, {
 					text: '房屋转让',
-					value: 2
+					value: '房屋转让'
 				}, {
 					text: '寻人寻物',
-					value: 3
+					value: '寻人寻物'
 				}, {
 					text: '闲置交易',
-					value: 4
+					value: '闲置交易'
 				}, {
 					text: '大件清运',
-					value: 5
+					value: '大件清运'
 				}, {
 					text: '开锁',
-					value: 6
+					value: '开锁'
 				}, {
 					text: '通下水道',
-					value: 7
+					value: '通下水道'
 				}, {
 					text: '家电维修',
-					value: 8
+					value: '家电维修'
 				}, {
 					text: '维修水电',
-					value: 9
+					value: '维修水电'
 				}, {
 					text: '放水漏水',
-					value: 10
+					value: '放水漏水'
 				}],
 				imgList: [],
+				pageType: "feedback",
+				cameraNumber: 3,
+				picture: []
 			}
 		},
+		onReady() {
+			// 需要在onReady中设置规则
+			this.$refs.form.setRules(this.rules)
+		},
 		methods: {
-			handleSelect(e) {
-				console.log('选择文件：', e)
+			// 文件上传
+			handleUploadFile(file) {
+				this.picture = file
 			},
-			handleSuccess(e) {
-				console.log('上传成功', e)
+			handleSubmitClick() {
+				this.$refs.form.validate().then(valid => {
+					if (valid) {
+						let params = {
+							type: this.form.type.toString(),
+							content: this.form.desc,
+							phone: this.form.phone,
+							picture: this.picture.toString(),
+						}
+						addAdvice(params).then(res => {
+							if (res.code == 200) {
+								uni.showToast({
+									title: '反馈成功',
+									icon: 'success',
+									duration: 2000
+								})
+								uni.switchTab({
+									url: "/pages/user/index"
+								})
+							}
+						})
+					}
+				})
 			},
-			// 手动上传
-			// handUpload(event) {
-			// 	console.log(event)
-			// 	// 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-			// 	let chooseList = [].concat(event.file) // 当前选中列表
-			// 	// 将选中的文件添加到文件列表
-			// 	chooseList.map((item) => {
-			// 		this.imgList.push({
-			// 			...item,
-			// 			status: '',
-			// 			message: ''
-			// 		})
-			// 	})
-			// },
-			// deletePic(event) {
-			// 	this.imgList.splice(event.index, 1);
-			// },
-			handleSubmitClick() {},
 			// 复制
 			handleCopy(value) {
 				//提示模板

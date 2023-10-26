@@ -18,7 +18,7 @@
 				</view>
 			</view>
 			<view class="message">
-				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
+				<u-form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
 					<!-- <u-form-item label="闲置类型" prop="type" borderBottom @click="showType = true;">
 						<u--input v-model="userInfo.type" disabled disabledColor="#ffffff" placeholder="请选择"
 							border="none"></u--input>
@@ -37,7 +37,7 @@
 					<u-form-item label="手机号" prop="phone" borderBottom>
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写你的手机号码"></u--input>
 					</u-form-item>
-				</u--form>
+				</u-form>
 				<!-- <u-action-sheet :show="showType" :actions="actions" title="请选择闲置类型" @close="showType = false"
 					@select="typeSelect">
 				</u-action-sheet> -->
