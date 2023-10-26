@@ -121,6 +121,8 @@
 						addComment(params).then(res => {
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
+								uni.$emit('changeUnused')
+								this.itemData.commentCount += 1
 								uni.showToast({
 									title: '评论成功',
 									icon: 'success',
@@ -138,6 +140,8 @@
 						addComment(params).then(res => {
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
+								uni.$emit('changeUnused')
+								this.itemData.commentCount += 1
 								uni.showToast({
 									title: '评论成功',
 									icon: 'success',
