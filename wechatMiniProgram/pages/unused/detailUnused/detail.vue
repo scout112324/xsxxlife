@@ -120,6 +120,7 @@
 						}
 						addComment(params).then(res => {
 							if (res.code === 200) {
+								this.$refs.commentRef.getListComment()
 								uni.showToast({
 									title: '评论成功',
 									icon: 'success',
@@ -136,6 +137,7 @@
 						}
 						addComment(params).then(res => {
 							if (res.code === 200) {
+								this.$refs.commentRef.getListComment()
 								uni.showToast({
 									title: '评论成功',
 									icon: 'success',

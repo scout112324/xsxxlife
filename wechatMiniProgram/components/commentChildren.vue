@@ -7,6 +7,7 @@
 				mode=""></image>
 			<view class="name">
 				{{itemData.nickname}}
+				<text class="address">{{itemData.toUsername}}</text>
 			</view>
 		</view>
 		<view class="content">

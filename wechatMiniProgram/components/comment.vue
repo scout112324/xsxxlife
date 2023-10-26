@@ -24,7 +24,7 @@
 				<!-- <view class="time">
 					40分钟前
 				</view> -->
-				<view class="record" @click="handleRecord">
+				<view class="record" @click="handleRecord(item.id)">
 					回复
 				</view>
 			</view>
@@ -84,8 +84,8 @@
 				this.$emit('focusInput', 1, id)
 			},
 			// 回复
-			handleRecord() {
-				this.$emit('focusInput', 0)
+			handleRecord(id) {
+				this.$emit('focusInput', 1, id)
 			},
 			handleMoreComment(id, index) {
 				this.activeIndex = index
@@ -106,7 +106,7 @@
 			},
 			handleFocus() {
 				// this.showInput = false
-				this.$emit('focusInput')
+				this.$emit('focusInput', 0)
 			},
 			getListComment() {
 				if (this.pageType == "unused") {
@@ -118,7 +118,6 @@
 					pageNum: this.pageNum,
 					pageSize: this.pageSize
 				}
-				console.log(params, this.moduleId)
 				listComment(params).then(res => {
 					if (res.code == 200) {
 						this.total = res.data.count
