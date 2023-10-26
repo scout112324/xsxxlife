@@ -254,7 +254,7 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$modal.confirm('是否确认删除公告').then(function () {
+      this.$modal.confirm('是否确认删除文章').then(function () {
         return deleteArticle({id: row.id})
       }).then(() => {
         this.getList()
