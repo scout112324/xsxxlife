@@ -32,7 +32,9 @@
       <el-table-column show-overflow-tooltip label="标题" align="center" prop="title"/>
       <el-table-column label="图片" align="center" width="200">
         <template slot-scope="scope">
-          <img class="list-img" :src="scope.row.picture">
+          <div class="img-container" v-if="scope.row.picture">
+            <img v-for="(pic,index) in scope.row.picture.split(',')" :key="index" class="list-img" :src="pic">
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="内容" align="center" prop="content">
@@ -93,21 +95,28 @@
           <el-input v-model="form.title" placeholder="请输入标题"/>
         </el-form-item>
         <el-form-item label="图片" prop="picture">
-          <el-upload
-            :action="uploadAction"
-            list-type="picture-card"
-            :auto-upload="true"
-            :show-file-list="false"
-            :headers="uploadHeader"
-            :on-success="handleUploadSuccess"
-          >
-            <img
-              v-if="form.picture"
-              :src="form.picture"
-              class="list-img"
-            />
-            <i v-if="!form.picture" class="el-icon-plus"></i>
-          </el-upload>
+          <div class="img-container">
+            <div class="img-item" v-if="fileList.length>0" v-for="(file,index) in fileList"
+                 :key="index" @click="handleDeleteImage(index)">
+              <img
+                :src="file"
+                class="list-img"
+              />
+              <i class="el-icon-delete delete-icon"></i>
+            </div>
+            <el-upload
+              name="files"
+              multiple
+              :action="uploadAction"
+              list-type="picture-card"
+              :auto-upload="true"
+              :show-file-list="false"
+              :headers="uploadHeader"
+              :on-success="handleUploadSuccess"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
+          </div>
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <editor v-model="form.content" :min-height="200"/>
@@ -160,11 +169,12 @@ export default {
         }
       ],
       // 上传地址
-      uploadAction: process.env.VUE_APP_SERVER_URL + '/web/icon/upload',
+      uploadAction: process.env.VUE_APP_SERVER_URL + '/web/icon/uploadBatch',
 
       uploadHeader: {'Authorization': getToken()},
       // 图片根目录
-      imagePath: ''
+      imagePath: '',
+      fileList: []
     }
   },
   created() {
@@ -206,6 +216,7 @@ export default {
         content: '',
         picture: "",
       }
+      this.fileList = []
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -221,6 +232,7 @@ export default {
       this.$set(this.form, 'title', row.title)
       this.$set(this.form, 'content', row.content)
       this.$set(this.form, 'picture', row.picture)
+      this.fileList = row.picture ? row.picture.split(',') : []
     },
     /** 提交按钮 */
     submitForm() {
@@ -229,7 +241,7 @@ export default {
           id: this.noticeId,
           title: this.form.title,
           content: this.form.content,
-          picture: this.form.picture,
+          picture: this.fileList.toString(),
         }
         updateArticle(params).then(response => {
           if (response.code === 200) {
@@ -273,8 +285,15 @@ export default {
       this.getList()
     },
     handleUploadSuccess(file) {
-      this.$set(this.form, 'picture', file.data.url)
+      if (file.code === 200) {
+        this.fileList.push(file.data[0].url)
+      }
+      console.log(this.fileList)
+      this.$set(this.form, 'picture', this.fileList.toString())
     },
+    handleDeleteImage(index) {
+      this.fileList.splice(index, 1);
+    }
   }
 }
 </script>
@@ -306,9 +325,25 @@ export default {
     line-height: 100px;
   }
 
-  .list-img {
-    width: 100px;
-    height: 100px;
+  .img-item {
+
+    .list-img {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin-right: 10px;
+    }
+
+    .delete-icon {
+      position: absolute;
+      font-size: 32px;
+      transform: translate(-75px, 35px);
+    }
+
+  }
+
+  .img-container {
+    display: flex;
   }
 }
 </style>
