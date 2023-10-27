@@ -107,6 +107,7 @@
             <el-upload
               name="files"
               multiple
+              accept=".bmp,.jpg,.jpeg,.png,.gif"
               :action="uploadAction"
               list-type="picture-card"
               :auto-upload="true"
