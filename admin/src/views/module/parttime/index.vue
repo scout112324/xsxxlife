@@ -142,23 +142,6 @@
         <el-form-item label="详细地址" prop="detailsPlace">
           <el-input v-model="form.detailsPlace" placeholder="请输入详细地址"/>
         </el-form-item>
-        <el-form-item label="用户头像" prop="photo">
-          <el-upload
-            :action="uploadAction"
-            list-type="picture-card"
-            :auto-upload="true"
-            :show-file-list="false"
-            :headers="uploadHeader"
-            :on-success="qrCodeUploadSuccess"
-          >
-            <img
-              v-if="form.photo"
-              :src="form.photo"
-              class="list-img"
-            />
-            <i v-if="!form.photo" class="el-icon-plus"></i>
-          </el-upload>
-        </el-form-item>
         <el-form-item label="状态" v-if="noticeId">
           <el-radio-group v-model="form.status">
             <el-radio
@@ -270,7 +253,6 @@ export default {
             needContent: row.needContent,
             timeContent: row.timeContent,
             detailsPlace: row.detailsPlace,
-            photo: row.photo,
             status: row.status
           }
         )
@@ -302,7 +284,6 @@ export default {
         detailsPlace: '',
         total: 0,
         status: 0,
-        photo: ""
       }
     },
     /** 新增按钮操作 */
@@ -329,7 +310,6 @@ export default {
       this.$set(this.form, 'timeContent', row.timeContent)
       this.$set(this.form, 'detailsPlace', row.detailsPlace)
       this.$set(this.form, 'status', String(row.status))
-      this.$set(this.form, 'photo', row.photo)
     },
     /** 提交按钮 */
     submitForm() {
@@ -349,7 +329,6 @@ export default {
           timeContent: this.form.timeContent,
           detailsPlace: this.form.detailsPlace,
           status: this.form.status,
-          photo: this.form.photo
         }
         updateJob(params).then(response => {
           if (response.code === 200) {
@@ -392,9 +371,6 @@ export default {
       this.queryParams.pageNum = val
       this.getList()
     },
-    qrCodeUploadSuccess(file) {
-      this.$set(this.form, 'photo', file.data.url)
-    }
   }
 }
 </script>
