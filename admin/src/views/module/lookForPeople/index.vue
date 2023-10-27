@@ -74,7 +74,6 @@
 </template>
 <script>
 import {findList, deleteFind} from '@/api/module/lookForPeople'
-import {getToken} from '@/utils/auth'
 
 export default {
   name: 'LookForPeople',

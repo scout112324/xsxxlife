@@ -312,7 +312,7 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$modal.confirm('是否确认删除公告').then(function() {
+      this.$modal.confirm('是否确认删除附近社群').then(function() {
         return deleteCrowd({ id: row.id })
       }).then(() => {
         this.getList()
