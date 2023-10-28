@@ -98,7 +98,7 @@
 			this.pictureList = this.itemData?.picture.split(',').length > 2 ?
 				this.itemData?.picture.split(',').slice(0, 3) :
 				this.itemData?.picture.split(',')
-			console.log(this.pictureList)
+			// console.log(this.pictureList)
 		},
 		methods: {
 			handleClick() {
