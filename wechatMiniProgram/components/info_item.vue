@@ -126,6 +126,11 @@
 						type: 6,
 						moduleId: item.id
 					}
+				} else if (this.pageType == 'houseTransfer') {
+					this.supportParams = {
+						type: 1,
+						moduleId: item.id
+					}
 				}
 				if (!!item.support) {
 					cancelSupport(this.supportParams).then(res => {
@@ -161,6 +166,11 @@
 				} else if (this.pageType == 'message') {
 					this.starParams = {
 						type: 6,
+						moduleId: item.id
+					}
+				} else if (this.pageType == 'houseTransfer') {
+					this.starParams = {
+						type: 1,
 						moduleId: item.id
 					}
 				}

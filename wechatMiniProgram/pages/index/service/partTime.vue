@@ -25,6 +25,9 @@
 
 <script>
 	import partTimeItem from "./components/partTimeItem.vue"
+	import {
+		getJob
+	} from "@/api/index/index.js"
 	export default {
 		options: {
 			styleIsolation: 'shared',
@@ -43,10 +46,28 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
-				screenHeight: 0
+				screenHeight: 0,
+				pageNum: 1,
+				pageSize: 10
 			}
 		},
+		onShow() {
+			this.getJobList()
+		},
 		methods: {
+			// 获取兼职列表
+			getJobList() {
+				let params = {
+					search: this.keyword,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				getJob(params).then(res => {
+					if (res.code === 200) {
+						console.log(res)
+					}
+				})
+			},
 			// 搜索
 			handleConfirm() {},
 			handleBack() {

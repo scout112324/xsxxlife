@@ -105,8 +105,11 @@
 		}
 
 		.community-container {
+			position: fixed;
+			z-index: 2;
 			height: 85rpx;
-			background: #FFFDF3;
+			width: 100%;
+			background: #FFFFFF;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
@@ -151,6 +154,7 @@
 		}
 
 		.community-list {
+			margin-top: 85rpx;
 			overflow-y: auto;
 			background: #FFFFFF;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);

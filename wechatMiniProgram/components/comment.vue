@@ -113,6 +113,8 @@
 					this.type = 3
 				} else if (this.pageType == "message") {
 					this.type = 6
+				} else if(this.pageType == 'houseTransfer') {
+					this.type = 1
 				}
 				let params = {
 					type: this.type,

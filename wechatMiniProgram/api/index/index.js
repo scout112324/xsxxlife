@@ -6,6 +6,10 @@ const api = {
 	tabList: 'app/home/tab',
 	getUnused: 'app/home/getUnused',
 	getCrowd: 'app/home/getCrowd',
+	getJob: 'app/job/list',
+	concatJob: 'app/job/concat',
+	houseList: 'app/house/list',
+	addHouse: 'app/house/add',
 }
 
 // 登录
@@ -31,4 +35,24 @@ export const getUnused = (param, option) => {
 // 获取附近社群
 export const getCrowd = (param, option) => {
 	return request.get(api.getCrowd, param)
+}
+
+// 获取兼职列表
+export const getJob = (param, option) => {
+	return request.get(api.getJob, param)
+}
+
+// 查询管理员联系方式
+export const concatJob = (param, option) => {
+	return request.get(api.concatJob, param)
+}
+
+// 查询房屋转让
+export const houseList = (param, option) => {
+	return request.get(api.houseList, param)
+}
+
+// 增加房屋转让
+export const addHouse = (param, option) => {
+	return request.post(api.addHouse, param)
 }

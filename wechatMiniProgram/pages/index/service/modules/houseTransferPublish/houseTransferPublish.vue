@@ -4,15 +4,15 @@
 			<view class="wrap-card">
 				<scroll-view scroll-y class="scroll_view">
 					<textarea adjust-position='false' auto-height @keyboardheightchange="keyboardheightchange"
-						class="con-text" maxlength='-1' v-model="textContent" placeholder="请描述一下你要发布的内容…"></textarea>
+						class="con-text" maxlength='-1' v-model="content" placeholder="请描述一下你要发布的内容…"></textarea>
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :cameraNumber="cameraNumber"></caremaItem>
+					<caremaItem :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile"></caremaItem>
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../../../static/home/dingwei.png" mode=""></image>
-					<text class="address-name">上海市静安区</text>
+					<u--input class="address-name" placeholder="请输入地址" border="none" v-model="place"></u--input>
 					<image class="tiaozhuan" src="../../../../../static/unused/tiaozhuan.png" mode=""></image>
 				</view>
 			</view>
@@ -24,8 +24,8 @@
 					<u-form-item label="联系电话" prop="phone" borderBottom>
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写你的手机号码"></u--input>
 					</u-form-item>
-					<u-form-item label="房屋地址" prop="address" borderBottom>
-						<u--input v-model="userInfo.address" border="none" placeholder="请填写地址"></u--input>
+					<u-form-item label="房屋地址" prop="detailsPlace" borderBottom>
+						<u--input v-model="userInfo.detailsPlace" border="none" placeholder="请填写地址"></u--input>
 					</u-form-item>
 				</u--form>
 			</view>
@@ -38,6 +38,9 @@
 
 <script>
 	import caremaItem from "@/components/camera_item.vue"
+	import {
+		addHouse
+	} from "@/api/index/index.js"
 	export default {
 		components: {
 			caremaItem
@@ -45,11 +48,13 @@
 		data() {
 			return {
 				cameraNumber: 9,
-				textContent: "",
+				content: "",
+				place: "",
+				picture: "",
 				userInfo: {
 					price: '',
 					phone: '',
-					address: ''
+					detailsPlace: ''
 				},
 				rules: {
 					price: [{
@@ -88,11 +93,32 @@
 			keyboardheightchange(event) {
 				this.bottomHeight = event.detail.height
 			},
+			// 文件上传
+			handleUploadFile(file) {
+				this.picture = file
+			},
 			// 发布
 			handlePublish() {
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						console.log("fabu")
+						let params = {
+							place: this.place,
+							content: this.content,
+							picture: this.picture.toString(),
+							phone: this.userInfo.phone,
+							detailsPlace: this.userInfo.detailsPlace,
+							price: this.userInfo.price
+						}
+						addHouse(params).then(res => {
+							uni.showToast({
+								title: '发布成功',
+								icon: 'success',
+								duration: 2000
+							})
+							uni.navigateTo({
+								url: "/pages/index/service/houseTransfer"
+							})
+						})
 					} else {
 						console.log('验证失败');
 					}

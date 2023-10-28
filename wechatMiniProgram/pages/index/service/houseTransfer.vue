@@ -10,10 +10,10 @@
 			</uni-easyinput>
 		</view>
 		<view class="unused-list" :style="{'height':screenHeight}">
-			<infoItem :pageType="pageType" @handleJumpHouseDetail="handleJumpHouseDetail"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
+			<view class="lift-item" v-for="item in houseList" :key="item.id">
+				<info-item :pageType="pageType" :itemData="item" @houseTransferChangeStatus="houseTransferChangeStatus"
+					@handleJumpHouseDetail="handleJumpHouseDetail(item)"></info-item>
+			</view>
 		</view>
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布" @click="handlePublishClick"></u-button>
@@ -23,6 +23,9 @@
 
 <script>
 	import infoItem from "@/components/info_item.vue"
+	import {
+		houseList
+	} from "@/api/index/index.js"
 	export default {
 		options: {
 			styleIsolation: 'shared',
@@ -43,19 +46,50 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
+				pageNum: 1,
+				pageSize: 10,
+				houseList: []
 			}
 		},
+		onLoad() {
+			uni.$on('changeHouseList', this.getHouseList)
+		},
+		onUnload() {
+			uni.$off('changeHouseList')
+		},
+		onShow() {
+			this.getHouseList()
+		},
 		methods: {
+			// 获取房屋转让列表
+			getHouseList() {
+				let params = {
+					search: this.keyword,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				houseList(params).then(res => {
+					if (res.code == 200) {
+						this.houseList = res.data
+					}
+				})
+			},
 			// 搜索
-			handleConfirm() {},
+			handleConfirm() {
+				this.getHouseList()
+			},
+			// 点赞,收藏状态改变
+			houseTransferChangeStatus() {
+				this.getHouseList()
+			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index"
 				})
 			},
-			handleJumpHouseDetail() {
+			handleJumpHouseDetail(item) {
 				uni.navigateTo({
-					url: "/pages/index/service/modules/houseTransferDetail/houseTransferDetail"
+					url: `/pages/index/service/modules/houseTransferDetail/houseTransferDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
 				})
 			},
 			handlePublishClick() {
