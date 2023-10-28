@@ -31,10 +31,13 @@
 			<view class="content">
 				{{itemData.content || '暂无'}}
 			</view>
-			<view class="product-image">
-				<image class="image"
-					src="https://tse1-mm.cn.bing.net/th/id/OIP-C.PutJRYbN20MeTUKQCLFAZQHaHa?pid=ImgDet&rs=1" mode="">
-				</image>
+			<view class="product-image" v-if="pictureList && pictureList.length>0">
+				<block v-for="(item,index) in pictureList" :key="index">
+					<image v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
+						class="image" :src="item" mode="">
+					</image>
+					<video v-else class="image" :src="item" controls></video>
+				</block>
 			</view>
 		</view>
 		<view class="comments" v-if="itemData.id">
@@ -93,14 +96,17 @@
 		},
 		onLoad(options) {
 			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			this.pictureList = this.itemData?.picture.split(',')
 		},
 		data() {
 			return {
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 				itemData: {},
 				showCommentInput: false,
 				pageType: "unused",
 				level: 0,
-				childId: ""
+				childId: "",
+				pictureList: [],
 			}
 		},
 		methods: {
