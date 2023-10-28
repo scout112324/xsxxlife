@@ -36,7 +36,7 @@
 		},
 		onReady() {
 			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 395 + 'rpx'
-			console.log(this.screenHeight)
+			// console.log(this.screenHeight)
 		},
 		data() {
 			return {

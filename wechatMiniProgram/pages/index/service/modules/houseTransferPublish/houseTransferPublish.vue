@@ -75,7 +75,7 @@
 							trigger: ['change', 'blur'],
 						}
 					],
-					address: [{
+					detailsPlace: [{
 						required: true,
 						message: '请填写地址',
 						trigger: ['blur', 'change'],

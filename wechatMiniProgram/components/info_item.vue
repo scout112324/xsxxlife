@@ -136,6 +136,11 @@
 						type: 2,
 						moduleId: item.id
 					}
+				} else if (this.pageType == 'largeShipmentTransfer') {
+					this.supportParams = {
+						type: 5,
+						moduleId: item.id
+					}
 				}
 				if (!!item.support) {
 					cancelSupport(this.supportParams).then(res => {
@@ -181,6 +186,11 @@
 				} else if (this.pageType == 'findPeople') {
 					this.starParams = {
 						type: 2,
+						moduleId: item.id
+					}
+				} else if (this.pageType == 'largeShipmentTransfer') {
+					this.starParams = {
+						type: 5,
 						moduleId: item.id
 					}
 				}

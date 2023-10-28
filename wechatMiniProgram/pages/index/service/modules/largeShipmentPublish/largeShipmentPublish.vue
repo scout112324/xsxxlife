@@ -4,16 +4,15 @@
 			<view class="wrap-card">
 				<scroll-view scroll-y class="scroll_view">
 					<textarea adjust-position='false' auto-height @keyboardheightchange="keyboardheightchange"
-						class="con-text" maxlength='-1' v-model="textContent"
-						placeholder="请用几句话描述一下你要发布的内容…"></textarea>
+						class="con-text" maxlength='-1' v-model="content" placeholder="请用几句话描述一下你要发布的内容…"></textarea>
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :cameraNumber="cameraNumber"></caremaItem>
+					<caremaItem :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile"></caremaItem>
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../../../static/home/dingwei.png" mode=""></image>
-					<text class="address-name">上海市静安区</text>
+					<u--input class="address-name" placeholder="请输入地址" border="none" v-model="place"></u--input>
 					<image class="tiaozhuan" src="../../../../../static/unused/tiaozhuan.png" mode=""></image>
 				</view>
 			</view>
@@ -30,12 +29,13 @@
 					<u-form-item label="联系电话" prop="phone" borderBottom>
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写联系电话"></u--input>
 					</u-form-item>
-					<u-form-item label="上门地址" prop="address" borderBottom>
-						<u--input v-model="userInfo.address" border="none" placeholder="请填写地址"></u--input>
+					<u-form-item label="上门地址" prop="detailsPlace" borderBottom>
+						<u--input v-model="userInfo.detailsPlace" border="none" placeholder="请填写地址"></u--input>
 					</u-form-item>
 				</u--form>
-				<u-datetime-picker mode="date" :show="showComeTime" :value="comeTime" closeOnClickOverlay
-					@cancel="comeTimeClose" @confirm="comeTimeConfirm" @close="comeTimeClose"></u-datetime-picker>
+				<u-datetime-picker mode="datetime" :show="showComeTime" :minDate="Number(new Date())" :value="comeTime"
+					closeOnClickOverlay @cancel="comeTimeClose" @confirm="comeTimeConfirm"
+					@close="comeTimeClose"></u-datetime-picker>
 			</view>
 		</view>
 		<view class="publish">
@@ -46,6 +46,9 @@
 
 <script>
 	import caremaItem from "@/components/camera_item.vue"
+	import {
+		addBig
+	} from "@/api/index/index.js"
 	export default {
 		components: {
 			caremaItem
@@ -53,16 +56,18 @@
 		data() {
 			return {
 				cameraNumber: 9,
-				textContent: "",
+				content: "",
+				place: "",
 				showComeTime: false,
+				// comeTime: uni.$u.timeFormat(Number(new Date()), 'yyyy-mm-dd hh:MM:ss')
 				userInfo: {
-					address: '',
+					detailsPlace: '',
 					comeTime: '',
 					price: '',
 					phone: ''
 				},
 				rules: {
-					address: [{
+					detailsPlace: [{
 						required: true,
 						message: '请填写地址',
 						trigger: ['blur', 'change'],
@@ -104,11 +109,35 @@
 			keyboardheightchange(event) {
 				this.bottomHeight = event.detail.height
 			},
+			// 文件上传
+			handleUploadFile(file) {
+				this.picture = file
+			},
 			// 发布
 			handlePublish() {
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						console.log("fabu")
+						let params = {
+							place: this.place,
+							content: this.content,
+							picture: this.picture ? this.picture.toString() : "",
+							phone: this.userInfo.phone,
+							detailsPlace: this.userInfo.detailsPlace,
+							goTime: this.userInfo.comeTime,
+							price: this.userInfo.price
+						}
+						addBig(params).then(res => {
+							if (res.code === 200) {
+								uni.showToast({
+									title: '发布成功',
+									icon: 'success',
+									duration: 2000
+								})
+								uni.navigateTo({
+									url: "/pages/index/service/largeShipmentClearance"
+								})
+							}
+						})
 					} else {
 						console.log('验证失败');
 					}
@@ -116,7 +145,7 @@
 			},
 			comeTimeConfirm(e) {
 				this.showComeTime = false
-				this.userInfo.comeTime = uni.$u.timeFormat(e.value, 'yyyy-mm-dd')
+				this.userInfo.comeTime = uni.$u.timeFormat(e.value, 'yyyy-mm-dd hh:MM:ss')
 				this.$refs.uForm.validateField('comeTime')
 			},
 			comeTimeClose(e) {

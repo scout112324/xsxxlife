@@ -3,14 +3,15 @@
 		<view class="container">
 			<view class="header">
 				<view class="user-info">
-					<image class="avatar" src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png"
-						mode=""></image>
+					<image v-if="itemData.photo" class="avatar" :src="itemData.photo" mode=""></image>
+					<image v-else class="avatar"
+						src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png" mode=""></image>
 					<view class="info">
 						<view class="nickname">
-							Ketty Perry
+							{{itemData.nickname || '暂无'}}
 						</view>
 						<view class="address">
-							上海市静安区
+							{{itemData.place || '暂无'}}
 						</view>
 					</view>
 				</view>
@@ -25,18 +26,19 @@
 			</view>
 			<view class="price">
 				<text class="unit">¥</text>
-				<text class="num">279000</text>
+				<text class="num">{{itemData.price || '暂无'}}</text>
 			</view>
-			<view class="content">
-				出闲置全新！感兴趣的朋友看过来或者在线直接联系，Apple/IPhone15一台，国行版内128G，手机无任何维修记录，没有任何划痕！
+			<view v-if="itemData.content" class="content" v-html="itemData.content"></view>
+			<view v-else class="content">
+				'暂无'
 			</view>
-			<view class="product-image">
-				<image class="image"
-					src="https://tse1-mm.cn.bing.net/th/id/OIP-C.PutJRYbN20MeTUKQCLFAZQHaHa?pid=ImgDet&rs=1" mode="">
-				</image>
-				<image class="image"
-					src="https://tse1-mm.cn.bing.net/th/id/OIP-C.PutJRYbN20MeTUKQCLFAZQHaHa?pid=ImgDet&rs=1" mode="">
-				</image>
+			<view class="product-image" v-if="pictureList && pictureList.length>0">
+				<block v-for="(item,index) in pictureList" :key="index">
+					<image v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
+						class="image" :src="item" mode="">
+					</image>
+					<video v-else class="image" :src="item" controls></video>
+				</block>
 			</view>
 		</view>
 		<view class="person-info">
@@ -46,7 +48,7 @@
 			<view class="info-item">
 				<image class="icon" src="../../../../../static/home/phone.png" mode=""></image>
 				<view class="item">
-					8888-8888-8888
+					{{itemData.phone || '暂无'}}
 				</view>
 			</view>
 			<view class="time">
@@ -55,7 +57,7 @@
 			<view class="info-item">
 				<image class="icon" src="../../../../../static/home/dingwei.png" mode=""></image>
 				<view class="item">
-					上海市奉贤区金海公路3800号龙湖上海奉贤天街F2
+					{{itemData.goTime || '暂无'}}
 				</view>
 			</view>
 			<view class="address">
@@ -64,31 +66,39 @@
 			<view class="info-item">
 				<image class="icon" src="../../../../../static/home/dingwei.png" mode=""></image>
 				<view class="item">
-					上海市奉贤区金海公路3800号龙湖上海奉贤天街F2
+					{{itemData.detailsPlace || '暂无'}}
 				</view>
 			</view>
 		</view>
-		<view class="comments">
-			<comment></comment>
+		<view class="comments" v-if="itemData.id">
+			<comment :pageType="pageType" :moduleId="itemData.id" ref="commentRef" @focusInput="focusInput">
+			</comment>
 		</view>
+		<commentInput @inputs="inputs" v-if="showCommentInput"></commentInput>
 		<view class="footer">
 			<view class="btns">
-				<view class="item">
-					<image class="icon" src="../../../../../static/components/dianzan.png" mode=""></image>
+				<view class="item" @click="handleSupport(itemData)">
+					<image v-if="itemData.support" class="icon" src="../../../../../static/components/dianzan_set.png"
+						mode="">
+					</image>
+					<image v-else class="icon" src="../../../../../static/components/dianzan.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.supportCount || 0}}
 					</view>
 				</view>
-				<view class="item">
-					<image class="icon" src="../../../../../static/components/shoucang_set.png" mode=""></image>
+				<view class="item" @click="handleStar(itemData)">
+					<image v-if="itemData.star" class="icon" src="../../../../../static/components/shoucang_set.png"
+						mode="">
+					</image>
+					<image v-else class="icon" src="../../../../../static/components/shoucang.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.starCount || 0}}
 					</view>
 				</view>
-				<view class="item">
+				<view class="item" @click="handleComment">
 					<image class="icon" src="../../../../../static/components/pinglun.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.commentCount || 0}}
 					</view>
 				</view>
 			</view>
@@ -106,18 +116,160 @@
 
 <script>
 	import comment from "@/components/comment.vue"
+	import commentInput from "@/components/commentInput.vue"
+	import {
+		addSupport,
+		cancelSupport,
+		addStar,
+		cancelStar,
+		addComment,
+		addGive
+	} from "@/api/common.js"
 	export default {
 		components: {
-			comment
+			comment,
+			commentInput
+		},
+		onLoad(options) {
+			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			this.pictureList = this.itemData?.picture.split(',')
 		},
 		data() {
 			return {
-
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
+				itemData: {},
+				showCommentInput: false,
+				pageType: "largeShipmentTransfer",
+				level: 0,
+				childId: "",
+				pictureList: []
 			}
 		},
 		methods: {
+			handleComment() {
+				this.$refs.commentRef.handleFocus()
+			},
+			inputs(e) {
+				this.showCommentInput = false
+				if (e) {
+					if (this.childId) {
+						let params = {
+							type: 5,
+							moduleId: this.itemData.id,
+							content: e,
+							level: this.level,
+							id: this.childId
+						}
+						addComment(params).then(res => {
+							if (res.code === 200) {
+								this.$refs.commentRef.getListComment()
+								uni.$emit('changeBigList')
+								this.itemData.commentCount += 1
+								uni.showToast({
+									title: '评论成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					} else {
+						let params = {
+							type: 5,
+							moduleId: this.itemData.id,
+							content: e,
+							level: this.level,
+						}
+						addComment(params).then(res => {
+							if (res.code === 200) {
+								this.$refs.commentRef.getListComment()
+								uni.$emit('changeBigList')
+								this.itemData.commentCount += 1
+								uni.showToast({
+									title: '评论成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					}
+				}
+
+			},
+			focusInput(level, id) {
+				this.showCommentInput = true
+				this.level = level
+				this.childId = id
+			},
 			handleShareClick() {},
-			handleCommuniteClick() {}
+			handleCommuniteClick() {},
+			// 点赞
+			handleSupport(item) {
+				this.supportParams = {
+					type: 5,
+					moduleId: item.id
+				}
+				if (!!item.support) {
+					cancelSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeBigList')
+							this.itemData.support = !this.itemData.support
+							this.itemData.supportCount -= 1
+							uni.showToast({
+								title: '取消点赞',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeBigList')
+							this.itemData.support = !this.itemData.support
+							this.itemData.supportCount += 1
+							uni.showToast({
+								title: '点赞成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
+			// 收藏
+			handleStar(item) {
+				this.starParams = {
+					type: 5,
+					moduleId: item.id
+				}
+				if (!!item.star) {
+					cancelStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeBigList')
+							this.itemData.star = !this.itemData.star
+							this.itemData.starCount -= 1
+							uni.showToast({
+								title: '取消收藏',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeBigList')
+							this.itemData.star = !this.itemData.star
+							this.itemData.starCount += 1
+							uni.showToast({
+								title: '收藏成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
 		}
 	}
 </script>

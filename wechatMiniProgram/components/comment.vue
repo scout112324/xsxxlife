@@ -113,10 +113,12 @@
 					this.type = 3
 				} else if (this.pageType == "message") {
 					this.type = 6
-				} else if(this.pageType == 'houseTransfer') {
+				} else if (this.pageType == 'houseTransfer') {
 					this.type = 1
-				}else if(this.pageType=='findPeople') {
+				} else if (this.pageType == 'findPeople') {
 					this.type = 2
+				} else if (this.pageType == 'largeShipmentTransfer') {
+					this.type = 5
 				}
 				let params = {
 					type: this.type,
