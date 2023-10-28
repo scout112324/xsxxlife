@@ -50,7 +50,7 @@
 			"path": "pages/unused/index",
 			"style": {
 				"navigationBarTitleText": "闲置交易",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -77,7 +77,7 @@
 			"path": "pages/message/index",
 			"style": {
 				"navigationBarTitleText": "资讯",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -138,7 +138,7 @@
 			"path": "pages/index/service/partTime",
 			"style": {
 				"navigationBarTitleText": "兼职入口",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -165,7 +165,7 @@
 			"path": "pages/index/service/houseTransfer",
 			"style": {
 				"navigationBarTitleText": "房屋转让",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -192,7 +192,7 @@
 			"path": "pages/index/service/lookForPeople",
 			"style": {
 				"navigationBarTitleText": "寻人寻物",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -218,7 +218,7 @@
 			"path": "pages/index/service/idleTransaction",
 			"style": {
 				"navigationBarTitleText": "闲置交易",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -227,7 +227,7 @@
 			"path": "pages/index/service/intraCityActivity",
 			"style": {
 				"navigationBarTitleText": "同城活动",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -255,7 +255,7 @@
 			"path": "pages/index/service/largeShipmentClearance",
 			"style": {
 				"navigationBarTitleText": "大件清运",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -300,7 +300,7 @@
 			"path": "pages/user/message/message",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -357,7 +357,6 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
-		"enablePullDownRefresh": true,
 		"onReachBottomDistance": 50
 	},
 	"uniIdRouter": {}

@@ -9,12 +9,13 @@
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<view class="unused-list" :style="{'height':screenHeight}">
+		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+
 			<view class="lift-item" v-for="item in houseList" :key="item.id">
 				<info-item :pageType="pageType" :itemData="item" @houseTransferChangeStatus="houseTransferChangeStatus"
 					@handleJumpHouseDetail="handleJumpHouseDetail(item)"></info-item>
 			</view>
-		</view>
+		</scroll-view>
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布" @click="handlePublishClick"></u-button>
 		</view>
@@ -34,7 +35,7 @@
 			infoItem
 		},
 		onReady() {
-			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 380 + 'rpx'
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 395 + 'rpx'
 			console.log(this.screenHeight)
 		},
 		data() {
@@ -47,8 +48,9 @@
 					color: "#131313"
 				},
 				pageNum: 1,
-				pageSize: 10,
-				houseList: []
+				pageSize: 3,
+				houseList: [],
+				hasMore: true
 			}
 		},
 		onLoad() {
@@ -60,7 +62,29 @@
 		onShow() {
 			this.getHouseList()
 		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.houseList = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getHouseList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					this.getHouseList()
+				}
+			},
 			// 获取房屋转让列表
 			getHouseList() {
 				let params = {
@@ -70,7 +94,14 @@
 				}
 				houseList(params).then(res => {
 					if (res.code == 200) {
-						this.houseList = res.data
+						if (this.pageNum > 1 && res.data.length === 0) {
+							this.hasMore = false
+							uni.showToast({
+								title: "没有数据了",
+								icon: "none"
+							});
+						}
+						this.houseList = this.houseList.concat(res.data)
 					}
 				})
 			},
@@ -105,6 +136,7 @@
 	.house-transfer-page {
 		background-color: #F3F6F5;
 		height: 100vh;
+		width: 100%;
 
 		::v-deep .u-status-bar,
 		::v-deep .u-navbar__content {
@@ -130,13 +162,14 @@
 		}
 
 		.unused-list {
-			margin: 0rpx 15rpx;
+			margin: 15rpx;
 			// height: 1006rpx;
 			background: #FFFFFF;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			border-radius: 20rpx;
 			overflow-y: auto;
 			padding: 10rpx 20rpx;
+			width: auto;
 		}
 
 		.publish {
