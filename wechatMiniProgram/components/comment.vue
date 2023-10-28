@@ -115,6 +115,8 @@
 					this.type = 6
 				} else if(this.pageType == 'houseTransfer') {
 					this.type = 1
+				}else if(this.pageType=='findPeople') {
+					this.type = 2
 				}
 				let params = {
 					type: this.type,

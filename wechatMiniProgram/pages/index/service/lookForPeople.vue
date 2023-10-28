@@ -9,12 +9,13 @@
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<view class="unused-list" :style="{'height':screenHeight}">
-			<infoItem :pageType="pageType" @handleJumpPeopleDetail="handleJumpPeopleDetail"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-			<infoItem :pageType="pageType"></infoItem>
-		</view>
+		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+
+			<view class="lift-item" v-for="item in findList" :key="item.id">
+				<info-item :pageType="pageType" :itemData="item" @findPeopleChangeStatus="findPeopleChangeStatus"
+					@handleJumpFindDetail="handleJumpFindDetail(item)"></info-item>
+			</view>
+		</scroll-view>
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布" @click="handlePublishClick"></u-button>
 		</view>
@@ -23,6 +24,9 @@
 
 <script>
 	import infoItem from "@/components/info_item.vue"
+	import {
+		findList
+	} from "@/api/index/index.js"
 	export default {
 		options: {
 			styleIsolation: 'shared',
@@ -31,31 +35,92 @@
 			infoItem
 		},
 		onReady() {
-			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 380 + 'rpx'
-			console.log(this.screenHeight)
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 395 + 'rpx'
 		},
 		data() {
 			return {
 				keyword: "",
 				screenHeight: 0,
-				pageType: "peopleTransfer",
+				pageType: "findPeople",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
 				},
+				pageNum: 1,
+				pageSize: 3,
+				findList: [],
+				hasMore: true
 			}
 		},
+		onLoad() {
+			uni.$on('changeFindList', this.getFindList)
+		},
+		onUnload() {
+			uni.$off('changeFindList')
+		},
+		onShow() {
+			this.getFindList()
+		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.findList = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getFindList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					this.getFindList()
+				}
+			},
+			// 获取寻人寻物列表
+			getFindList() {
+				let params = {
+					search: this.keyword,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				findList(params).then(res => {
+					if (res.code == 200) {
+						if (this.pageNum > 1 && res.data.length === 0) {
+							this.hasMore = false
+							uni.showToast({
+								title: "没有数据了",
+								icon: "none"
+							});
+						}
+						this.findList = this.findList.concat(res.data)
+					}
+				})
+			},
 			// 搜索
-			handleConfirm() {},
+			handleConfirm() {
+				this.getFindList()
+			},
+			// 点赞,收藏状态改变
+			findPeopleChangeStatus() {
+				this.findList = []
+				this.getFindList()
+			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index"
 				})
 			},
-			handleJumpPeopleDetail() {
+			handleJumpFindDetail(item) {
 				uni.navigateTo({
-					url: "/pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail"
+					url: `/pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
 				})
 			},
 			handlePublishClick() {
@@ -96,13 +161,14 @@
 		}
 
 		.unused-list {
-			margin: 0rpx 15rpx;
+			margin: 15rpx;
 			// height: 1006rpx;
 			background: #FFFFFF;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			border-radius: 20rpx;
 			overflow-y: auto;
 			padding: 10rpx 20rpx;
+			width: auto;
 		}
 
 		.publish {

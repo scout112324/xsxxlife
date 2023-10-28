@@ -3,17 +3,16 @@
 		<view class="container">
 			<view class="wrap-card">
 				<scroll-view scroll-y class="scroll_view">
-					<textarea adjust-position='false' @keyboardheightchange="keyboardheightchange"
-						class="con-text" maxlength='-1' v-model="textContent"
-						placeholder="请详细描述一下你要发布的内容…\n详细丢失的时间\n详细丢失的地点"></textarea>
+					<textarea adjust-position='false' @keyboardheightchange="keyboardheightchange" class="con-text"
+						maxlength='-1' v-model="content" placeholder="请详细描述一下你要发布的内容…\n详细丢失的时间\n详细丢失的地点"></textarea>
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :cameraNumber="cameraNumber"></caremaItem>
+					<caremaItem :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile"></caremaItem>
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../../../static/home/dingwei.png" mode=""></image>
-					<text class="address-name">上海市静安区</text>
+					<u--input class="address-name" placeholder="请输入地址" border="none" v-model="place"></u--input>
 					<image class="tiaozhuan" src="../../../../../static/unused/tiaozhuan.png" mode=""></image>
 				</view>
 			</view>
@@ -33,6 +32,9 @@
 
 <script>
 	import caremaItem from "@/components/camera_item.vue"
+	import {
+		addFind
+	} from "@/api/index/index.js"
 	export default {
 		components: {
 			caremaItem
@@ -40,7 +42,9 @@
 		data() {
 			return {
 				cameraNumber: 9,
-				textContent: "",
+				content: "",
+				place: "",
+				picture: "",
 				userInfo: {
 					phone: '',
 				},
@@ -60,7 +64,7 @@
 					],
 				},
 				radio: '',
-				switchVal: false
+				switchVal: false,
 			}
 		},
 		onReady() {
@@ -71,11 +75,32 @@
 			keyboardheightchange(event) {
 				this.bottomHeight = event.detail.height
 			},
+			// 文件上传
+			handleUploadFile(file) {
+				this.picture = file
+			},
 			// 发布
 			handlePublish() {
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						console.log("fabu")
+						let params = {
+							place: this.place,
+							content: this.content,
+							picture: this.picture.toString(),
+							phone: this.userInfo.phone,
+						}
+						addFind(params).then(res => {
+							if (res.code === 200) {
+								uni.showToast({
+									title: '发布成功',
+									icon: 'success',
+									duration: 2000
+								})
+								uni.navigateTo({
+									url: "/pages/index/service/lookForPeople"
+								})
+							}
+						})
 					} else {
 						console.log('验证失败');
 					}

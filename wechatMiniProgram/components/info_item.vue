@@ -20,7 +20,7 @@
 						{{itemData.place || '暂无'}}
 					</view>
 				</view>
-				<view class="price">
+				<view class="price" v-if="pageType!='findPeople'">
 					<text class="unit">￥</text>
 					<text>{{itemData.price || '暂无'}}</text>
 				</view>
@@ -108,8 +108,8 @@
 					this.$emit('handleJumpMessageDetail')
 				} else if (this.pageType == 'houseTransfer') {
 					this.$emit('handleJumpHouseDetail')
-				} else if (this.pageType == 'peopleTransfer') {
-					this.$emit('handleJumpPeopleDetail')
+				} else if (this.pageType == 'findPeople') {
+					this.$emit('handleJumpFindDetail')
 				} else if (this.pageType == 'largeShipmentTransfer') {
 					this.$emit('handleJumpLargeDetail')
 				}
@@ -129,6 +129,11 @@
 				} else if (this.pageType == 'houseTransfer') {
 					this.supportParams = {
 						type: 1,
+						moduleId: item.id
+					}
+				} else if (this.pageType == 'findPeople') {
+					this.supportParams = {
+						type: 2,
 						moduleId: item.id
 					}
 				}
@@ -171,6 +176,11 @@
 				} else if (this.pageType == 'houseTransfer') {
 					this.starParams = {
 						type: 1,
+						moduleId: item.id
+					}
+				} else if (this.pageType == 'findPeople') {
+					this.starParams = {
+						type: 2,
 						moduleId: item.id
 					}
 				}

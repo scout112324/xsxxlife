@@ -110,14 +110,16 @@
 							price: this.userInfo.price
 						}
 						addHouse(params).then(res => {
-							uni.showToast({
-								title: '发布成功',
-								icon: 'success',
-								duration: 2000
-							})
-							uni.navigateTo({
-								url: "/pages/index/service/houseTransfer"
-							})
+							if (res.code === 200) {
+								uni.showToast({
+									title: '发布成功',
+									icon: 'success',
+									duration: 2000
+								})
+								uni.navigateTo({
+									url: "/pages/index/service/houseTransfer"
+								})
+							}
 						})
 					} else {
 						console.log('验证失败');
