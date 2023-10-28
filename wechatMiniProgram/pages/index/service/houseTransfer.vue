@@ -48,7 +48,7 @@
 					color: "#131313"
 				},
 				pageNum: 1,
-				pageSize: 3,
+				pageSize: 50,
 				houseList: [],
 				hasMore: true
 			}
@@ -82,7 +82,24 @@
 			handleToLower() {
 				if (this.hasMore) {
 					this.pageNum += 1
-					this.getHouseList()
+					let params = {
+						search: this.keyword,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					houseList(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.houseList = this.houseList.concat(res.data)
+						}
+					})
 				}
 			},
 			// 获取房屋转让列表
@@ -94,14 +111,7 @@
 				}
 				houseList(params).then(res => {
 					if (res.code == 200) {
-						if (this.pageNum > 1 && res.data.length === 0) {
-							this.hasMore = false
-							uni.showToast({
-								title: "没有数据了",
-								icon: "none"
-							});
-						}
-						this.houseList = this.houseList.concat(res.data)
+						this.houseList = res.data
 					}
 				})
 			},

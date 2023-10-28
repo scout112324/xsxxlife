@@ -47,7 +47,7 @@
 					color: "#131313"
 				},
 				pageNum: 1,
-				pageSize: 3,
+				pageSize: 50,
 				findList: [],
 				hasMore: true
 			}
@@ -69,7 +69,6 @@
 			// 下拉刷新
 			refresh() {
 				this.pageNum = 1
-				this.findList = []
 				this.hasMore = true
 				setTimeout(() => {
 					this.getFindList();
@@ -81,7 +80,24 @@
 			handleToLower() {
 				if (this.hasMore) {
 					this.pageNum += 1
-					this.getFindList()
+					let params = {
+						search: this.keyword,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					findList(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.findList = this.findList.concat(res.data)
+						}
+					})
 				}
 			},
 			// 获取寻人寻物列表
@@ -92,16 +108,7 @@
 					pageSize: this.pageSize
 				}
 				findList(params).then(res => {
-					if (res.code == 200) {
-						if (this.pageNum > 1 && res.data.length === 0) {
-							this.hasMore = false
-							uni.showToast({
-								title: "没有数据了",
-								icon: "none"
-							});
-						}
-						this.findList = this.findList.concat(res.data)
-					}
+					this.findList = res.data
 				})
 			},
 			// 搜索
@@ -110,7 +117,6 @@
 			},
 			// 点赞,收藏状态改变
 			findPeopleChangeStatus() {
-				this.findList = []
 				this.getFindList()
 			},
 			handleBack() {
