@@ -159,9 +159,9 @@
 				//提示模板
 				uni.showModal({
 					content: value, //模板中提示的内容
-					confirmText: '复制微信号',
+					confirmText: '复制内容',
 					showCancel: false,
-					success: () => { //点击复制内容的后调函数
+					success: (res) => { //点击复制内容的后调函数
 						uni.setClipboardData({
 							data: value, //要被复制的内容
 							success: () => { //复制成功的回调函数
@@ -170,6 +170,9 @@
 								})
 							}
 						});
+					},
+					fail: (err) => {
+						// console.log(err)
 					}
 				});
 			},
@@ -394,6 +397,7 @@
 							margin-top: 10rpx;
 						}
 					}
+
 					.item_wx {
 						.title {
 							margin-top: 20rpx;
