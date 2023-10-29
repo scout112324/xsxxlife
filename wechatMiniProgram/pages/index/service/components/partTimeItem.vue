@@ -2,26 +2,28 @@
 	<view class="part-time-item">
 		<view class="header">
 			<view class="name">
-				罗森便利店店员-总部大厦店
+				{{itemData.title}}
 			</view>
 			<view class="price">
-				3000-6000/月
+				{{itemData.price}}
 			</view>
 		</view>
 		<view class="address">
 			<image class="icon" src="../../../../static/home/dingwei.png" mode=""></image>
-			<text class="address-name">上海市静安区</text>
+			<text class="address-name">{{itemData.detailsPlace}}</text>
 		</view>
 		<view class="tags">
-			<uni-tag text="周结" style="margin-right: 10rpx;" />
-			<uni-tag text="工作轻松" />
+			<block v-for="(item,index) in label" :key="index">
+				<uni-tag :text="item" style="margin-right: 10rpx;" />
+			</block>
 		</view>
 		<view class="footer">
 			<view class="user">
-				<image class="avatar"
-					src="https://www.qqkw.com/d/file/p/2018/07-10/7e27b761d63caa38080a0dbca04a8a11.jpg" mode=""></image>
+				<image v-if="itemData.photo" class="avatar" :src="itemData.photo" mode=""></image>
+				<image v-else class="avatar"
+					src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png" mode=""></image>
 				<view class="nickname">
-					热量计算器
+					{{itemData.nickname}}
 				</view>
 			</view>
 			<view class="right">
@@ -33,12 +35,21 @@
 
 <script>
 	export default {
+		props: {
+			itemData: {
+				type: Object,
+				default: () => {}
+			}
+		},
 		options: {
 			styleIsolation: 'shared', // 解除样式隔离
 		},
+		created() {
+			this.label = this.itemData.label ? this.itemData.label.split(',') : []
+		},
 		data() {
 			return {
-				value: 100
+				label: []
 			}
 		},
 		methods: {

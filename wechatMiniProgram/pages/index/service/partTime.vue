@@ -9,14 +9,13 @@
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<view class="part-time-list" :style="{'height':screenHeight}">
-			<partTimeItem @jumpPartTimeDetail="jumpPartTimeDetail"></partTimeItem>
-			<partTimeItem></partTimeItem>
-			<partTimeItem></partTimeItem>
-			<partTimeItem></partTimeItem>
-			<partTimeItem></partTimeItem>
-			<partTimeItem></partTimeItem>
-		</view>
+		<scroll-view class="part-time-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+
+			<view class="lift-item" v-for="item in jobList" :key="item.id">
+				<partTimeItem :itemData="item" @jobChangeStatus="jobChangeStatus"
+					@jumpPartTimeDetail="jumpPartTimeDetail(item)"></partTimeItem>
+			</view>
+		</scroll-view>
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布兼职" @click="handlePublishClick"></u-button>
 		</view>
@@ -48,13 +47,60 @@
 				},
 				screenHeight: 0,
 				pageNum: 1,
-				pageSize: 10
+				pageSize: 50,
+				jobList: [],
+				hasMore: true
 			}
+		},
+		onLoad() {
+			uni.$on('changeJobList', this.getJobList)
+		},
+		onUnload() {
+			uni.$off('changeJobList')
 		},
 		onShow() {
 			this.getJobList()
 		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.jobList = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getJobList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					let params = {
+						search: this.keyword,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					getJob(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.jobList = this.jobList.concat(res.data)
+						}
+					})
+				}
+			},
 			// 获取兼职列表
 			getJobList() {
 				let params = {
@@ -64,12 +110,18 @@
 				}
 				getJob(params).then(res => {
 					if (res.code === 200) {
-						console.log(res)
+						this.jobList = res.data
 					}
 				})
 			},
 			// 搜索
-			handleConfirm() {},
+			handleConfirm() {
+				this.getJobList()
+			},
+			// 点赞,收藏状态改变
+			jobChangeStatus() {
+				this.getJobList()
+			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index"
@@ -80,9 +132,9 @@
 					url: "/pages/index/service/modules/partTimePublish/partTimePublish"
 				})
 			},
-			jumpPartTimeDetail() {
+			jumpPartTimeDetail(item) {
 				uni.navigateTo({
-					url: "/pages/index/service/modules/partTimeDetail/partTimeDetail"
+					url: `/pages/index/service/modules/partTimeDetail/partTimeDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
 				})
 			}
 		}
@@ -126,6 +178,7 @@
 			overflow-y: auto;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			border-radius: 20rpx;
+			width: auto;
 		}
 
 		.publish {

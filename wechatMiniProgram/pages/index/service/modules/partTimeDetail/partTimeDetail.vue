@@ -2,37 +2,39 @@
 	<view class="detail-page">
 		<view class="container">
 			<view class="title">
-				日结无印良品店员上海-长期兼职/包吃包住/可短期做一个月
+				{{itemData.title}}
 			</view>
 			<view class="tags">
-				<uni-tag text="日结" style="margin-right: 10rpx;" />
-				<uni-tag text="有责任心" />
+				<block v-for="(item,index) in label" :key="index">
+					<uni-tag :text="item" style="margin-right: 10rpx;" />
+				</block>
 			</view>
 			<view class="price">
-				<text class="num">25元/小时</text>
+				<text class="num">{{itemData.price}}</text>
 			</view>
 			<view class="header">
 				<view class="user-info">
-					<image class="avatar" src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png"
-						mode=""></image>
+					<image v-if="itemData.photo" class="avatar" :src="itemData.photo" mode=""></image>
+					<image v-else class="avatar"
+						src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png" mode=""></image>
 					<view class="info">
 						<view class="nickname">
-							Ketty Perry
+							{{itemData.nickname}}
 						</view>
 						<view class="address">
-							上海市静安区
+							{{itemData.place}}
 						</view>
 					</view>
 				</view>
 				<view class="share">
-					<view class="item" style="margin-right: 20rpx;">
+					<uni-button class="item item_wx" style="margin-right: 20rpx;" @tap="handleCopy(itemData.wx)">
 						<image class="icon" src="../../../../../static/home/weixin.png" mode=""></image>
 						<text class="title">微信联系</text>
-					</view>
-					<view class="item">
+					</uni-button>
+					<button class="item item_tel" @click="handlePhoneCall(itemData.phone)">
 						<image class="icon" src="../../../../../static/home/dianhua.png" mode=""></image>
 						<text class="title">电话联系</text>
-					</view>
+					</button>
 				</view>
 			</view>
 			<view class="content">
@@ -41,22 +43,21 @@
 				</view>
 				<view class="condition">
 					【工作内容】
-					1.收银公族：保证每天营收数额正确；
-					2.商品管理及销售：商品陈列整齐，数量正确、来货验收、商品销售；
-					3.卖场管理：保证卖场干净整洁、防盗防损；
-					4.顾客服务：保证顾客满意度，提升顾客回头率
-
+					<view class="item">
+						{{itemData.jobContent}}
+					</view>
 					【薪资待遇】
-					1.25元/小时，日结70%，周结30%
-					2.入职即购买商业保险；
-					3.节假日按照国家法定三倍薪资支付
-
+					<view class="item">
+						{{itemData.priceContent}}
+					</view>
 					【工作时间】
-					早班9点-14点，晚班14点到22点，轮休，每周6天；
-
+					<view class="item">
+						{{itemData.timeContent}}
+					</view>
 					【用工要求】
-					1.男女不限，18-40岁，身高155-178cm；
-					2.有服务意识
+					<view class="item">
+						{{itemData.needContent}}
+					</view>
 				</view>
 			</view>
 		</view>
@@ -67,22 +68,39 @@
 			<view class="info-item">
 				<image class="icon" src="../../../../../static/home/dingwei.png" mode=""></image>
 				<view class="item">
-					上海市奉贤区金海公路3800号龙湖上海奉贤天街F2
+					{{itemData.detailsPlace}}
 				</view>
 			</view>
 		</view>
+		<view class="comments" v-if="itemData.id">
+			<comment :pageType="pageType" :moduleId="itemData.id" ref="commentRef" @focusInput="focusInput">
+			</comment>
+		</view>
+		<commentInput @inputs="inputs" v-if="showCommentInput"></commentInput>
 		<view class="footer">
 			<view class="btns">
-				<view class="item">
-					<image class="icon" src="../../../../../static/components/zhuanfa.png" mode=""></image>
+				<view class="item" @click="handleSupport(itemData)">
+					<image v-if="itemData.support" class="icon" src="../../../../../static/components/dianzan_set.png"
+						mode="">
+					</image>
+					<image v-else class="icon" src="../../../../../static/components/dianzan.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.supportCount || 0}}
 					</view>
 				</view>
-				<view class="item">
-					<image class="icon" src="../../../../../static/components/shoucang_set.png" mode=""></image>
+				<view class="item" @click="handleStar(itemData)">
+					<image v-if="itemData.star" class="icon" src="../../../../../static/components/shoucang_set.png"
+						mode="">
+					</image>
+					<image v-else class="icon" src="../../../../../static/components/shoucang.png" mode=""></image>
 					<view class="num">
-						999
+						{{itemData.starCount || 0}}
+					</view>
+				</view>
+				<view class="item" @click="handleComment">
+					<image class="icon" src="../../../../../static/components/pinglun.png" mode=""></image>
+					<view class="num">
+						{{itemData.commentCount || 0}}
 					</view>
 				</view>
 			</view>
@@ -94,14 +112,190 @@
 </template>
 
 <script>
+	import comment from "@/components/comment.vue"
+	import commentInput from "@/components/commentInput.vue"
+	import {
+		addSupport,
+		cancelSupport,
+		addStar,
+		cancelStar,
+		addComment,
+		addGive
+	} from "@/api/common.js"
 	export default {
+		components: {
+			comment,
+			commentInput
+		},
+		onLoad(options) {
+			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			this.label = this.itemData.label ? this.itemData.label.split(',') : []
+		},
 		data() {
 			return {
-
+				itemData: {},
+				showCommentInput: false,
+				pageType: "partTime",
+				level: 0,
+				childId: "",
+				label: []
 			}
 		},
 		methods: {
-			handleCommuniteClick() {}
+			// 拨打电话
+			handlePhoneCall(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber: phoneNumber,
+					success: (e) => {
+						console.log(e)
+					},
+					fail: (e) => {
+						console.log(e)
+					}
+				});
+			},
+			// 复制
+			handleCopy(value) {
+				//提示模板
+				uni.showModal({
+					content: value, //模板中提示的内容
+					confirmText: '复制微信号',
+					showCancel: false,
+					success: () => { //点击复制内容的后调函数
+						uni.setClipboardData({
+							data: value, //要被复制的内容
+							success: () => { //复制成功的回调函数
+								uni.showToast({ //提示
+									title: '复制成功'
+								})
+							}
+						});
+					}
+				});
+			},
+			handleComment() {
+				this.$refs.commentRef.handleFocus()
+			},
+			inputs(e) {
+				this.showCommentInput = false
+				if (e) {
+					if (this.childId) {
+						let params = {
+							type: 0,
+							moduleId: this.itemData.id,
+							content: e,
+							level: this.level,
+							id: this.childId
+						}
+						addComment(params).then(res => {
+							if (res.code === 200) {
+								this.$refs.commentRef.getListComment()
+								uni.$emit('changeJobList')
+								this.itemData.commentCount += 1
+								uni.showToast({
+									title: '评论成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					} else {
+						let params = {
+							type: 0,
+							moduleId: this.itemData.id,
+							content: e,
+							level: this.level,
+						}
+						addComment(params).then(res => {
+							if (res.code === 200) {
+								this.$refs.commentRef.getListComment()
+								uni.$emit('changeJobList')
+								this.itemData.commentCount += 1
+								uni.showToast({
+									title: '评论成功',
+									icon: 'success',
+									duration: 2000
+								})
+							}
+						})
+					}
+				}
+
+			},
+			focusInput(level, id) {
+				this.showCommentInput = true
+				this.level = level
+				this.childId = id
+			},
+			handleCommuniteClick() {},
+			// 点赞
+			handleSupport(item) {
+				this.supportParams = {
+					type: 0,
+					moduleId: item.id
+				}
+				if (!!item.support) {
+					cancelSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeJobList')
+							this.itemData.support = !this.itemData.support
+							this.itemData.supportCount -= 1
+							uni.showToast({
+								title: '取消点赞',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addSupport(this.supportParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeJobList')
+							this.itemData.support = !this.itemData.support
+							this.itemData.supportCount += 1
+							uni.showToast({
+								title: '点赞成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
+			// 收藏
+			handleStar(item) {
+				this.starParams = {
+					type: 0,
+					moduleId: item.id
+				}
+				if (!!item.star) {
+					cancelStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeJobList')
+							this.itemData.star = !this.itemData.star
+							this.itemData.starCount -= 1
+							uni.showToast({
+								title: '取消收藏',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else {
+					addStar(this.starParams).then(res => {
+						if (res.code === 200) {
+							uni.$emit('changeJobList')
+							this.itemData.star = !this.itemData.star
+							this.itemData.starCount += 1
+							uni.showToast({
+								title: '收藏成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
 		}
 	}
 </script>
@@ -200,6 +394,20 @@
 							margin-top: 10rpx;
 						}
 					}
+					.item_wx {
+						.title {
+							margin-top: 20rpx;
+						}
+					}
+
+					::v-deep .item_tel {
+						background-color: transparent;
+						margin-top: 18rpx;
+
+						&::after {
+							border: none;
+						}
+					}
 				}
 			}
 
@@ -254,6 +462,10 @@
 			}
 		}
 
+		.comments {
+			background-color: #ffffff;
+		}
+
 		.footer {
 			background-color: #ffffff;
 			padding: 0 34rpx;
@@ -291,7 +503,7 @@
 
 			.communicate {
 				::v-deep .u-button {
-					width: 416rpx;
+					width: 300rpx;
 					height: 74rpx;
 					background: #FFD100;
 					border-radius: 46rpx;

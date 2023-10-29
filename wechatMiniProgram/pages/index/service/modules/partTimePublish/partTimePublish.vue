@@ -8,19 +8,19 @@
 			<view class="communicate">
 				<image class="icon" src="../../../../../static/home/dianhua.png" mode=""></image>
 				<view class="number">
-					888-888-8888
+					{{concatJob.phone}}
 				</view>
 				<view class="btn">
-					<button class="tel-call" @click="handlePhoneCall('18203696838')">呼叫</button>
+					<button class="tel-call" @click="handlePhoneCall(concatJob.phone)">呼叫</button>
 				</view>
 			</view>
 			<view class="communicate">
 				<image class="icon" src="../../../../../static/home/weixin.png" mode=""></image>
 				<view class="number">
-					888-888-8888
+					{{concatJob.wx}}
 				</view>
 				<view class="btn">
-					<uni-button type="primary" class="tel-call uni-btn" @tap="handleCopy('18909878909')">
+					<uni-button type="primary" class="tel-call uni-btn" @tap="handleCopy(concatJob.wx)">
 						复制
 					</uni-button>
 				</view>
@@ -30,13 +30,27 @@
 </template>
 
 <script>
+	import {
+		concatJob
+	} from "@/api/index/index.js"
 	export default {
 		data() {
 			return {
-
+				concatJob: {}
 			}
 		},
+		onShow() {
+			this.getConcatJob()
+		},
 		methods: {
+			// 获取管理员信息
+			getConcatJob() {
+				concatJob().then(res => {
+					if (res.code === 200) {
+						this.concatJob = res.data
+					}
+				})
+			},
 			// 拨打电话
 			handlePhoneCall(phoneNumber) {
 				uni.makePhoneCall({

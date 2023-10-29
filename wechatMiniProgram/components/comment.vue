@@ -121,6 +121,8 @@
 					this.type = 5
 				} else if (this.pageType == 'intraActivity') {
 					this.type = 4
+				} else if (this.pageType == 'partTime') {
+					this.type = 0
 				}
 				let params = {
 					type: this.type,
