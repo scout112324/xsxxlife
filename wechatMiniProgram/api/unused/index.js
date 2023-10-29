@@ -12,5 +12,5 @@ export const addUnused = (param, option) => {
 
 // 获取闲置物品
 export const listUnused = (param, option) => {
-	return request.post(api.listUnused, param)
+	return request.get(api.listUnused, param)
 }

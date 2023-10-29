@@ -7,13 +7,14 @@
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<view class="unused-list" :style="{'height':screenHeight}">
+		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+
 			<view class="lift-item" v-for="item in messageList" :key="item.id">
 				<info-item :showPrice="showPrice" :pageType="pageType" :itemData="item"
 					@messageChangeStatus="messageChangeStatus"
 					@handleJumpMessageDetail="handleJumpMessageDetail(item)"></info-item>
 			</view>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -45,7 +46,8 @@
 				showPrice: false,
 				messageList: [],
 				pageNum: 1,
-				pageSize: 10
+				pageSize: 50,
+				hasMore: true
 			}
 		},
 		onLoad() {
@@ -64,11 +66,38 @@
 		methods: {
 			// 下拉刷新
 			refresh() {
+				this.pageNum = 1
+				this.bigList = []
+				this.hasMore = true
 				setTimeout(() => {
 					this.getMessageList();
 					// 停止下拉刷新
 					uni.stopPullDownRefresh()
-				}, 1000)
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					let params = {
+						search: this.keyword,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					listArticle(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.messageList = this.messageList.concat(res.data)
+						}
+					})
+				}
 			},
 			// 获取资讯列表
 			getMessageList() {
@@ -138,6 +167,7 @@
 			border-radius: 20rpx;
 			overflow-y: auto;
 			padding: 10rpx 20rpx;
+			width: auto;
 		}
 	}
 </style>
