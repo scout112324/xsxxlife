@@ -119,6 +119,8 @@
 					this.type = 2
 				} else if (this.pageType == 'largeShipmentTransfer') {
 					this.type = 5
+				} else if (this.pageType == 'intraActivity') {
+					this.type = 4
 				}
 				let params = {
 					type: this.type,

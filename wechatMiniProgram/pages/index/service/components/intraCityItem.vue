@@ -1,41 +1,45 @@
 <template>
 	<view class="part-time-item">
 		<view class="leaflet">
-
+			<image
+				v-if="imgType.includes(pictureList[0].substr(pictureList[0].lastIndexOf('.') + 1, pictureList[0].length).toLowerCase())"
+				class="image" :src="pictureList[0]" mode="">
+			</image>
+			<video v-else class="image" :src="pictureList[0]" controls></video>
 		</view>
 		<view class="content">
 			<view class="title">
-				全民唱歌挑战赛全民唱歌挑战赛活动
+				{{itemData.title}}
 			</view>
 			<view class="item">
 				<view class="circle circle1"></view>
 				<view class="type">
-					报名截止时间: 2023年9月18日
+					报名截止时间: {{itemData.endTime}}
 				</view>
 			</view>
 			<view class="item">
 				<view class="circle circle2"></view>
 				<view class="type">
-					发布地点: 上海市静安区
+					发布地点: {{itemData.place}}
 				</view>
 			</view>
 			<view class="item">
 				<view class="circle circle3"></view>
 				<view class="type">
-					活动开始时间: 2023年9月25日
+					活动开始时间: {{itemData.startTime}}
 				</view>
 			</view>
 			<view class="item">
 				<view class="circle circle4"></view>
 				<view class="type">
-					活动地点: 上海市奉贤区金海公路3800号龙湖上海奉贤天街F2
+					活动地点: {{itemData.detailsPlace}}
 				</view>
 			</view>
 		</view>
 		<view class="footer">
 			<view class="left">
 				<image class="icon" src="../../../../static/home/tishi.png" mode=""></image>
-				<text class="rule">限200人报名参加</text>
+				<text class="rule">限{{itemData.limitPeople}}人报名参加</text>
 			</view>
 			<view class="right" @click="handleJumpDetail">
 				<text>进入活动</text>
@@ -47,13 +51,23 @@
 
 <script>
 	export default {
+		props: {
+			itemData: {
+				type: Object,
+				default: () => {}
+			}
+		},
 		options: {
 			styleIsolation: 'shared', // 解除样式隔离
 		},
 		data() {
 			return {
-
+				pictureList: [],
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 			}
+		},
+		created() {
+			this.pictureList = this.itemData?.picture.split(',')
 		},
 		methods: {
 			handleJumpDetail() {
@@ -72,9 +86,12 @@
 		box-sizing: border-box;
 
 		.leaflet {
-			height: 294rpx;
-			background: #D8D8D8;
-			border-radius: 20rpx 20rpx 0rpx 0rpx;
+
+			.image {
+				height: 294rpx;
+				width: 100%;
+				border-radius: 20rpx 20rpx 0rpx 0rpx;
+			}
 		}
 
 		.content {

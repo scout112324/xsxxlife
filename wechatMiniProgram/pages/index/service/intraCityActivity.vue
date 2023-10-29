@@ -9,11 +9,13 @@
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<view class="part-time-list" :style="{'height':screenHeight}">
-			<intraCityItem @jumpIntraCityDetail="jumpIntraCityDetail"></intraCityItem>
-			<intraCityItem></intraCityItem>
-			<intraCityItem></intraCityItem>
-		</view>
+		<scroll-view class="part-time-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+
+			<view class="lift-item" v-for="item in activityList" :key="item.id">
+				<intraCityItem :itemData="item" @activityChangeStatus="activityChangeStatus"
+					@jumpIntraCityDetail="jumpIntraCityDetail(item)"></intraCityItem>
+			</view>
+		</scroll-view>
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布" @click="handlePublishClick"></u-button>
 		</view>
@@ -22,6 +24,9 @@
 
 <script>
 	import intraCityItem from "./components/intraCityItem.vue"
+	import {
+		activityList
+	} from "@/api/index/index.js"
 	export default {
 		options: {
 			styleIsolation: 'shared',
@@ -40,12 +45,83 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
-				screenHeight: 0
+				screenHeight: 0,
+				pageNum: 1,
+				pageSize: 50,
+				activityList: [],
+				hasMore: true
 			}
 		},
+		onLoad() {
+			uni.$on('changeActivityList', this.getActivityList)
+		},
+		onUnload() {
+			uni.$off('changeActivityList')
+		},
+		onShow() {
+			this.getActivityList()
+		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.activityList = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getActivityList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					let params = {
+						search: this.keyword,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					activityList(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.activityList = this.activityList.concat(res.data)
+						}
+					})
+				}
+			},
+			// 获取大件清运列表
+			getActivityList() {
+				let params = {
+					search: this.keyword,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				activityList(params).then(res => {
+					if (res.code == 200) {
+						this.activityList = res.data
+					}
+				})
+			},
 			// 搜索
-			handleConfirm() {},
+			handleConfirm() {
+				this.getActivityList()
+			},
+			// 点赞,收藏状态改变
+			activityChangeStatus() {
+				this.getActivityList()
+			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index"
@@ -56,9 +132,9 @@
 					url: "/pages/index/service/modules/intraCityPublish/intraCityPublish"
 				})
 			},
-			jumpIntraCityDetail() {
+			jumpIntraCityDetail(item) {
 				uni.navigateTo({
-					url: "/pages/index/service/modules/intraCityDetail/intraCityDetail"
+					url: `/pages/index/service/modules/intraCityDetail/intraCityDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
 				})
 			}
 		}
@@ -102,6 +178,7 @@
 			overflow-y: auto;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			border-radius: 20rpx;
+			width: auto;
 		}
 
 		.publish {
