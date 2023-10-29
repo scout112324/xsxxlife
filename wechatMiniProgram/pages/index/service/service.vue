@@ -11,8 +11,8 @@
 				<u-notice-bar :text="text"></u-notice-bar>
 			</view>
 			<view class="service">
-				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item.name)">
-					<image class="icon" :src="item.icon" mode=""></image>
+				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item)">
+					<image class="icon" :src="item.url" mode=""></image>
 					<view class="title">
 						{{item.name}}
 					</view>
@@ -26,6 +26,9 @@
 </template>
 
 <script>
+	import {
+		intservHome
+	} from "@/api/index/index.js"
 	export default {
 		onReady() {
 			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 100 + 'rpx'
@@ -41,40 +44,50 @@
 				serviceData: [{
 						id: 1,
 						name: "通下水道",
-						icon: "../../../static/home/tongxiashuidao.png"
+						url: "../../../static/home/tongxiashuidao.png"
 					},
 					{
 						id: 2,
 						name: "家电维修",
-						icon: "../../../static/home/jiadianweixiu.png"
+						url: "../../../static/home/jiadianweixiu.png"
 					},
 					{
 						id: 3,
 						name: "大件清运",
-						icon: "../../../static/home/dajianqingyun.png"
+						url: "../../../static/home/dajianqingyun.png"
 					},
 					{
 						id: 4,
 						name: "维修水电",
-						icon: "../../../static/home/weixiushuidian.png"
+						url: "../../../static/home/weixiushuidian.png"
 					},
 					{
 						id: 5,
 						name: "防水漏水",
-						icon: "../../../static/home/fangshuiloushui.png"
+						url: "../../../static/home/fangshuiloushui.png"
 					},
 					{
 						id: 6,
 						name: "开锁",
-						icon: "../../../static/home/lock.png"
+						url: "../../../static/home/lock.png"
 					},
 				],
 			}
 		},
+		onShow() {
+			this.getIntservHome()
+		},
 		methods: {
-			handleClickService(name) {
+			getIntservHome() {
+				intservHome().then(res => {
+					if (res.code === 200) {
+						this.serviceData = res.data
+					}
+				})
+			},
+			handleClickService(item) {
 				uni.navigateTo({
-					url: "/pages/index/service/modules/serviceDetail/serviceDetail"
+					url: `/pages/index/service/modules/serviceDetail/serviceDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
 				})
 			},
 			handleBack() {

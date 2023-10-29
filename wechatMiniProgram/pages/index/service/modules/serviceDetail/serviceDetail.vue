@@ -9,34 +9,36 @@
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<view class="service-detail-list">
+		<view class="service-detail-list" v-if="serviceInfo && serviceInfo.id">
 			<view class="service-detail-item">
 				<view class="header">
 					<view class="avatar">
-						<image class="image" src="../../../../../static/chat/avatar.png" mode=""></image>
+						<image v-if="serviceInfo.photo" class="image" :src="serviceInfo.photo" mode=""></image>
+						<image v-else class="image" src="./../../../../static/home/address.png" mode="">
+						</image>
 					</view>
 					<view class="info">
 						<view class="name">
-							李师傅
+							{{serviceInfo.name}}
 						</view>
 						<view class="product">
-							经营范围：开锁、通下水道、水电维修、家电维修、大件清运、防水漏水
+							{{serviceInfo.content}}
 						</view>
 					</view>
 				</view>
 				<view class="phone">
 					<image class="icon" src="../../../../../static/home/dianhua.png" mode=""></image>
 					<view class="number">
-						18203696838
+						{{serviceInfo.phone}}
 					</view>
 					<view class="btn">
-						<button class="tel-call" @click="handlePhoneCall('18203696838')">点击拨打</button>
+						<button class="tel-call" @click="handlePhoneCall(serviceInfo.phone)">点击拨打</button>
 					</view>
 				</view>
 				<view class="address">
 					<image class="icon" src="../../../../../static/home/address.png" mode=""></image>
 					<view class="name">
-						上海市奉贤区金海公路3800号龙湖上海奉贤天街F2100号
+						{{serviceInfo.detailsPlace}}
 					</view>
 				</view>
 			</view>
@@ -45,9 +47,15 @@
 </template>
 
 <script>
+	import {
+		intservInfoHome
+	} from "@/api/index/index.js"
 	export default {
 		options: {
 			styleIsolation: 'shared',
+		},
+		onLoad(options) {
+			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
 		},
 		data() {
 			return {
@@ -56,11 +64,30 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
+				itemData: {},
+				serviceInfo: {}
 			}
 		},
+		onShow() {
+			this.getIntservInfoHome()
+		},
 		methods: {
+			getIntservInfoHome() {
+				let params = {
+					id: this.itemData.id,
+					search: this.keyword
+				}
+				intservInfoHome(params).then(res => {
+					if (res.code === 200) {
+						this.serviceInfo = res.data[0]
+						console.log(this.serviceInfo)
+					}
+				})
+			},
 			// 搜索
-			handleConfirm() {},
+			handleConfirm() {
+				this.getIntservInfoHome()
+			},
 			handleBack() {
 				uni.navigateTo({
 					url: "/pages/index/service/service"

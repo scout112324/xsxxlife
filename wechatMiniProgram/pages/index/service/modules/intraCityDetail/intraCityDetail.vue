@@ -118,7 +118,7 @@
 				</view>
 			</view>
 			<view class="communicate">
-				<u-button text="立即报名" @click="handleCommuniteClick"></u-button>
+				<u-button text="立即报名" @click="handleCommuniteClick(itemData.id)"></u-button>
 			</view>
 		</view>
 	</view>
@@ -135,6 +135,9 @@
 		addComment,
 		addGive
 	} from "@/api/common.js"
+	import {
+		entryActivity
+	} from "@/api/index/index.js"
 	export default {
 		components: {
 			comment,
@@ -210,7 +213,17 @@
 				this.level = level
 				this.childId = id
 			},
-			handleCommuniteClick() {},
+			handleCommuniteClick(id) {
+				entryActivity({id}).then(res=>{
+					if(res.code===200) {
+						uni.showToast({
+							title: '报名成功',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				})
+			},
 			// 点赞
 			handleSupport(item) {
 				this.supportParams = {

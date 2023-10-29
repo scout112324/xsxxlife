@@ -18,6 +18,7 @@ const api = {
 	addActivity: 'app/activity/add',
 	entryActivity: 'app/activity/entry',
 	intservInfoHome: 'app/home/intservInfo',
+	intservHome: 'app/home/intserv',
 }
 
 // 登录
@@ -103,4 +104,9 @@ export const entryActivity = (param, option) => {
 // 获取综合服务信息
 export const intservInfoHome = (param, option) => {
 	return request.get(api.intservInfoHome, param)
+}
+
+// 获取综合服务的icon
+export const intservHome = (param, option) => {
+	return request.get(api.intservHome, param)
 }
