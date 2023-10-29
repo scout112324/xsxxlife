@@ -86,7 +86,7 @@
 						let params = {
 							place: this.place,
 							content: this.content,
-							picture: this.picture.toString(),
+							picture: this.picture ? this.picture.toString() : "",
 							phone: this.userInfo.phone,
 						}
 						addFind(params).then(res => {

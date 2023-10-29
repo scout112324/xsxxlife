@@ -4,39 +4,44 @@
 			<view class="wrap-card">
 				<scroll-view scroll-y class="scroll_view">
 					<textarea adjust-position='false' auto-height @keyboardheightchange="keyboardheightchange"
-						class="con-text" maxlength='-1' v-model="textContent"
-						placeholder="请用几句话描述一下你要发布的内容…"></textarea>
+						class="con-text" maxlength='-1' v-model="content" placeholder="请用几句话描述一下你要发布的内容…"></textarea>
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :cameraNumber="cameraNumber"></caremaItem>
+					<caremaItem :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile"></caremaItem>
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../../../static/home/dingwei.png" mode=""></image>
-					<text class="address-name">上海市静安区</text>
+					<u--input class="address-name" placeholder="请输入地址" border="none" v-model="place"></u--input>
 					<image class="tiaozhuan" src="../../../../../static/unused/tiaozhuan.png" mode=""></image>
 				</view>
 			</view>
 			<view class="message">
 				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
-					<u-form-item label="报名截止时间" prop="deadline" borderBottom @click="showDeadline = true">
-						<u--input v-model="userInfo.deadline" disabled disabledColor="#ffffff" placeholder="请选择"
-							border="none"></u--input>
-						<u-icon slot="right" name="arrow-right"></u-icon>
-					</u-form-item>
 					<u-form-item label="活动开始时间" prop="startTime" borderBottom @click="showStartTime = true">
 						<u--input v-model="userInfo.startTime" disabled disabledColor="#ffffff" placeholder="请选择"
 							border="none"></u--input>
 						<u-icon slot="right" name="arrow-right"></u-icon>
 					</u-form-item>
-					<u-form-item label="活动地点" prop="address" borderBottom>
-						<u--input v-model="userInfo.address" border="none" placeholder="请填写活动地点"></u--input>
+					<u-form-item label="报名截止时间" prop="deadline" borderBottom @click="showDeadline = true">
+						<u--input v-model="userInfo.deadline" disabled disabledColor="#ffffff" placeholder="请选择"
+							border="none"></u--input>
+						<u-icon slot="right" name="arrow-right"></u-icon>
+					</u-form-item>
+					<u-form-item label="标题" prop="title" borderBottom>
+						<u--input v-model="userInfo.title" border="none" placeholder="请填写活动标题"></u--input>
+					</u-form-item>
+					<u-form-item label="活动地点" prop="detailsPlace" borderBottom>
+						<u--input v-model="userInfo.detailsPlace" border="none" placeholder="请填写活动地点"></u--input>
+					</u-form-item>
+					<u-form-item label="限制人数" prop="limitPeople" borderBottom>
+						<u--input v-model="userInfo.limitPeople" border="none" placeholder="请填写限制人数"></u--input>
 					</u-form-item>
 				</u--form>
-				<u-datetime-picker mode="date" :show="showDeadline" :value="deadline"
+				<u-datetime-picker :minDate="Number(new Date())" mode="date" :show="showDeadline" :value="deadline"
 					closeOnClickOverlay @cancel="deadlineClose" @confirm="deadlineConfirm"
 					@close="deadlineClose"></u-datetime-picker>
-				<u-datetime-picker mode="date" :show="showStartTime" :value="startTime"
+				<u-datetime-picker :minDate="Number(new Date())" mode="date" :show="showStartTime" :value="startTime"
 					closeOnClickOverlay @cancel="startTimeClose" @confirm="startTimeConfirm"
 					@close="deadlineClose"></u-datetime-picker>
 			</view>
@@ -49,6 +54,9 @@
 
 <script>
 	import caremaItem from "@/components/camera_item.vue"
+	import {
+		addActivity
+	} from "@/api/index/index.js"
 	export default {
 		components: {
 			caremaItem
@@ -56,16 +64,30 @@
 		data() {
 			return {
 				cameraNumber: 9,
-				textContent: "",
+				content: "",
+				place: "",
+				picture: [],
 				showDeadline: false,
 				showStartTime: false,
 				userInfo: {
-					address: '',
+					title: '',
+					detailsPlace: '',
 					deadline: '',
-					startTime: ''
+					startTime: '',
+					limitPeople: '',
 				},
 				rules: {
-					address: [{
+					title: [{
+						type: 'string',
+						message: '请填写活动标题',
+						trigger: ['blur', 'change'],
+					}],
+					limitPeople: [{
+						type: 'number',
+						message: '请填写限制人数',
+						trigger: ['blur', 'change'],
+					}],
+					detailsPlace: [{
 						required: true,
 						message: '请填写活动地点',
 						trigger: ['blur', 'change'],
@@ -95,11 +117,37 @@
 			keyboardheightchange(event) {
 				this.bottomHeight = event.detail.height
 			},
+			// 文件上传
+			handleUploadFile(file) {
+				this.picture = file
+			},
 			// 发布
 			handlePublish() {
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						console.log("fabu")
+						let params = {
+							startTime: this.userInfo.startTime,
+							endTime: this.userInfo.deadline,
+							place: this.place,
+							detailsPlace: this.userInfo.detailsPlace,
+							limitPeople: this.userInfo.limitPeople,
+							content: this.content,
+							title: this.userInfo.title,
+							picture: this.picture ? this.picture.toString() : "",
+						}
+						addActivity(params).then(res => {
+							if (res.code === 200) {
+								uni.showToast({
+									title: '发布成功',
+									icon: 'success',
+									duration: 2000
+								})
+								uni.navigateTo({
+									url: "/pages/index/service/intraCityActivity"
+								})
+							}
+						})
+						console.log(params)
 					} else {
 						console.log('验证失败');
 					}

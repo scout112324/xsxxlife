@@ -58,6 +58,7 @@
 				cameraNumber: 9,
 				content: "",
 				place: "",
+				picture: [],
 				showComeTime: false,
 				// comeTime: uni.$u.timeFormat(Number(new Date()), 'yyyy-mm-dd hh:MM:ss')
 				userInfo: {
