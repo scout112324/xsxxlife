@@ -65,7 +65,21 @@
 	export default {
 		onLoad(options) {
 			this.userId = options.userId
+			let openId = uni.getStorageSync('openId')
 			console.log('userId', this.userId)
+			uni.connectSocket({
+				url: `ws://43.138.111.70:6001/websocket/${openId}`,
+				header: {
+					'content-type': 'application/json'
+				},
+				method: 'POST',
+				success(res) {
+					console.log('res', res)
+				}
+			})
+			uni.onSocketMessage(function(res) {
+				console.log('收到服务器内容：' + res.data);
+			});
 		},
 		data() {
 			return {
@@ -248,18 +262,25 @@
 			},
 			//接受输入内容
 			inputs(e) {
+				// console.log('e', e)
 				//时间间隔处理
 				let data = {
-					"sendName": "゛时光い",
-					"receviceName": "xpq",
-					"sendText": e.message,
-					"createTime": new Date(),
-					"updateTime": new Date(),
-					"chatmState": 1,
-					"TextType": e.type
+					type: 0,
+					msg: e.message,
+					acceptUserId: 1
+					// "sendName": "゛时光い",
+					// "receviceName": "xpq",
+					// "sendText": e.message,
+					// "createTime": new Date(),
+					// "updateTime": new Date(),
+					// "chatmState": 1,
+					// "TextType": e.type
 				};
 				// 发送给服务器消息
 				// onSendWS(JSON.stringify(data));
+				uni.sendSocketMessage({
+					data: data
+				})
 
 				this.unshiftmsg.push(data);
 				// 跳转到最后一条数据 与前面的:id进行对照
