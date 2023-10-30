@@ -8,51 +8,45 @@
 		<view class="message-container">
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
 			</uni-easyinput>
-			<view class="clear">
+			<view class="clear" @click="handleClearMsg">
 				<image class="icon" src="../../../static/user/clear.png" mode=""></image>
 				<text class="word">清除未读</text>
 			</view>
 		</view>
 		<view class="message-list">
-			<view class="message-item" @click="handleJumpChat">
-				<uni-badge class="uni-badge-left-margin" :text="value" absolute="rightTop" size="small">
-					<view class="left"></view>
+			<view class="message-item" @click="handleJumpChat(item.userId)" v-for="item in msgList" :key="item.userId"
+				@longpress="handleLongpress(item.userId)">
+				<uni-badge class="uni-badge-left-margin" :text="item.unReadCount" absolute="rightTop" size="small">
+					<image v-if="item.photo" class="left" :src="item.photo" mode=""></image>
+					<image v-else class="left" src="../../../static/avatar.png" mode=""></image>
 				</uni-badge>
 
 				<view class="center">
 					<view class="name">
-						上海本地社区生活圈上海本地社区生活圈上海本地社区生活圈上海本地社区生活圈
+						{{item.nickname}}
 					</view>
 					<view class="detail">
-						哲哲小王-上海市 已加入生活圈
+						{{item.msg}}
 					</view>
 				</view>
 				<view class="time">
-					10: 36
-				</view>
-			</view>
-			<view class="message-item">
-				<uni-badge class="uni-badge-left-margin" :text="value" absolute="rightTop" size="small">
-					<view class="left"></view>
-				</uni-badge>
-			
-				<view class="center">
-					<view class="name">
-						上海本地社区生活圈
-					</view>
-					<view class="detail">
-						哲哲小王-上海市 已加入生活圈
-					</view>
-				</view>
-				<view class="time">
-					10: 36
+					{{item.time}}
 				</view>
 			</view>
 		</view>
+		<u-popup :show="show" mode="center" @close="handleClose">
+			<view class="popup_container" @click.stop="handleRead">
+				<text>标为已读</text>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
 <script>
+	import {
+		msgList,
+		msgRead
+	} from "@/api/user/index.js"
 	export default {
 		options: {
 			styleIsolation: 'shared',
@@ -65,19 +59,75 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
-				value: 100
+				value: 100,
+				msgList: [],
+				pageNum: 1,
+				pageSize: 1000,
+				show: false,
+				userId: ""
 			}
 		},
+		onShow() {
+			this.getMsgList()
+		},
 		methods: {
+			handleRead() {
+				this.show = false
+				let params = {
+					all: 1,
+					userId: this.userId
+				}
+				msgRead(params).then(res => {
+					if (res.code === 200) {
+						this.getMsgList()
+					}
+				})
+			},
+			handleClose() {
+				this.show = false
+			},
+			// 长按
+			handleLongpress(userId) {
+				this.show = true
+				this.userId = userId
+			},
+			// 清除未读
+			handleClearMsg() {
+				let params = {
+					all: 0,
+					userId: this.userId
+				}
+				msgRead(params).then(res => {
+					if (res.code === 200) {
+						this.getMsgList()
+					}
+				})
+			},
+			// 获取消息列表
+			getMsgList() {
+				let params = {
+					search: this.keyword,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				msgList(params).then(res => {
+					if (res.code === 200) {
+						this.msgList = res.data
+						console.log(res.data)
+					}
+				})
+			},
 			// 搜索
-			handleConfirm() {},
+			handleConfirm() {
+				this.getMsgList()
+			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/user/index"
 				})
 			},
 			// 点击进入在线聊天页面
-			handleJumpChat() {
+			handleJumpChat(userId) {
 				uni.navigateTo({
 					url: "/pages/user/chat/chat"
 				})
@@ -91,6 +141,11 @@
 		font-family: PingFangSC-Regular, PingFang SC;
 		background-color: #F3F6F5;
 		height: 100vh;
+
+		::v-deep .u-status-bar,
+		::v-deep .u-navbar__content {
+			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
+		}
 
 		.message-container {
 			background-color: #F3F6F5;
@@ -147,7 +202,6 @@
 				.left {
 					width: 96rpx;
 					height: 96rpx;
-					background: #DADBDC;
 					border-radius: 16rpx;
 
 				}
@@ -162,10 +216,10 @@
 						font-weight: 500;
 						color: #232624;
 						line-height: 42rpx;
-						
+
 						width: 445rpx;
-						overflow: hidden; 
-						text-overflow:ellipsis; 
+						overflow: hidden;
+						text-overflow: ellipsis;
 						white-space: nowrap;
 					}
 
@@ -185,5 +239,9 @@
 				}
 			}
 		}
+	}
+
+	.popup_container {
+		padding: 60rpx 100rpx;
 	}
 </style>
