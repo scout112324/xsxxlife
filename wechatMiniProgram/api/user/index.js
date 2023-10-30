@@ -1,11 +1,17 @@
 import request from "@/utils/request/index.js"
 
+import config from '@/config'
+
+// 后端api地址
+const baseURL = config.apiUrl
+
 const api = {
 	updateUser: 'app/user/update',
 	addAdvice: 'app/advice/add',
 	msgList: 'app/msg/list',
 	msgRead: 'app/msg/read',
 	msgChat: 'app/msg/chat',
+	websocket: 'websocket'
 }
 
 // 更改昵称或者头像
@@ -31,4 +37,26 @@ export const msgRead = (param, option) => {
 // 查询聊天记录
 export const msgChat = (param, option) => {
 	return request.get(api.msgChat, param)
+}
+
+// 聊天的websocket
+export const websocket = (param, option) => {
+	console.log(param.openId)
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: baseURL + api.websocket + param.openId,
+			method: 'POST',
+			header: {
+				'content-type': 'application/json',
+				'openId': uni.getStorageSync('openId')
+			},
+			// data: data,
+			success: (res) => {
+				resolve(res.data);
+			},
+			fail: (err) => {
+				reject(err)
+			}
+		})
+	})
 }

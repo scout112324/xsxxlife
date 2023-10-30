@@ -113,7 +113,6 @@
 				msgList(params).then(res => {
 					if (res.code === 200) {
 						this.msgList = res.data
-						console.log(res.data)
 					}
 				})
 			},
@@ -129,7 +128,7 @@
 			// 点击进入在线聊天页面
 			handleJumpChat(userId) {
 				uni.navigateTo({
-					url: "/pages/user/chat/chat"
+					url: `/pages/user/chat/chat?userId=${userId}`
 				})
 			}
 		}

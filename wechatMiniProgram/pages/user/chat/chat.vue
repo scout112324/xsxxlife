@@ -54,37 +54,26 @@
 	import dateTime from '../../../common/dateTime.js';
 	import submit from '../../../components/submit.vue';
 
+	import {
+		msgChat,
+	} from "@/api/user/index.js"
+
 
 	//音频播放
 	const innerAudioContext = uni.createInnerAudioContext();
 
 	export default {
+		onLoad(options) {
+			this.userId = options.userId
+			console.log('userId', this.userId)
+		},
 		data() {
 			return {
+				userId: "",
+				pageNum: 1,
+				pageSize: 1000,
 				friendName: "xpq",
 				msg: [{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": {
-							"voice": "时光匆匆流过",
-							"time": 2 //秒
-						},
-						"createTime": "2022-01-06 12:22:12",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 2
-					}, {
-						"sendName": "xpq",
-						"receviceName": "゛时光い",
-						"sendText": {
-							"voice": "谢谢你",
-							"time": 60 //秒
-						},
-						"createTime": "2022-01-06 12:00:12",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 2
-					}, {
 						"sendName": "゛时光い",
 						"receviceName": "xpq",
 						"sendText": "这是第九条未读消息",
@@ -184,6 +173,7 @@
 			}
 		},
 		onShow() {
+			this.getMsgChat()
 			// 数组倒叙 主要是应对后端传过来的数据
 			for (var i = 0; i < this.msg.length; i++) {
 				//时间间隔处理
@@ -209,6 +199,20 @@
 			submit,
 		},
 		methods: {
+			// 获取聊天记录
+			getMsgChat() {
+				let params = {
+					userId: this.userId,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				msgChat(params).then(res => {
+					if (res.code === 200) {
+						this.msg = res.data
+						console.log(res.data)
+					}
+				})
+			},
 			changeTime(date) {
 				return dateTime.dateTime1(date);
 			},
