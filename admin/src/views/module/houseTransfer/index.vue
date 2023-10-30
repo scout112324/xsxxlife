@@ -24,9 +24,9 @@
           <img class="list-img" :src="scope.row.photo">
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="地点" align="center" prop="place"/>
+      <el-table-column label="地点" align="center" prop="place"/>
       <el-table-column show-overflow-tooltip label="详细地点" align="center" prop="detailsPlace"/>
-      <el-table-column label="内容" align="center" prop="content"></el-table-column>
+      <el-table-column show-overflow-tooltip label="内容" align="center" prop="content"></el-table-column>
       <el-table-column label="图片" align="center" width="200">
         <template slot-scope="scope">
           <div class="img-container" v-for="(pic,index) in scope.row.picture.split(',')" :key="index">
@@ -130,7 +130,7 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$modal.confirm('是否确认删除这房屋转让').then(function () {
+      this.$modal.confirm('是否确认删除房屋转让').then(function () {
         return deleteHouse({id: row.id})
       }).then(() => {
         this.getList()
