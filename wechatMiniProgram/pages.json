@@ -349,7 +349,14 @@
 				"navigationBarBackgroundColor": "#FBE64D",
 				"navigationBarTextStyle": "black"
 			}
-
+		}, {
+			"path": "pages/unused/payDetail",
+			"style": {
+				"navigationBarTitleText": "订单确认",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {

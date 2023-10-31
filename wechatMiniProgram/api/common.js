@@ -9,6 +9,8 @@ const api = {
 	addComment: 'app/comment/add',
 	listComment: 'app/comment/list',
 	childrenListComment: 'app/comment/childrenList',
+	submitWx: 'app/wx/submit',
+	toPayWx: 'app/wx/toPay',
 }
 
 // 点赞
@@ -49,4 +51,40 @@ export const listComment = (param, option) => {
 // 获取二级评论列表
 export const childrenListComment = (param, option) => {
 	return request.get(api.childrenListComment, param)
+}
+
+// 支付结算
+export const submitWx = (param, option) => {
+	return request.get(api.submitWx, param)
+}
+
+// 去结算
+export const toPayWx = (param, option) => {
+	return request.get(api.toPayWx, param)
+}
+
+/**
+ * 发起支付请求
+ * @param {Object} 参数
+ */
+export const wxPayment = (option) => {
+	const options = {
+		timeStamp: '',
+		nonceStr: '',
+		prepay_id: '',
+		paySign: '',
+		...option
+	}
+	return new Promise((resolve, reject) => {
+		uni.requestPayment({
+			provider: 'wxpay',
+			timeStamp: options.timeStamp,
+			nonceStr: options.nonceStr,
+			'package': options.packageValue,
+			signType: 'MD5',
+			paySign: options.paySign,
+			success: res => resolve(res),
+			fail: res => reject(res)
+		})
+	})
 }
