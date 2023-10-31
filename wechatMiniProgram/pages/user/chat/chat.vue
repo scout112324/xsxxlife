@@ -205,7 +205,17 @@
 				}
 				msgChat(params).then(res => {
 					if (res.code === 200) {
-						this.chatList = res.data
+						let msgList = res.data
+						if (msgList > 0) {
+							msgList.forEach(item => {
+								if (item.type == 1) {
+									this.imgMsg.unshift(item.msg)
+								}
+								return this.chatList.unshift(item)
+							})
+						} else {
+							this.chatList = msgList
+						}
 						console.log('getMsgChat', this.chatList)
 					}
 				})
