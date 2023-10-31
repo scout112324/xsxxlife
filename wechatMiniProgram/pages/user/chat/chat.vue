@@ -3,42 +3,42 @@
 		<!-- 聊天内容 -->
 		<scroll-view class="chat" scroll-y="true" scroll-with-animation="true" :scroll-into-view="scrollToView">
 			<view class="chat-main" :style="{paddingBottom:inputh+'rpx'}">
-				<view class="chat-ls" v-for="(item,index) in unshiftmsg" :key="index" :id="'msg'+ index">
-					<view class="chat-time" v-if="item.createTime != ''">{{changeTime(item.createTime)}}</view>
-					<view class="msg-m msg-left" v-if="item.sendName ==  friendName">
+				<view class="chat-ls" v-for="(item,index) in chatList" :key="index" :id="'msg'+ index">
+					<view class="chat-time" v-if="item.time != ''">{{changeTime(item.time)}}</view>
+					<view class="msg-m msg-left" v-if="item.sendType ==  0">
 						<image class="user-img" src="../../../static/chat/avatar.png">
 						</image>
-						<view class="message" v-if="item.TextType == 0">
+						<view class="message" v-if="item.type == 0">
 							<!-- 文字 -->
-							<view class="msg-text">{{item.sendText}}</view>
+							<view class="msg-text">{{item.msg}}</view>
 						</view>
-						<view class="message" v-if="item.TextType == 1" @tap="previewImg(item.sendText)">
+						<view class="message" v-if="item.type == 1" @tap="previewImg(item.msg)">
 							<!-- 图像 -->
-							<image :src="item.sendText" class="msg-img" mode="widthFix"></image>
+							<image :src="item.msg" class="msg-img" mode="widthFix"></image>
 						</view>
-						<view class="message" v-if="item.TextType == 2" @tap="playVoice(item.sendText.voice)">
+						<view class="message" v-if="item.type == 2" @tap="playVoice(item.msg.voice)">
 							<!-- 音频 -->
-							<view class="msg-text voice" :style="{width:item.sendText.time*4+'rpx'}">
+							<view class="msg-text voice" :style="{width:item.msg.time*4+'rpx'}">
 								<image src="../../../static/chat/camera.png" class="voice-img"></image>
-								{{item.sendText.time}}″
+								{{item.msg.time}}″
 							</view>
 						</view>
 					</view>
-					<view class="msg-m msg-right" v-if="item.sendName != friendName">
+					<view class="msg-m msg-right" v-if="item.sendType != 0">
 						<image class="user-img" src="../../../static/chat/avatar.png"></image>
-						<view class="message" v-if="item.TextType == 0">
-							<view class="msg-text">{{item.sendText}}</view>
+						<view class="message" v-if="item.type == 0">
+							<view class="msg-text">{{item.msg}}</view>
 						</view>
-						<view class="message" v-if="item.TextType == 1">
-							<image v-if="item.sendText.fileType=='image'" :src="item.sendText.tempFilePath"
-								class="msg-img" mode="widthFix" @tap="previewImg(item.sendText)"></image>
-							<video v-if="item.sendText.fileType=='video'" :src="item.sendText.tempFilePath"
-								class="msg-img" mode="widthFix"></video>
+						<view class="message" v-if="item.type == 1">
+							<image v-if="item.msg.fileType=='image'" :src="item.msg.tempFilePath" class="msg-img"
+								mode="widthFix" @tap="previewImg(item.msg)"></image>
+							<video v-if="item.msg.fileType=='video'" :src="item.msg.tempFilePath" class="msg-img"
+								mode="widthFix"></video>
 						</view>
-						<view class="message" v-if="item.TextType == 2" @tap="playVoice(item.sendText.voice)">
+						<view class="message" v-if="item.type == 2" @tap="playVoice(item.msg.voice)">
 							<!-- 音频 -->
-							<view class="msg-text voice" :style="{width:item.sendText.time*4+'rpx'}">
-								{{item.sendText.time}}″
+							<view class="msg-text voice" :style="{width:item.msg.time*4+'rpx'}">
+								{{item.msg.time}}″
 								<image src="../../../static/chat/voice.png" class="voice-img"></image>
 							</view>
 						</view>
@@ -63,12 +63,12 @@
 	const innerAudioContext = uni.createInnerAudioContext();
 
 	export default {
+		onReady() {
+			this.getMsgChat()
+		},
 		onLoad(options) {
 			this.userId = options.userId
 			console.log('userId', this.userId)
-			// uni.onSocketMessage(function(res) {
-			// 	console.log('收到服务器内容：' + res.data);
-			// });
 
 			// socket初始化
 			this.init()
@@ -87,100 +87,9 @@
 				userId: "",
 				pageNum: 1,
 				pageSize: 1000,
-				friendName: "xpq",
-				msg: [{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": "这是第九条未读消息",
-						"createTime": "2022-01-03 12:22:12",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 0
-					},
-					{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": "这是第八条未读消息",
-						"createTime": "2022-01-02 12:22:07",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 0
-					},
-					{
-						"sendName": "xpq",
-						"receviceName": "xpq",
-						"sendText": "这是第七条未读消息",
-						"createTime": "2021-12-19 12:22:03",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 0
-					},
-					{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": "这是第六条未读消息",
-						"createTime": "2021-12-19 12:21:58",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 0
-					},
-					{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": "http://demo.rageframe.com/attachment/images/2021/11/18/image_1637224530_diIlZlmm.jpeg",
-						"createTime": "2021-12-19 12:21:54",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 1
-					},
-					{
-						"sendName": "xpq",
-						"receviceName": "゛时光い",
-						"sendText": "http://demo2.rageframe.com/attachment/images/2021/09/01/image_1630483477_N03W37zs.jpg",
-						"createTime": "2021-12-19 12:21:48",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 1
-					},
-					{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": "这是第三条未读消息",
-						"createTime": "2021-12-19 12:21:42",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 0
-					},
-					{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": "这是第二条未读消息",
-						"createTime": "2021-12-19 12:21:33",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 0
-					},
-					{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": "http://demo2.rageframe.com/attachment/images/2021/09/01/image_1630483477_N03W37zs.jpg",
-						"createTime": "2021-12-19 11:02:18",
-						"updateTime": null,
-						"chatmState": 1,
-						"TextType": 1
-					},
-					{
-						"sendName": "゛时光い",
-						"receviceName": "xpq",
-						"sendText": "爱你啊",
-						"createTime": "2021-12-18 20:37:03",
-						"updateTime": null,
-						"chatmState": 0,
-						"TextType": 0
-					}
-				],
+				msg: [],
 				// 反转数据接收
-				unshiftmsg: [],
+				chatList: [],
 				imgMsg: [],
 				scrollToView: '',
 				oldTime: new Date(),
@@ -188,26 +97,25 @@
 			}
 		},
 		onShow() {
-			this.getMsgChat()
-			// 数组倒叙 主要是应对后端传过来的数据
-			for (var i = 0; i < this.msg.length; i++) {
-				//时间间隔处理
-				if (i < this.msg.length - 1) { //这里表示头部时间还是显示一下
-					let t = dateTime.spaceTime(this.oldTime, this.msg[i].createTime);
-					if (t) {
-						this.oldTime = t;
-					}
-					this.msg[i].createTime = t;
-				}
-				// 获取图片，为下面的预览做准备
-				if (this.msg[i].TextType == 1) {
-					this.imgMsg.unshift(this.msg[i].sendText)
-				}
-				this.unshiftmsg.unshift(this.msg[i]);
-			}
+			// // 数组倒叙 主要是应对后端传过来的数据
+			// for (var i = 0; i < this.msg.length; i++) {
+			// 	//时间间隔处理
+			// 	if (i < this.msg.length - 1) { //这里表示头部时间还是显示一下
+			// 		let t = dateTime.spaceTime(this.oldTime, this.msg[i].createTime);
+			// 		if (t) {
+			// 			this.oldTime = t;
+			// 		}
+			// 		this.msg[i].createTime = t;
+			// 	}
+			// 	// 获取图片，为下面的预览做准备
+			// 	if (this.msg[i].TextType == 1) {
+			// 		this.imgMsg.unshift(this.msg[i].sendText)
+			// 	}
+			// 	this.unshiftmsg.unshift(this.msg[i]);
+			// }
 			// 跳转到最后一条数据 与前面的:id进行对照
 			this.$nextTick(function() {
-				this.scrollToView = 'msg' + (this.unshiftmsg.length - 1)
+				this.scrollToView = 'msg' + (this.chatList.length - 1)
 			})
 		},
 		components: {
@@ -226,6 +134,7 @@
 				this.openSocket()
 				this.onclose()
 				this.onSocketMessage()
+				this.onSocketError()
 			},
 			// 打开Soceket
 			openSocket() {
@@ -269,19 +178,19 @@
 			closeSocket() {
 				uni.closeSocket();
 			},
+			onSocketError() {
+				uni.onSocketError(res => {
+					console.log('onSocketError', res)
+				})
+			},
 			// 接收事件
 			onSocketMessage() {
 				let that = this
 				uni.onSocketMessage((res) => {
 					let obj = JSON.parse(res.data)
 					console.log("接收事件", obj);
-					this.onMessageHandle(obj)
+					this.chatList.push(obj)
 				});
-			},
-			// 接收到事件后处理的方法（可自己重写）
-			onMessageHandle(obj) {
-				console.log('obj', obj)
-				// 根据自己业务逻辑重写
 			},
 			// 获取聊天记录
 			getMsgChat() {
@@ -292,8 +201,8 @@
 				}
 				msgChat(params).then(res => {
 					if (res.code === 200) {
-						this.msg = res.data
-						console.log(res.data)
+						this.chatList = res.data
+						console.log('getMsgChat', this.chatList)
 					}
 				})
 			},
@@ -337,7 +246,7 @@
 				let data = {
 					type: e.type,
 					msg: e.message,
-					acceptUserId: 40
+					acceptUserId: this.userId,
 					// "sendName": "゛时光い",
 					// "receviceName": "xpq",
 					// "sendText": e.message,
@@ -349,10 +258,16 @@
 				// 发送给服务器消息
 				// onSendWS(JSON.stringify(data));
 				if (this.socketOpen) {
+					let that = this
 					uni.sendSocketMessage({
 						data: JSON.stringify(data),
 						success() {
-							console.log('发送成功', data)
+							that.chatList.push({
+								...data,
+								time: new Date(),
+								sendType: 1
+							})
+							console.log('发送成功', data, that.chatList)
 						},
 						fail(err) {
 							console.log(err)
@@ -363,13 +278,12 @@
 					this.init()
 					setTimeout(() => {
 						this.inputs(data)
-					}, 300)
+					}, 2000)
 				}
 
-				this.unshiftmsg.push(data);
 				// 跳转到最后一条数据 与前面的:id进行对照
 				this.$nextTick(function() {
-					this.scrollToView = 'msg' + (this.unshiftmsg.length - 1)
+					this.scrollToView = 'msg' + (this.chatList.length - 1)
 				})
 				if (e.type == 1 && e.message.fileType == 'image') {
 					this.imgMsg.push(e.message.tempFilePath);
@@ -384,7 +298,7 @@
 			goBottom() {
 				this.scrollToView = '';
 				this.$nextTick(function() {
-					this.scrollToView = 'msg' + (this.unshiftmsg.length - 1)
+					this.scrollToView = 'msg' + (this.chatList.length - 1)
 				})
 			}
 		}
