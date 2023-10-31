@@ -68,7 +68,8 @@
 			let openId = uni.getStorageSync('openId')
 			console.log('userId', this.userId)
 			uni.connectSocket({
-				url: `ws://43.138.111.70:6001/websocket/${openId}`,
+				url: `wss://www.lionjj.club/websocketxian/${openId}`,
+				// url: `ws://43.138.111.70:6001/websocket/${openId}`,
 				header: {
 					'content-type': 'application/json'
 				},
@@ -267,7 +268,7 @@
 				let data = {
 					type: 0,
 					msg: e.message,
-					acceptUserId: 1
+					acceptUserId: 40
 					// "sendName": "゛时光い",
 					// "receviceName": "xpq",
 					// "sendText": e.message,
