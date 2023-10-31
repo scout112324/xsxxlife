@@ -189,7 +189,10 @@
 				uni.onSocketMessage((res) => {
 					let obj = JSON.parse(res.data)
 					console.log("接收事件", obj);
-					this.chatList.push(obj)
+					this.chatList.push({
+						...obj,
+						sendType: 0
+					})
 				});
 			},
 			// 获取聊天记录
