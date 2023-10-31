@@ -65,25 +65,25 @@
 	export default {
 		onLoad(options) {
 			this.userId = options.userId
-			let openId = uni.getStorageSync('openId')
 			console.log('userId', this.userId)
-			uni.connectSocket({
-				url: `wss://www.lionjj.club/websocketxian/${openId}`,
-				// url: `ws://43.138.111.70:6001/websocket/${openId}`,
-				header: {
-					'content-type': 'application/json'
-				},
-				method: 'POST',
-				success(res) {
-					console.log('res', res)
-				}
-			})
-			uni.onSocketMessage(function(res) {
-				console.log('收到服务器内容：' + res.data);
-			});
+			// uni.onSocketMessage(function(res) {
+			// 	console.log('收到服务器内容：' + res.data);
+			// });
+
+			// socket初始化
+			this.init()
+			// 定时器，定时判断socket有没有掉线
+			this.timer = setInterval(() => {
+				this.isSocketConnct()
+			}, 2000)
+
 		},
 		data() {
 			return {
+				// socket是否开启
+				socketOpen: false,
+				// 定时器
+				timer: null,
 				userId: "",
 				pageNum: 1,
 				pageSize: 1000,
@@ -213,7 +213,76 @@
 		components: {
 			submit,
 		},
+		beforeDestroy() {
+			// 关闭定时器
+			clearInterval(this.timer)
+			// 关闭Socket
+			this.closeSocket()
+		},
 		methods: {
+			// 初始化
+			init() {
+				this.connect()
+				this.openSocket()
+				this.onclose()
+				this.onSocketMessage()
+			},
+			// 打开Soceket
+			openSocket() {
+				let that = this
+				uni.onSocketOpen((res) => {
+					that.socketOpen = true
+					console.log('WebSocket连接已打开！');
+				});
+			},
+			// 判断是否连接
+			isSocketConnct() {
+				if (!this.socketOpen) {
+					console.log("WebSocket 再次连接！");
+					this.init()
+				}
+			},
+			// 建立连接
+			connect() {
+				let openId = uni.getStorageSync('openId')
+				uni.connectSocket({
+					url: `wss://www.lionjj.club/websocketxian/${openId}`,
+					// url: `ws://43.138.111.70:6001/websocket/${openId}`,
+					header: {
+						'content-type': 'application/json'
+					},
+					method: 'POST',
+					success(res) {
+						console.log('res', res)
+					}
+				})
+			},
+			// 监听关闭
+			onclose() {
+				let that = this
+				uni.onSocketClose((res) => {
+					that.socketOpen = false
+					console.log('WebSocket 已关闭！');
+				});
+			},
+			// 关闭
+			closeSocket() {
+				uni.closeSocket();
+			},
+			// 接收事件
+			onSocketMessage() {
+				let that = this
+				uni.onSocketMessage((res) => {
+					let obj = JSON.parse(res.data)
+					console.log("接收事件", obj);
+					this.onMessageHandle(obj)
+				});
+			},
+			// 接收到事件后处理的方法（可自己重写）
+			onMessageHandle(obj) {
+				console.log('obj', obj)
+				// 根据自己业务逻辑重写
+			},
 			// 获取聊天记录
 			getMsgChat() {
 				let params = {
@@ -263,10 +332,10 @@
 			},
 			//接受输入内容
 			inputs(e) {
-				// console.log('e', e)
+				console.log('e', e)
 				//时间间隔处理
 				let data = {
-					type: 0,
+					type: e.type,
 					msg: e.message,
 					acceptUserId: 40
 					// "sendName": "゛时光い",
@@ -279,9 +348,23 @@
 				};
 				// 发送给服务器消息
 				// onSendWS(JSON.stringify(data));
-				uni.sendSocketMessage({
-					data: data
-				})
+				if (this.socketOpen) {
+					uni.sendSocketMessage({
+						data: JSON.stringify(data),
+						success() {
+							console.log('发送成功', data)
+						},
+						fail(err) {
+							console.log(err)
+						}
+					})
+				} else {
+					// Socket没有开启，重新连接并重新发送消息
+					this.init()
+					setTimeout(() => {
+						this.inputs(data)
+					}, 300)
+				}
 
 				this.unshiftmsg.push(data);
 				// 跳转到最后一条数据 与前面的:id进行对照
