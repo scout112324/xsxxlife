@@ -3,8 +3,9 @@
 		<!-- 聊天内容 -->
 		<scroll-view class="chat" scroll-y="true" scroll-with-animation="true" :scroll-into-view="scrollToView">
 			<view class="chat-main" :style="{paddingBottom:inputh+'rpx'}">
-				<view class="chat-ls" v-for="(item,index) in chatList" :key="index" :id="'msg'+ index">
-					<view class="chat-time" v-if="item.time != ''">{{changeTime(item.time)}}</view>
+				<view v-if="chatList.length>0" class="chat-ls" v-for="(item,index) in chatList" :key="index"
+					:id="'msg'+ index">
+					<view class="chat-time" v-if="item.time != ''">{{item.time}}</view>
 					<view class="msg-m msg-left" v-if="item.sendType ==  0">
 						<image class="user-img" src="../../../static/chat/avatar.png">
 						</image>
@@ -267,7 +268,7 @@
 						success() {
 							that.chatList.push({
 								...data,
-								time: new Date(),
+								time: `${new Date().getHours() > 9 ? new Date().getHours() : '0' + new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0' + new Date().getMinutes()}`,
 								sendType: 1
 							})
 							console.log('发送成功', data, that.chatList)
