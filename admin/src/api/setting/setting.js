@@ -80,3 +80,21 @@ export function userList(query) {
     params: query
   })
 }
+
+// 获取聊天列表
+export function chatMsgList(query) {
+  return request({
+    url: '/web/chatMsg/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 删除聊天列表
+export function deleteChatMsg(query) {
+  return request({
+    url: '/web/chatMsg/delete',
+    method: 'get',
+    params: query
+  })
+}
