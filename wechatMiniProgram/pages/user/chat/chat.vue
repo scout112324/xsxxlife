@@ -15,15 +15,20 @@
 						</view>
 						<view class="message" v-if="item.type == 1" @tap="previewImg(item.msg)">
 							<!-- 图像 -->
-							<image :src="item.msg" class="msg-img" mode="widthFix"></image>
+							<image v-if="JSON.parse(item.msg).fileType=='image'"
+								:src="JSON.parse(item.msg).tempFilePath" class="msg-img" mode="widthFix"
+								@tap="previewImg(JSON.parse(item.msg))"></image>
+							<video v-if="JSON.parse(item.msg).fileType=='video'"
+								:src="JSON.parse(item.msg).tempFilePath" class="msg-img" mode="widthFix"></video>
+							<!-- <image :src="item.msg" class="msg-img" mode="widthFix"></image> -->
 						</view>
-						<view class="message" v-if="item.type == 2" @tap="playVoice(item.msg.voice)">
-							<!-- 音频 -->
+						<!-- 音频 -->
+						<!-- <view class="message" v-if="item.type == 2" @tap="playVoice(item.msg.voice)">	
 							<view class="msg-text voice" :style="{width:item.msg.time*4+'rpx'}">
 								<image src="../../../static/chat/camera.png" class="voice-img"></image>
 								{{item.msg.time}}″
 							</view>
-						</view>
+						</view> -->
 					</view>
 					<view class="msg-m msg-right" v-if="item.sendType != 0">
 						<image v-if="item.myPhoto" class="user-img" :src="item.myPhoto"></image>
@@ -32,18 +37,19 @@
 							<view class="msg-text">{{item.msg}}</view>
 						</view>
 						<view class="message" v-if="item.type == 1">
-							<image v-if="item.msg.fileType=='image'" :src="item.msg.tempFilePath" class="msg-img"
-								mode="widthFix" @tap="previewImg(item.msg)"></image>
-							<video v-if="item.msg.fileType=='video'" :src="item.msg.tempFilePath" class="msg-img"
-								mode="widthFix"></video>
+							<image v-if="JSON.parse(item.msg).fileType=='image'"
+								:src="JSON.parse(item.msg).tempFilePath" class="msg-img" mode="widthFix"
+								@tap="previewImg(JSON.parse(item.msg))"></image>
+							<video v-if="JSON.parse(item.msg).fileType=='video'"
+								:src="JSON.parse(item.msg).tempFilePath" class="msg-img" mode="widthFix"></video>
 						</view>
-						<view class="message" v-if="item.type == 2" @tap="playVoice(item.msg.voice)">
-							<!-- 音频 -->
+						<!-- 音频 -->
+						<!-- <view class="message" v-if="item.type == 2" @tap="playVoice(item.msg.voice)">
 							<view class="msg-text voice" :style="{width:item.msg.time*4+'rpx'}">
 								{{item.msg.time}}″
 								<image src="../../../static/chat/voice.png" class="voice-img"></image>
 							</view>
-						</view>
+						</view> -->
 					</view>
 				</view>
 			</view>
@@ -267,7 +273,7 @@
 				//时间间隔处理
 				let data = {
 					type: e.type,
-					msg: e.message,
+					msg: e.type == 1 ? JSON.stringify(e.message) : e.message,
 					acceptUserId: this.userId,
 					// "sendName": "゛时光い",
 					// "receviceName": "xpq",
