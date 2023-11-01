@@ -1,6 +1,28 @@
 <template>
 	<view class="container p-bottom">
 
+		<view class="confirm-container">
+			<view class="flow-all-list">
+				<text class="flex-five">商品信息</text>
+			</view>
+			<view class="content">
+				<view class="product-image" v-if="pictureList && pictureList.length>0">
+					<image
+						v-if="imgType.includes(pictureList[0].substr(pictureList[0].lastIndexOf('.') + 1, pictureList[0].length).toLowerCase())"
+						class="image" :src="pictureList[0]" mode="">
+					</image>
+					<video v-else class="image" :src="pictureList[0]" controls></video>
+				</view>
+				<view v-else class="product-image">
+					<image class="image" src="../../../static/avatar.png" mode=""></image>
+				</view>
+				<view class="price">
+					<text class="unit">¥</text>
+					<text class="num">{{payInfo.price || '暂无'}}</text>
+				</view>
+			</view>
+		</view>
+
 		<!-- 支付方式 -->
 		<view class="pay-method flow-all-money b-f m-top20">
 			<view class="flow-all-list">
@@ -8,24 +30,15 @@
 			</view>
 			<!-- 微信支付 -->
 			<view class="pay-item">
-				<view class="item-left flex-y-center">
-					<view class="item-left_icon wechat">
-						<text class="iconfont icon-weixinzhifu"></text>
-					</view>
+				<view class="item-left">
+					<image class="icon" src="../../static/wxpay.png" mode=""></image>
 					<view class="item-left_text">
-						<text>微信支付</text>
+						微信支付
 					</view>
 				</view>
-				<view class="item-right col-m" v-if="curPayType == PayTypeEnum.WECHAT.value">
-					<text class="iconfont icon-duihao"></text>
+				<view class="item-right">
+					<image class="icon" src="../../static/success.png" mode=""></image>
 				</view>
-			</view>
-		</view>
-
-		<!-- 买家留言 -->
-		<view class="flow-all-money b-f m-top20">
-			<view class="ipt-wrapper flow-all-list">
-				<input v-model="remark" placeholder="选填：顾客留言（50字以内）"></input>
 			</view>
 		</view>
 
@@ -34,133 +47,96 @@
 			<view class="chackout-box">
 				<view class="chackout-left pl-12">
 					<view class="col-amount-do">支付金额：
-						<text class="pay-amount">￥{{ 100 }}</text>
+						<text class="pay-amount">￥{{ payInfo.price || 0 }}</text>
 					</view>
 				</view>
-				<view class="chackout-right" @click="doSubmitOrder(10)">
-					<view class="flow-btn f-32" :class="{ disabled }">提交订单</view>
+				<view class="chackout-right" @click="doSubmitOrder()">
+					<view class="flow-btn f-32" :class="{ disabled }">确认支付</view>
 				</view>
 			</view>
 		</view>
-
-
-		<!-- 支付方式弹窗 -->
-		<u-popup v-model="showPayPopup" mode="bottom" :closeable="true">
-			<view class="pay-type-popup">
-				<view class="title">请选择支付方式</view>
-				<view class="pop-content">
-					<!-- 微信支付 -->
-					<!-- #ifdef MP-WEIXIN -->
-					<view class="pay-item">
-						<view class="item-left flex-y-center">
-							<view class="item-left_icon wechat">
-								<text class="iconfont icon-weixinzhifu"></text>
-							</view>
-							<view class="item-left_text">
-								<text>{{ PayTypeEnum.WECHAT.name }}</text>
-							</view>
-						</view>
-					</view>
-					<!-- #endif -->
-					<!-- 余额支付 -->
-					<view class="pay-item">
-						<view class="item-left flex-y-center">
-							<view class="item-left_icon balance">
-								<text class="iconfont icon-qiandai"></text>
-							</view>
-							<view class="item-left_text">
-								<text>{{ PayTypeEnum.BALANCE.name }}</text>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
-		</u-popup>
 	</view>
 </template>
 
 <script>
 	import {
-		wxPayment
+		wxPayment,
+		toPayWx
 	} from "@/api/common.js"
 	export default {
 		data() {
 			return {
-				showPayPopup: true,
-				payment: {}
+				payInfo: {},
+				pictureList: [],
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 			}
 		},
 		onLoad(options) {
-			this.payment = JSON.parse(decodeURIComponent(options.payment))
+			this.payInfo = JSON.parse(decodeURIComponent(options.payInfo))
+			this.pictureList = this.payInfo.picture ? this.payInfo.picture.split(',') : []
+			console.log('payInfo', this.payInfo)
 		},
 		methods: {
 			doSubmitOrder() {
-				console.log(this.payment)
-				wxPayment(this.payment)
-					.then(res => {
-						console.log('支付成功')
-					})
-					.catch(err => {
-						console.log('支付失败')
-					})
-					.finally(() => {
-						// app.disabled = false
-						// app.navToOrderResult(result.data.orderInfo.id, '')
-					})
+				toPayWx({
+					orderId: this.payInfo.orderId
+				}).then(res => {
+					if (res.code === 200) {
+						let payment = res.data
+						wxPayment(payment)
+							.then(res => {
+								uni.showToast({
+									title: '支付成功',
+									icon: 'success',
+									duration: 2000
+								})
+							})
+							.catch(err => {
+								console.log('支付失败')
+							})
+							.finally(() => {
+								// app.disabled = false
+								// app.navToOrderResult(result.data.orderInfo.id, '')
+							})
+					}
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	// 弹出层-支付方式
-	.pay-type-popup {
-		padding: 25rpx;
+	.confirm-container {
+		padding: 0 30rpx;
 
-		.title {
-			font-size: 30rpx;
-			margin-bottom: 50rpx;
-			font-weight: bold;
-			text-align: center;
+		.flow-all-list {
+			font-size: 28rpx;
+			padding: 20rpx 0;
+			border-bottom: 1rpx solid rgb(248, 248, 248);
 		}
 
-		.pop-content {
-			min-height: 140rpx;
-			padding: 0 20rpx;
+		.content {
+			margin-top: 20rpx;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
 
-			.pay-item {
-				padding: 30rpx;
-				font-size: 30rpx;
-				background: #fff;
-				border: 1rpx solid #00acac;
-				border-radius: 8rpx;
-				color: #888;
-				margin-bottom: 12rpx;
-				text-align: center;
-
-				.item-left_icon {
-					margin-right: 20rpx;
-					font-size: 48rpx;
-
-					&.wechat {
-						color: #00c800;
-					}
-
-					&.balance {
-						color: #00acac;
-					}
-				}
+			.image {
+				width: 120rpx;
+				height: 120rpx;
+				border-radius: 10rpx;
 			}
-		}
-	}
 
-	// 买家留言
-	.flow-all-money {
-		.ipt-wrapper {
-			input {
-				font-size: 28rpx;
-				width: 100%;
-				height: 75rpx;
+			.price {
+				font-size: 26rpx;
+				font-family: PingFangSC-Semibold, PingFang SC;
+				font-weight: 600;
+				color: #D30303;
+				margin-left: 30rpx;
+
+				.num {
+					font-size: 46rpx;
+				}
 			}
 		}
 	}
@@ -174,16 +150,21 @@
 			font-size: 28rpx;
 			border-bottom: 1rpx solid rgb(248, 248, 248);
 
-			.item-left_icon {
-				margin-right: 20rpx;
-				font-size: 32rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 
-				&.wechat {
-					color: #00c800;
-				}
+			.icon {
+				width: 40rpx;
+				height: 40rpx;
+			}
 
-				&.balance {
-					color: #ff9700;
+			.item-left {
+				display: flex;
+				align-items: center;
+
+				.item-left_text {
+					margin-left: 20rpx;
 				}
 			}
 		}

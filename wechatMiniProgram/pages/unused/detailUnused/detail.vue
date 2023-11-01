@@ -45,27 +45,6 @@
 			</comment>
 		</view>
 		<commentInput @inputs="inputs" v-if="showCommentInput"></commentInput>
-		<u-popup :show="showConfirm" mode="bottom" @close="handleClose" :closeable="true">
-			<view class="confirm-container">
-				<view class="content">
-					<view class="product-image" v-if="pictureList && pictureList.length>0">
-						<image
-							v-if="imgType.includes(pictureList[0].substr(pictureList[0].lastIndexOf('.') + 1, pictureList[0].length).toLowerCase())"
-							class="image" :src="pictureList[0]" mode="">
-						</image>
-						<video v-else class="image" :src="pictureList[0]" controls></video>
-					</view>
-					<view v-else class="product-image">
-						<image class="image" src="../../../static/avatar.png" mode=""></image>
-					</view>
-					<view class="price">
-						<text class="unit">¥</text>
-						<text class="num">{{itemData.price || '暂无'}}</text>
-					</view>
-				</view>
-				<u-button text="立即下单" @click.stop="handleConfirmPay"></u-button>
-			</view>
-		</u-popup>
 		<view class="footer">
 			<view class="btns">
 				<view class="item" @click="handleSupport(itemData)">
@@ -110,7 +89,6 @@
 		addComment,
 		addGive,
 		submitWx,
-		toPayWx
 	} from "@/api/common.js"
 	export default {
 		components: {
@@ -130,8 +108,6 @@
 				level: 0,
 				childId: "",
 				pictureList: [],
-				showConfirm: false,
-				orderId: ""
 			}
 		},
 		methods: {
@@ -190,34 +166,21 @@
 				this.childId = id
 			},
 			handleShareClick() {},
-			handleClose() {
-				this.showConfirm = false
-			},
 			// 去支付
 			handleCommuniteClick() {
-				this.showConfirm = !this.showConfirm
-
 				submitWx({
 					id: this.itemData.id
 				}).then(res => {
 					if (res.code === 200) {
-						this.orderId = res.data.orderId
-					}
-				})
-			},
-			// 确认支付
-			handleConfirmPay() {
-				toPayWx({
-					orderId: this.orderId
-				}).then(res => {
-					if (res.code === 200) {
-						console.log(res.data)
+						let payInfo = {
+							...this.itemData,
+							orderId: res.data.orderId
+						}
 						uni.navigateTo({
-							url: `/pages/unused/payDetail?payment=${encodeURIComponent(JSON.stringify(res.data))}`
+							url: `/pages/unused/payDetail?payInfo=${encodeURIComponent(JSON.stringify(payInfo))}`
 						})
 					}
 				})
-				console.log('确认支付')
 			},
 			// 点赞
 			handleSupport(item) {
@@ -388,51 +351,6 @@
 
 		.comments {
 			background-color: #ffffff;
-		}
-
-		.confirm-container {
-			height: 300rpx;
-			padding: 0 30rpx;
-
-			.content {
-				margin-top: 60rpx;
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-
-				.image {
-					width: 120rpx;
-					height: 120rpx;
-					border-radius: 10rpx;
-				}
-
-				.price {
-					font-size: 26rpx;
-					font-family: PingFangSC-Semibold, PingFang SC;
-					font-weight: 600;
-					color: #D30303;
-					margin-left: 30rpx;
-
-					.num {
-						font-size: 46rpx;
-					}
-				}
-			}
-
-			::v-deep .u-button {
-				width: 224rpx;
-				height: 74rpx;
-				background: #FFD100;
-				border-radius: 46rpx;
-				border: 0 solid rgba(255, 209, 0, 0.31);
-			}
-
-			::v-deep .u-button__text {
-				font-size: 30rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
-				font-weight: 500;
-				color: #232624;
-			}
 		}
 
 		.footer {
