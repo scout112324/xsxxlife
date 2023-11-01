@@ -17,3 +17,12 @@ export function deleteAdvice(query) {
     params: query
   })
 }
+
+// 交易记录
+export function orderList(query) {
+  return request({
+    url: '/web/order/list',
+    method: 'get',
+    params: query
+  })
+}

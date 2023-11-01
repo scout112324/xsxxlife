@@ -71,3 +71,12 @@ export function deleteIcon(query) {
     params: query
   })
 }
+
+// 获取用户列表
+export function userList(query) {
+  return request({
+    url: '/web/user/list',
+    method: 'get',
+    params: query
+  })
+}
