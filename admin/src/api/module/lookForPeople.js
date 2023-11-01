@@ -9,6 +9,15 @@ export function findList(query) {
   })
 }
 
+// 修改大件清运（主要修改审核）
+export function updateFind(data) {
+  return request({
+    url: '/web/find/update',
+    method: 'post',
+    data: data
+  })
+}
+
 // 删除寻人寻物
 export function deleteFind(query) {
   return request({

@@ -37,6 +37,7 @@
         </template>
       </el-table-column>
       <el-table-column label="电话" align="center" prop="phone"></el-table-column>
+      <el-table-column label="审核状态" align="center" prop="examineStatus" :formatter="formatterStatus"></el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime">
         <template slot-scope="scope">
           <span v-if="scope.row.createTime">{{ parseTime(scope.row.createTime) }}</span>
@@ -50,6 +51,13 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+          >修改
+          </el-button>
           <el-button
             size="mini"
             type="text"
@@ -75,10 +83,29 @@
       >
       </el-pagination>
     </div>
+    <!-- 添加或修改用户配置对话框 -->
+    <el-dialog class="common-dialog" :title="diaTitle" :visible.sync="open" width="600px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="内容" prop="examineStatus">
+          <el-select v-model="form.examineStatus" placeholder="请审核">
+            <el-option
+              v-for="item in examineStatusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-import {findList, deleteFind} from '@/api/module/lookForPeople'
+import {findList, updateFind, deleteFind} from '@/api/module/lookForPeople'
 
 export default {
   name: 'LookForPeople',
@@ -97,12 +124,75 @@ export default {
       // 总条数
       total: 0,
       imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
+      diaTitle: "",
+      // 是否显示弹出层
+      open: false,
+      rules: {},
+      form: {},
+      examineStatusOptions: [{
+        value: 0,
+        label: '待审核'
+      }, {
+        value: 1,
+        label: '审核通过'
+      }, {
+        value: 2,
+        label: '审核不通过'
+      }],
     }
   },
   created() {
     this.getList()
   },
   methods: {
+    /** 修改按钮操作 */
+    handleUpdate(row) {
+      this.open = true
+      this.diaTitle = '审核大件清运'
+      this.noticeId = row.id
+      this.$set(this.form, 'examineStatus', row.examineStatus)
+    },
+    /** 提交按钮 */
+    submitForm() {
+      if (this.noticeId) {
+        const params = {
+          id: this.noticeId,
+          examineStatus: this.form.examineStatus,
+        }
+        updateFind(params).then(response => {
+          if (response.code === 200) {
+            this.$modal.msgSuccess('修改成功')
+            this.open = false
+            this.noticeId = ""
+            this.getList()
+            this.reset()
+          }
+        })
+      }
+    },
+    // 取消按钮
+    cancel() {
+      this.open = false
+      this.reset()
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        examineStatus: '',
+      }
+    },
+    formatterStatus(row) {
+      switch (row.examineStatus) {
+        case 0:
+          return "待审核";
+        case 1:
+          return "审核通过";
+        case 2:
+          return "审核不通过";
+        default:
+          return
+      }
+    },
     /** 查询用户列表 */
     getList() {
       this.loading = true
