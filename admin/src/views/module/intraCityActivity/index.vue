@@ -58,6 +58,13 @@
           <el-button
             size="mini"
             type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+          >修改
+          </el-button>
+          <el-button
+            size="mini"
+            type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
           >删除
@@ -80,10 +87,30 @@
       >
       </el-pagination>
     </div>
+
+    <!-- 添加或修改用户配置对话框 -->
+    <el-dialog class="common-dialog" :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="内容" prop="examineStatus">
+          <el-select v-model="form.examineStatus" placeholder="请审核">
+            <el-option
+              v-for="item in examineStatusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-import {activityList, deleteActivity} from '@/api/module/intraCityActivity'
+import {activityList, updateActivity, deleteActivity} from '@/api/module/intraCityActivity'
 
 export default {
   name: 'intraCityActivity',
@@ -102,6 +129,24 @@ export default {
       // 总条数
       total: 0,
       imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
+      // 弹出层标题
+      diaTitle: '',
+      // 是否显示弹出层
+      open: false,
+      noticeId: '',
+      form: {},
+      // 表单校验
+      rules: {},
+      examineStatusOptions: [{
+        value: 0,
+        label: '待审核'
+      }, {
+        value: 1,
+        label: '审核通过'
+      }, {
+        value: 2,
+        label: '审核不通过'
+      }],
     }
   },
   created() {
@@ -126,10 +171,46 @@ export default {
       this.queryParams.pageNum = 1
       this.getList()
     },
+    // 取消按钮
+    cancel() {
+      this.open = false
+      this.reset()
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        examineStatus: '',
+      }
+    },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
       this.handleQuery()
+    },
+    /** 修改按钮操作 */
+    handleUpdate(row) {
+      this.open = true
+      this.diaTitle = '审核同城活动'
+      this.noticeId = row.id
+      this.$set(this.form, 'examineStatus', row.examineStatus)
+    },
+    /** 提交按钮 */
+    submitForm() {
+      if (this.noticeId) {
+        const params = {
+          id: this.noticeId,
+          examineStatus: this.form.examineStatus,
+        }
+        updateActivity(params).then(response => {
+          if (response.code === 200) {
+            this.$modal.msgSuccess('修改成功')
+            this.open = false
+            this.noticeId = ""
+            this.getList()
+            this.reset()
+          }
+        })
+      }
     },
     /** 删除按钮操作 */
     handleDelete(row) {
