@@ -7,8 +7,8 @@
 					:id="'msg'+ index">
 					<view class="chat-time" v-if="item.time != ''">{{item.time}}</view>
 					<view class="msg-m msg-left" v-if="item.sendType ==  0">
-						<image class="user-img" src="../../../static/chat/avatar.png">
-						</image>
+						<image v-if="item.sendPhoto" class="user-img" src="../../../static/chat/avatar.png"></image>
+						<image v-else class="user-img" src="../../../static/chat/avatar.png"></image>
 						<view class="message" v-if="item.type == 0">
 							<!-- 文字 -->
 							<view class="msg-text">{{item.msg}}</view>
@@ -26,7 +26,8 @@
 						</view>
 					</view>
 					<view class="msg-m msg-right" v-if="item.sendType != 0">
-						<image class="user-img" src="../../../static/chat/avatar.png"></image>
+						<image v-if="item.myPhoto" class="user-img" :src="item.myPhoto"></image>
+						<image v-else class="user-img" src="../../../static/chat/avatar.png"></image>
 						<view class="message" v-if="item.type == 0">
 							<view class="msg-text">{{item.msg}}</view>
 						</view>
@@ -194,6 +195,13 @@
 						...obj,
 						sendType: 0
 					})
+					// 跳转到最后一条数据 与前面的:id进行对照
+					this.$nextTick(function() {
+						this.scrollToView = 'msg' + (this.chatList.length - 1)
+					})
+					if (type == 1 && msg.fileType == 'image') {
+						this.imgMsg.push(msg.tempFilePath);
+					}
 				});
 			},
 			// 获取聊天记录
@@ -206,7 +214,8 @@
 				msgChat(params).then(res => {
 					if (res.code === 200) {
 						let msgList = res.data
-						if (msgList > 0) {
+						if (msgList.length > 0) {
+							// 数组倒叙 主要是应对后端传过来的数据
 							msgList.forEach(item => {
 								if (item.type == 1) {
 									this.imgMsg.unshift(item.msg)
@@ -216,7 +225,6 @@
 						} else {
 							this.chatList = msgList
 						}
-						console.log('getMsgChat', this.chatList)
 					}
 				})
 			},

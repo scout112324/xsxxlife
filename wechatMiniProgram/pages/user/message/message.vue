@@ -25,8 +25,11 @@
 					<view class="name">
 						{{item.nickname}}
 					</view>
-					<view class="detail">
+					<view class="detail" v-if="item.type==0">
 						{{item.msg}}
+					</view>
+					<view class="detail" v-else>
+						【图片】
 					</view>
 				</view>
 				<view class="time">
@@ -113,6 +116,7 @@
 				msgList(params).then(res => {
 					if (res.code === 200) {
 						this.msgList = res.data
+						console.log('msgList', this.msgList)
 					}
 				})
 			},
@@ -127,6 +131,16 @@
 			},
 			// 点击进入在线聊天页面
 			handleJumpChat(userId) {
+				this.show = false
+				let params = {
+					all: 1,
+					userId: userId
+				}
+				msgRead(params).then(res => {
+					if (res.code === 200) {
+						this.getMsgList()
+					}
+				})
 				uni.navigateTo({
 					url: `/pages/user/chat/chat?userId=${userId}`
 				})
@@ -208,6 +222,8 @@
 				.center {
 					flex: 1;
 					margin: 0 35rpx;
+					/*超出隐藏*/
+					overflow: hidden;
 
 					.name {
 						font-size: 30rpx;
@@ -223,6 +239,13 @@
 					}
 
 					.detail {
+						width: 100%;
+						/*超出的空白区域不换行*/
+						white-space: nowrap;
+						/*超出隐藏*/
+						overflow: hidden;
+						/*文本超出显示省略号*/
+						text-overflow: ellipsis;
 						margin-top: 12rpx;
 						font-size: 24rpx;
 						font-weight: 400;
