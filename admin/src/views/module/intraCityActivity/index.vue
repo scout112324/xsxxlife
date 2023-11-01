@@ -89,7 +89,7 @@
     </div>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog class="common-dialog" :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog class="common-dialog" :title="diaTitle" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="内容" prop="examineStatus">
           <el-select v-model="form.examineStatus" placeholder="请审核">
