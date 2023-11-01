@@ -6,7 +6,6 @@
 					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
 					<view class="select-address">
 						<uni-data-picker popup-title="请选择所在地区" :localdata="dataTree" v-model="areas" @change="onchange"
-							@nodeclick="onnodeclick" @popupopened="onpopupopened" @popupclosed="onpopupclosed"
 							:clear-icon="false">
 						</uni-data-picker>
 						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
@@ -330,15 +329,6 @@
 			handleConfirm() {
 				this.show = false
 			},
-			onnodeclick(e) {
-				console.log(e);
-			},
-			onpopupopened(e) {
-				console.log('popupopened');
-			},
-			onpopupclosed(e) {
-				console.log('popupclosed');
-			},
 			onchange(e) {
 				console.log('onchange:', e);
 			},
@@ -405,6 +395,10 @@
 </script>
 
 <style lang="scss" scoped>
+	::v-deep .uni-data-tree-dialog {
+		top: 50%;
+	}
+
 	.home-page {
 
 		::v-deep .u-status-bar,
