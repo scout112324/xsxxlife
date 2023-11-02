@@ -2,7 +2,7 @@
 	<view class="home-page">
 		<u-navbar title="线上线下" placeholder leftIcon="" :titleStyle="titleStyle">
 			<view class="u-nav-slot" slot="left">
-				<view class="address" v-if="!!areas">
+				<view class="address">
 					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
 					<view class="select-address">
 						<uni-data-picker popup-title="请选择所在地区" :localdata="areaTree" v-model="areas" @change="onchange"
@@ -149,7 +149,7 @@
 						icon: "../../static/home/mianfeixianzhijiaoyi.png"
 					}
 				],
-				areas: "",
+				areas: [],
 				areaTree: [{
 					text: "上海市",
 					value: "上海市",
@@ -227,8 +227,15 @@
 			}
 		},
 		onShow() {
-			this.areas = `${uni.getStorageSync('province')}/${uni.getStorageSync('district')}`
-			console.log('areas1234567890', this.areas)
+			this.areas = [{
+					text: `${uni.getStorageSync('province')}`,
+					value: `${uni.getStorageSync('province')}`
+				},
+				{
+					text: `${uni.getStorageSync('district')}`,
+					value: `${uni.getStorageSync('district')}`
+				}
+			]
 			// 微信授权登录
 			let openId = uni.getStorageSync('openId')
 			if (openId) {
