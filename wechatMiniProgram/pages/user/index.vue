@@ -55,12 +55,14 @@
 
 <script>
 	import {
+		infoUser,
 		withdrawal
 	} from "@/api/user/index.js"
 	export default {
 		data() {
 			return {
 				avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
+				nickname: "",
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -140,14 +142,28 @@
 						}
 					]
 				},
-				money: 100
+				money: 0,
+				myInfo: {}
 			}
 		},
 		onReady() {
 			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
 			this.$refs.uForm.setRules(this.rules)
 		},
+		onShow() {
+			this.getInfoUser()
+		},
 		methods: {
+			// 获取我的信息
+			getInfoUser() {
+				infoUser().then(res => {
+					if (res.code === 200) {
+						this.myInfo = res.data
+						// this.avatarUrl = res.data.phone
+						this.money = res.data.realMoney
+					}
+				})
+			},
 			onChooseAvatar(e) {
 				const {
 					avatarUrl
@@ -213,7 +229,8 @@
 					let params = {
 						money: this.money,
 						name: this.userInfo.name,
-						phone: this.userInfo.account
+						phone: this.userInfo.account,
+						nickname: this.userInfo.nickname
 					}
 					withdrawal(params).then(res => {
 						if (res.code === 200) {
