@@ -67,7 +67,7 @@
 			}
 		},
 		created() {
-			this.pictureList = this.itemData?.picture.split(',')
+			this.pictureList = this.itemData.picture ? this.itemData.picture.split(',') : []
 		},
 		methods: {
 			handleJumpDetail() {

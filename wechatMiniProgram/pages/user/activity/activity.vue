@@ -10,7 +10,7 @@
 			</uni-easyinput>
 		</view>
 		<view class="tabs">
-			<u-tabs :list="list" @click="click" lineWidth="41" lineColor="#FFD100" :activeStyle="{
+			<u-tabs :list="list" @click="handleTab" lineWidth="41" lineColor="#FFD100" :activeStyle="{
 				            color: '#232624',
 				            fontWeight: 'bold',
 				            transform: 'scale(1.05)'
@@ -20,38 +20,51 @@
 				        }" itemStyle="padding-left: 28rpx; padding-right: 28rpx; height: 88rpx;"></u-tabs>
 		</view>
 		<view class="activity-list">
-			<view class="activity-item">
-				<view class="leaflet">
-
-				</view>
-				<view class="content">
-					<view class="title">
-						全民唱歌挑战赛全民唱歌挑战赛活动
+			<block v-for="item in activityListInfo" :key="item.id">
+				<view class="activity-item">
+					<view class="leaflet">
+						<block v-if="item.picture">
+							<image
+								v-if="imgType.includes(item.picture.split(',')[0].substr(item.picture.split(',')[0].lastIndexOf('.') + 1, item.picture.split(',')[0].length).toLowerCase())"
+								class="image" :src="item.picture.split(',')[0]" mode="">
+							</image>
+							<video v-else class="image" :src="item.picture.split(',')[0]" controls></video>
+						</block>
+						<image v-else src="../../../static/chat/avatar.png" mode=""></image>
 					</view>
-					<view class="item">
-						<view class="circle circle3"></view>
-						<view class="type">
-							活动开始时间: 2023年9月25日
+					<view class="content">
+						<view class="title">
+							{{item.title}}
+						</view>
+						<view class="item">
+							<view class="circle circle3"></view>
+							<view class="type">
+								活动开始时间: {{item.startTime}}
+							</view>
+						</view>
+						<view class="item">
+							<view class="circle circle4"></view>
+							<view class="type">
+								活动地点: {{item.place}}{{item.detailsPlace}}
+							</view>
 						</view>
 					</view>
-					<view class="item">
-						<view class="circle circle4"></view>
-						<view class="type">
-							活动地点: 上海市奉贤区金海公路3800号龙湖上海奉贤天街F2
-						</view>
+					<view class="footer">
+						<image v-if="item.photo" class="avatar" :src="item.photo" mode=""></image>
+						<image v-else class="avatar" src="../../../static/avatar.png" mode=""></image>
+						<text class="nickname">{{item.nickname || '管理'}}</text>
+						<uni-tag text="发布者" />
 					</view>
 				</view>
-				<view class="footer">
-					<image class="avatar" src="../../../static/chat/avatar.png" mode=""></image>
-					<text class="nickname">热量计算器</text>
-					<uni-tag text="发布者" />
-				</view>
-			</view>
+			</block>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		activityList
+	} from "@/api/user/index.js"
 	export default {
 		options: {
 			styleIsolation: 'shared',
@@ -67,18 +80,44 @@
 					name: '已开始',
 				}, {
 					name: '未开始'
-				}]
+				}],
+				isStart: 0,
+				activityListInfo: [],
+				pageNum: 1,
+				pageSize: 10,
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 			}
+		},
+		onShow() {
+			this.getActivityList()
 		},
 		methods: {
 			// 搜索
-			handleConfirm() {},
+			handleConfirm() {
+				this.getActivityList()
+			},
+			getActivityList() {
+				let params = {
+					search: this.keyword,
+					isStart: this.isStart,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				activityList(params).then(res => {
+					if (res.code === 200) {
+						this.activityListInfo = res.data
+					}
+				})
+			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/user/index"
 				})
 			},
-			click() {}
+			handleTab(item) {
+				this.isStart = item.index
+				this.getActivityList()
+			}
 		}
 	}
 </script>
@@ -144,9 +183,11 @@
 				box-sizing: border-box;
 
 				.leaflet {
-					height: 294rpx;
-					background: #D8D8D8;
-					border-radius: 20rpx 20rpx 0rpx 0rpx;
+					.image {
+						height: 294rpx;
+						width: 100%;
+						border-radius: 20rpx 20rpx 0rpx 0rpx;
+					}
 				}
 
 				.content {
