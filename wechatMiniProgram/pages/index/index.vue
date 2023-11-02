@@ -2,10 +2,10 @@
 	<view class="home-page">
 		<u-navbar title="线上线下" placeholder leftIcon="" :titleStyle="titleStyle">
 			<view class="u-nav-slot" slot="left">
-				<view class="address">
+				<view class="address" v-if="!!areas">
 					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
 					<view class="select-address">
-						<uni-data-picker popup-title="请选择所在地区" :localdata="dataTree" v-model="areas" @change="onchange"
+						<uni-data-picker popup-title="请选择所在地区" :localdata="areaTree" v-model="areas" @change="onchange"
 							:clear-icon="false">
 						</uni-data-picker>
 						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
@@ -100,7 +100,7 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
-				cityname: "上海市",
+				// cityname: "上海市",
 				text: ["发布闲置后支持线上线下交易啦～", "111"],
 				tabListInfo: [],
 				serviceData: [{
@@ -149,9 +149,8 @@
 						icon: "../../static/home/mianfeixianzhijiaoyi.png"
 					}
 				],
-
-				areas: '',
-				dataTree: [{
+				areas: "",
+				areaTree: [{
 					text: "上海市",
 					value: "上海市",
 					children: [{
@@ -228,6 +227,8 @@
 			}
 		},
 		onShow() {
+			this.areas = `${uni.getStorageSync('province')}/${uni.getStorageSync('district')}`
+			console.log('areas1234567890', this.areas)
 			// 微信授权登录
 			let openId = uni.getStorageSync('openId')
 			if (openId) {
@@ -235,23 +236,11 @@
 			} else {
 				this.goLogin()
 			}
-			if (this.$store.state.changeCity) {
-				this.cityname = this.$store.state.storeCityName
-			}
+			// if (this.$store.state.changeCity) {
+			// 	this.cityname = this.$store.state.storeCityName
+			// }
 		},
 		created() {
-			// 获取位置信息
-			uni.getLocation({
-				type: 'gcj02',
-				success(res) {
-					console.log(res)
-					uni.setStorageSync('latitude', res.latitude);
-					uni.setStorageSync('longitude', res.longitude);
-				},
-				fail(e) {
-					// empty
-				}
-			})
 			// 获取公告数据
 			this.getNoticeData()
 			this.getTabList()
@@ -330,6 +319,7 @@
 				this.show = false
 			},
 			onchange(e) {
+				this.areas = e.detail.value
 				console.log('onchange:', e);
 			},
 			// 点击更多跳转到闲置列表

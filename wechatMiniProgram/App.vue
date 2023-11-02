@@ -1,4 +1,7 @@
 <script>
+	import {
+		getArea
+	} from "@/api/common.js"
 	export default {
 		onLaunch: function() {
 
@@ -20,6 +23,27 @@
 			//         })
 			//     }
 			// })
+			// 获取位置信息
+			uni.getLocation({
+				type: 'gcj02',
+				success(res) {
+					uni.setStorageSync('latitude', res.latitude);
+					uni.setStorageSync('longitude', res.longitude);
+					let option = {
+						latitude: res.latitude,
+						longitude: res.longitude
+					}
+					getArea(option).then(res => {
+						if (res.statusCode === 200) {
+							uni.setStorageSync('province', res.data.result.addressComponent.province);
+							uni.setStorageSync('district', res.data.result.addressComponent.district);
+						}
+					})
+				},
+				fail(e) {
+					// empty
+				}
+			})
 		},
 		onHide: function() {
 
