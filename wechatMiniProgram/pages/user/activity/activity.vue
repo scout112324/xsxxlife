@@ -30,7 +30,7 @@
 							</image>
 							<video v-else class="image" :src="item.picture.split(',')[0]" controls></video>
 						</block>
-						<image v-else src="../../../static/chat/avatar.png" mode=""></image>
+						<image class="image" v-else src="../../../static/chat/avatar.png" mode=""></image>
 					</view>
 					<view class="content">
 						<view class="title">

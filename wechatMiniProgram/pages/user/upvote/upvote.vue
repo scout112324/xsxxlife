@@ -1,7 +1,7 @@
 <template>
 	<view class="upvote-page">
 		<view class="tabs">
-			<tab :pageType="pageType" @handleSupportTab="handleSupportTab"></tab>
+			<tab :list="list" :pageType="pageType" @handleSupportTab="handleSupportTab"></tab>
 		</view>
 		<view class="list-container">
 			<block v-for="item in supportListInfo" :key="item.id">
@@ -32,7 +32,25 @@
 				pageNum: 1,
 				pageSize: 10,
 				supportListInfo: [],
-				pageType: 'support'
+				pageType: 'support',
+				list: [{
+						name: '兼职'
+					}, {
+						name: '房屋转让'
+					}, {
+						name: '寻人寻物'
+					}, {
+						name: '闲置交易'
+					}, {
+						name: '同城活动'
+					},
+					{
+						name: '大件清运'
+					},
+					{
+						name: '资讯',
+					}
+				]
 			}
 		},
 		onShow() {

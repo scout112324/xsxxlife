@@ -1,7 +1,7 @@
 <template>
 	<view class="collection-page">
 		<view class="tabs">
-			<tab :pageType="pageType" @handleStarTab="handleStarTab"></tab>
+			<tab :list="list" :pageType="pageType" @handleStarTab="handleStarTab"></tab>
 		</view>
 		<view class="list-container">
 			<block v-for="item in starListInfo" :key="item.id">
@@ -31,7 +31,25 @@
 				pageNum: 1,
 				pageSize: 10,
 				starListInfo: [],
-				pageType: 'star'
+				pageType: 'star',
+				list: [{
+						name: '兼职'
+					}, {
+						name: '房屋转让'
+					}, {
+						name: '寻人寻物'
+					}, {
+						name: '闲置交易'
+					}, {
+						name: '同城活动'
+					},
+					{
+						name: '大件清运'
+					},
+					{
+						name: '资讯',
+					}
+				]
 			}
 		},
 		onShow() {
