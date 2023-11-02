@@ -1,19 +1,12 @@
 <template>
 	<view class="collection-page">
 		<view class="tabs">
-			<tab></tab>
+			<tab @handleStarTab="handleStarTab"></tab>
 		</view>
 		<view class="list-container">
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
+			<block v-for="item in starListInfo" :key="item.id">
+				<userItem :itemData="item" :typeStar="type"></userItem>
+			</block>
 		</view>
 	</view>
 </template>
@@ -21,6 +14,9 @@
 <script>
 	import tab from "@/components/tab.vue"
 	import userItem from "@/components/user_item.vue"
+	import {
+		starList
+	} from "@/api/user/index.js"
 	export default {
 		components: {
 			tab,
@@ -31,28 +27,37 @@
 		},
 		data() {
 			return {
-				list1: [{
-					name: '闲置',
-				}, {
-					name: '资讯',
-				}, {
-					name: '兼职'
-				}, {
-					name: '寻人寻物'
-				}, {
-					name: '大件清运'
-				}, {
-					name: '房屋转让'
-				}, {
-					name: '闲置交易'
-				}, {
-					name: '同城活动'
-				}, {
-					name: '闲置专区'
-				}]
+				type: 0,
+				pageNum: 1,
+				pageSize: 10,
+				starListInfo: []
 			}
 		},
-
+		onShow() {
+			this.getStarList()
+		},
+		methods: {
+			// tab切换
+			handleStarTab(item) {
+				this.type = item.index
+				this.getStarList()
+				console.log('item', this.type);
+			},
+			// 获取收藏列表
+			getStarList() {
+				let params = {
+					type: this.type,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				starList(params).then(res => {
+					if (res.code === 200) {
+						this.starListInfo = res.data
+						console.log(res.data)
+					}
+				})
+			}
+		}
 	}
 </script>
 

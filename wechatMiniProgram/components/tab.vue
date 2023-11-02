@@ -1,5 +1,5 @@
 <template>
-	<u-tabs :list="list1" @click="click" lineWidth="41" lineColor="#FFD100" :activeStyle="{
+	<u-tabs :list="list" @click="click" lineWidth="41" lineColor="#FFD100" :activeStyle="{
 		            color: '#232624',
 		            fontWeight: 'bold',
 		            transform: 'scale(1.05)'
@@ -16,30 +16,29 @@
 		},
 		data() {
 			return {
-				list1: [{
-					name: '闲置',
-				}, {
-					name: '资讯',
-				}, {
-					name: '兼职'
-				}, {
-					name: '寻人寻物'
-				}, {
-					name: '大件清运'
-				}, {
-					name: '房屋转让'
-				}, {
-					name: '闲置交易'
-				}, {
-					name: '同城活动'
-				}, {
-					name: '闲置专区'
-				}]
+				list: [{
+						name: '兼职'
+					}, {
+						name: '房屋转让'
+					}, {
+						name: '寻人寻物'
+					}, {
+						name: '闲置交易'
+					}, {
+						name: '同城活动'
+					},
+					{
+						name: '大件清运'
+					},
+					{
+						name: '资讯',
+					}
+				]
 			}
 		},
 		methods: {
 			click(item) {
-				console.log('item', item);
+				this.$emit('handleStarTab', item)
 			}
 		}
 	}

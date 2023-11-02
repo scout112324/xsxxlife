@@ -1,19 +1,29 @@
 <template>
 	<view class="user-item">
-		<image class="image" src="../../../static/chat/avatar.png" mode=""></image>
+		<image
+			v-if="itemData.picture && imgType.includes(pictureList[0].substr(pictureList[0].lastIndexOf('.') + 1, pictureList[0].length).toLowerCase())"
+			class="image" :src="pictureList[0]" mode=""></image>
+		<image v-else-if="!itemData.picture" class="image" src="../../../static/chat/avatar.png" mode=""></image>
+		<video v-else class="image" :src="pictureList[0]" controls></video>
 		<view class="content">
-			<view class="title">
-				出闲置全新Apple/IPhone15一台,出闲置全新Apple/IPhone15一台。
+			<view v-if="itemData.title" class="title"
+				:class="{'mul-title': !(typeStar!==0 && typeStar!==2 && typeStar!==4 && typeStar!==6)}">
+				{{itemData.title}}
 			</view>
-			<view class="price">
+			<view v-else-if="itemData.content" class="title"
+				:class="{'mul-title': !(typeStar!==0 && typeStar!==2 && typeStar!==4 && typeStar!==6)}">
+				{{itemData.content}}
+			</view>
+			<view class="price" v-if="typeStar!==0 && typeStar!==2 && typeStar!==4 && typeStar!==6">
 				<text class="unit">¥</text>
-				<text>279000</text>
+				<text>{{itemData.price}}</text>
 			</view>
 			<view class="footer">
 				<view class="left">
-					<image class="avatar" src="../../../static/chat/avatar.png" mode=""></image>
+					<image v-if="itemData.photo" class="avatar" src="../../../static/avatar.png" mode=""></image>
+					<image v-else class="avatar" src="../../../static/avatar.png" mode=""></image>
 					<view class="nickname">
-						热量计算器
+						{{itemData.nickname || '管理'}}
 					</view>
 				</view>
 				<view class="btn">
@@ -29,8 +39,23 @@
 		options: {
 			styleIsolation: 'shared',
 		},
+		props: {
+			itemData: {
+				type: Object
+			},
+			typeStar: {
+				type: Number,
+				default: 0
+			}
+		},
+		created() {
+			this.pictureList = this.itemData?.picture.split(',')
+		},
 		data() {
-			return {}
+			return {
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
+				pictureList: []
+			}
 		}
 	}
 </script>
@@ -51,6 +76,9 @@
 		.content {
 			flex: 1;
 			font-family: PingFangSC-Regular, PingFang SC;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
 
 			.title {
 				font-size: 28rpx;
@@ -61,6 +89,13 @@
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				overflow: hidden;
+
+				&.mul-title {
+					white-space: pre-wrap;
+					display: -webkit-box;
+					-webkit-line-clamp: 2; //第几行
+					-webkit-box-orient: vertical;
+				}
 			}
 
 			.price {

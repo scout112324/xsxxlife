@@ -11,7 +11,13 @@ const api = {
 	msgList: 'app/msg/list',
 	msgRead: 'app/msg/read',
 	msgChat: 'app/msg/chat',
-	websocket: 'websocket'
+	websocket: 'websocket',
+	starList: 'app/my/starList',
+	supportList: 'app/my/supportList',
+	activityList: 'app/my/activityList',
+	myPublic: 'app/my/myPublic',
+	orderRecord: 'app/my/order',
+
 }
 
 // 更改昵称或者头像
@@ -59,4 +65,29 @@ export const websocket = (param, option) => {
 			}
 		})
 	})
+}
+
+// 收藏列表
+export const starList = (param, option) => {
+	return request.get(api.starList, param)
+}
+
+// 获取点赞列表
+export const supportList = (param, option) => {
+	return request.get(api.supportList, param)
+}
+
+// 我的活动
+export const activityList = (param, option) => {
+	return request.get(api.activityList, param)
+}
+
+// 我的发布
+export const myPublic = (param, option) => {
+	return request.get(api.myPublic, param)
+}
+
+// 交易记录
+export const orderRecord = (param, option) => {
+	return request.get(api.orderRecord, param)
 }
