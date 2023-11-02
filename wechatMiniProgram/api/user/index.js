@@ -17,7 +17,7 @@ const api = {
 	activityList: 'app/my/activityList',
 	myPublic: 'app/my/myPublic',
 	orderRecord: 'app/my/order',
-
+	withdrawal: '/app/withdrawal/add',
 }
 
 // 更改昵称或者头像
@@ -90,4 +90,9 @@ export const myPublic = (param, option) => {
 // 交易记录
 export const orderRecord = (param, option) => {
 	return request.get(api.orderRecord, param)
+}
+
+// 增加提现申请
+export const withdrawal = (param, option) => {
+	return request.get(api.withdrawal, param)
 }

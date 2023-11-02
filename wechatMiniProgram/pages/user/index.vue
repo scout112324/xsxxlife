@@ -30,7 +30,7 @@
 							NEW
 						</view>
 						<view class="money" v-if="item.name=='点击提现'">
-							100￥
+							{{money}}￥
 						</view>
 						<uni-icons type="forward" size="22"></uni-icons>
 					</view>
@@ -54,6 +54,9 @@
 </template>
 
 <script>
+	import {
+		withdrawal
+	} from "@/api/user/index.js"
 	export default {
 		data() {
 			return {
@@ -137,6 +140,7 @@
 						}
 					]
 				},
+				money: 100
 			}
 		},
 		onReady() {
@@ -206,12 +210,21 @@
 			// 确认
 			handleConfirm() {
 				this.$refs.uForm.validate().then(res => {
-					console.log(this.userInfo)
-					this.userInfo = {
-						name: "",
-						account: ""
+					let params = {
+						money: this.money,
+						name: this.userInfo.name,
+						phone: this.userInfo.account
 					}
-					this.show = false
+					withdrawal(params).then(res => {
+						if (res.code === 200) {
+							uni.showToast({
+								title: '提现成功',
+								icon: 'success',
+								duration: 2000
+							})
+							this.show = false
+						}
+					})
 				}).catch(errors => {
 					console.log('校验失败')
 				})
