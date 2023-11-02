@@ -1,19 +1,12 @@
 <template>
 	<view class="upvote-page">
 		<view class="tabs">
-			<tab></tab>
+			<tab :pageType="pageType" @handleSupportTab="handleSupportTab"></tab>
 		</view>
 		<view class="list-container">
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
-			<userItem></userItem>
+			<block v-for="item in supportListInfo" :key="item.id">
+				<userItem :itemData="item" :typeStar="type"></userItem>
+			</block>
 		</view>
 	</view>
 </template>
@@ -21,6 +14,10 @@
 <script>
 	import tab from "@/components/tab.vue"
 	import userItem from "@/components/user_item.vue"
+	import {
+		supportList
+	} from "@/api/user/index.js"
+
 	export default {
 		components: {
 			tab,
@@ -31,28 +28,35 @@
 		},
 		data() {
 			return {
-				list1: [{
-					name: '闲置',
-				}, {
-					name: '资讯',
-				}, {
-					name: '兼职'
-				}, {
-					name: '寻人寻物'
-				}, {
-					name: '大件清运'
-				}, {
-					name: '房屋转让'
-				}, {
-					name: '闲置交易'
-				}, {
-					name: '同城活动'
-				}, {
-					name: '闲置专区'
-				}]
+				type: 0,
+				pageNum: 1,
+				pageSize: 10,
+				supportListInfo: [],
+				pageType: 'support'
 			}
 		},
-
+		onShow() {
+			this.getSupportList()
+		},
+		methods: {
+			handleSupportTab(item) {
+				this.type = item.index
+				this.getSupportList()
+			},
+			// 获取点赞列表
+			getSupportList() {
+				let params = {
+					type: this.type,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				supportList(params).then(res => {
+					if (res.code === 200) {
+						this.supportListInfo = res.data
+					}
+				})
+			}
+		}
 	}
 </script>
 

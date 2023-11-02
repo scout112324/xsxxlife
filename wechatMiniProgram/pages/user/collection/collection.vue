@@ -1,7 +1,7 @@
 <template>
 	<view class="collection-page">
 		<view class="tabs">
-			<tab @handleStarTab="handleStarTab"></tab>
+			<tab :pageType="pageType" @handleStarTab="handleStarTab"></tab>
 		</view>
 		<view class="list-container">
 			<block v-for="item in starListInfo" :key="item.id">
@@ -30,7 +30,8 @@
 				type: 0,
 				pageNum: 1,
 				pageSize: 10,
-				starListInfo: []
+				starListInfo: [],
+				pageType: 'star'
 			}
 		},
 		onShow() {
@@ -41,7 +42,6 @@
 			handleStarTab(item) {
 				this.type = item.index
 				this.getStarList()
-				console.log('item', this.type);
 			},
 			// 获取收藏列表
 			getStarList() {
@@ -53,7 +53,6 @@
 				starList(params).then(res => {
 					if (res.code === 200) {
 						this.starListInfo = res.data
-						console.log(res.data)
 					}
 				})
 			}

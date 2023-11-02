@@ -1,10 +1,12 @@
 <template>
 	<view class="user-item">
 		<image
-			v-if="itemData.picture && imgType.includes(pictureList[0].substr(pictureList[0].lastIndexOf('.') + 1, pictureList[0].length).toLowerCase())"
-			class="image" :src="pictureList[0]" mode=""></image>
-		<image v-else-if="!itemData.picture" class="image" src="../../../static/chat/avatar.png" mode=""></image>
-		<video v-else class="image" :src="pictureList[0]" controls></video>
+			v-if="pictureUrl && imgType.includes(pictureUrl.substr(pictureUrl.lastIndexOf('.') + 1, pictureUrl.length).toLowerCase())"
+			class="image" :src="pictureUrl" mode=""></image>
+		<video
+			v-else-if="pictureUrl && videoType.includes(pictureUrl.substr(pictureUrl.lastIndexOf('.') + 1, pictureUrl.length).toLowerCase())"
+			class="image" :src="pictureUrl" controls></video>
+		<image v-else class="image" src="../../../static/chat/avatar.png" mode=""></image>
 		<view class="content">
 			<view v-if="itemData.title" class="title"
 				:class="{'mul-title': !(typeStar!==0 && typeStar!==2 && typeStar!==4 && typeStar!==6)}">
@@ -49,12 +51,15 @@
 			}
 		},
 		created() {
-			this.pictureList = this.itemData?.picture.split(',')
+			this.pictureList = this.itemData.picture ? this.itemData.picture.split(',') : []
+			this.pictureUrl = this.itemData.picture ? this.pictureList[0] : ""
 		},
 		data() {
 			return {
 				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
-				pictureList: []
+				videoType: ['mp4'],
+				pictureList: [],
+				pictureUrl: ""
 			}
 		}
 	}

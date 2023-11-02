@@ -14,6 +14,12 @@
 		options: {
 			styleIsolation: 'shared',
 		},
+		props: {
+			pageType: {
+				type: String,
+				default: ""
+			}
+		},
 		data() {
 			return {
 				list: [{
@@ -38,7 +44,13 @@
 		},
 		methods: {
 			click(item) {
-				this.$emit('handleStarTab', item)
+				console.log(item)
+				if (this.pageType == 'star') {
+					this.$emit('handleStarTab', item)
+				} else if (this.pageType == 'support') {
+					console.log(item)
+					this.$emit('handleSupportTab', item)
+				}
 			}
 		}
 	}
