@@ -10,7 +10,7 @@
 			</uni-easyinput>
 		</view>
 		<view class="tabs">
-			<u-tabs :list="list" @click="click" lineWidth="41" lineColor="#FFD100" :activeStyle="{
+			<u-tabs :list="list" @click="handleTabClick" lineWidth="41" lineColor="#FFD100" :activeStyle="{
 				            color: '#232624',
 				            fontWeight: 'bold',
 				            transform: 'scale(1.05)'
@@ -20,37 +20,50 @@
 				        }" itemStyle="padding-left: 28rpx; padding-right: 28rpx; height: 88rpx;"></u-tabs>
 		</view>
 		<view class="list-container">
-			<view class="list-item">
-				<view class="header">
-					<image class="avatar" src="../../../static/chat/avatar.png" mode=""></image>
-					<view class="content">
-						出闲置全新！感兴趣的朋友看过来…
+			<block v-for="item in tradingList" :key="item.id">
+				<view class="list-item">
+					<view class="header">
+						<image v-if="item.photo" class="avatar" src="../../../static/avatar.png" mode=""></image>
+						<image v-else class="avatar" src="../../../static/avatar.png" mode=""></image>
+						<view class="content">
+							{{item.content}}
+						</view>
+						<view class="status">
+							{{item.payStatus==0 ? '待支付' : '已支付'}}
+						</view>
 					</view>
-					<view class="status">
-						交易成功
+					<view class="container">
+						<block v-if="item.picture">
+							<image
+								v-if="imgType.includes(item.picture.split(',')[0].substr(item.picture.split(',')[0].lastIndexOf('.') + 1, item.picture.split(',')[0].length).toLowerCase())"
+								class="logo" :src="item.picture.split(',')[0]" mode="">
+							</image>
+							<video v-else class="logo" :src="item.picture.split(',')[0]" controls></video>
+						</block>
+						<image class="logo" v-else src="../../../static/chat/avatar.png" mode=""></image>
+						<view class="info">
+							<text class="time">
+								下单时间：{{item.createTime}}
+							</text>
+							<text class="price">
+								总价：{{item.price}}
+							</text>
+						</view>
+					</view>
+					<view class="footer">
+						<button class="communicate">联系卖家</button>
+						<button class="delete">删除订单</button>
 					</view>
 				</view>
-				<view class="container">
-					<image class="logo" src="../../../static/chat/avatar.png" mode=""></image>
-					<view class="info">
-						<text class="time">
-							下单时间：2023年9月23日
-						</text>
-						<text class="price">
-							总价：279000
-						</text>
-					</view>
-				</view>
-				<view class="footer">
-					<button class="communicate">联系卖家</button>
-					<button class="delete">删除订单</button>
-				</view>
-			</view>
+			</block>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		orderRecord
+	} from "@/api/user/index.js"
 	export default {
 		data() {
 			return {
@@ -59,6 +72,7 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 				list: [{
 					name: '全部',
 				}, {
@@ -67,18 +81,43 @@
 					name: '已付款',
 				}, {
 					name: '已卖出'
-				}]
+				}],
+				type: 0,
+				pageNum: 1,
+				pageSize: 10,
+				tradingList: []
 			}
+		},
+		onShow() {
+			this.getOrderRecord()
 		},
 		methods: {
 			// 搜索
-			handleConfirm() {},
+			handleConfirm() {
+				this.getOrderRecord()
+			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/user/index"
 				})
 			},
-			click() {}
+			handleTabClick(item) {
+				this.type = item.index
+				this.getOrderRecord()
+			},
+			getOrderRecord() {
+				let params = {
+					search: this.keyword,
+					type: this.type,
+					pageNum: this.pageNum,
+					pageSize: this.pageSize
+				}
+				orderRecord(params).then(res => {
+					if (res.code === 200) {
+						this.tradingList = res.data
+					}
+				})
+			}
 		}
 	}
 </script>
