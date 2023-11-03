@@ -18,6 +18,7 @@ const api = {
 	addBig: 'app/big/add',
 	activityList: 'app/activity/list',
 	addActivity: 'app/activity/add',
+	updateActivity: 'app/activity/update',
 	entryActivity: 'app/activity/entry',
 	intservInfoHome: 'app/home/intservInfo',
 	intservHome: 'app/home/intserv',
@@ -106,6 +107,11 @@ export const activityList = (param, option) => {
 // 增加同城活动
 export const addActivity = (param, option) => {
 	return request.post(api.addActivity, param)
+}
+
+// 编辑同城活动
+export const updateActivity = (param, option) => {
+	return request.post(api.updateActivity, param)
 }
 
 // 报名同城活动

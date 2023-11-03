@@ -114,6 +114,7 @@
 				this.content = this.itemData.content
 				this.place = this.itemData.place
 				this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
+				this.picture = this.mediaList
 				this.itemId = this.itemData.id
 			}
 		},

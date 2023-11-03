@@ -8,7 +8,8 @@
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile"></caremaItem>
+					<caremaItem :mediaList="mediaList" :cameraNumber="cameraNumber"
+						@handleUploadFile="handleUploadFile"></caremaItem>
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../../../static/home/dingwei.png" mode=""></image>
@@ -17,7 +18,8 @@
 				</view>
 			</view>
 			<view class="message">
-				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
+				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx"
+					:key='keydata'>
 					<u-form-item label="活动开始时间" prop="startTime" borderBottom @click="showStartTime = true">
 						<u--input v-model="userInfo.startTime" disabled disabledColor="#ffffff" placeholder="请选择"
 							border="none"></u--input>
@@ -55,7 +57,8 @@
 <script>
 	import caremaItem from "@/components/camera_item.vue"
 	import {
-		addActivity
+		addActivity,
+		updateActivity
 	} from "@/api/index/index.js"
 	export default {
 		components: {
@@ -107,11 +110,38 @@
 				},
 				radio: '',
 				switchVal: false,
+				itemData: {},
+				keydata: '1',
+				mediaList: [],
+				itemId: ""
 			}
 		},
 		onReady() {
 			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
 			this.$refs.uForm.setRules(this.rules)
+		},
+		onLoad(options) {
+			if (JSON.stringify(options) != "{}") {
+				this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			}
+		},
+		mounted() {
+			if (this.itemData) {
+				this.keydata++;
+				let obj = {
+					startTime: this.itemData.startTime,
+					deadline: this.itemData.endTime,
+					limitPeople: this.itemData.limitPeople,
+					title: this.itemData.title,
+					detailsPlace: this.itemData.detailsPlace
+				}
+				this.userInfo = obj
+				this.content = this.itemData.content
+				this.place = this.itemData.place
+				this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
+				this.picture = this.mediaList
+				this.itemId = this.itemData.id
+			}
 		},
 		methods: {
 			keyboardheightchange(event) {
@@ -123,31 +153,57 @@
 			},
 			// 发布
 			handlePublish() {
+				this.keydata++;
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						let params = {
-							startTime: this.userInfo.startTime,
-							endTime: this.userInfo.deadline,
-							place: this.place,
-							detailsPlace: this.userInfo.detailsPlace,
-							limitPeople: this.userInfo.limitPeople,
-							content: this.content,
-							title: this.userInfo.title,
-							picture: this.picture ? this.picture.toString() : "",
-						}
-						addActivity(params).then(res => {
-							if (res.code === 200) {
-								uni.showToast({
-									title: '发布成功',
-									icon: 'success',
-									duration: 2000
-								})
-								uni.navigateTo({
-									url: "/pages/index/service/intraCityActivity"
-								})
+						if (this.itemId) {
+							let params = {
+								id: this.itemId,
+								startTime: this.userInfo.startTime,
+								endTime: this.userInfo.deadline,
+								place: this.place,
+								detailsPlace: this.userInfo.detailsPlace,
+								limitPeople: this.userInfo.limitPeople,
+								content: this.content,
+								title: this.userInfo.title,
+								picture: this.picture ? this.picture.toString() : "",
 							}
-						})
-						console.log(params)
+							updateActivity(params).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										title: '编辑成功',
+										icon: 'success',
+										duration: 2000
+									})
+									uni.navigateTo({
+										url: "/pages/index/service/intraCityActivity"
+									})
+								}
+							})
+						} else {
+							let params = {
+								startTime: this.userInfo.startTime,
+								endTime: this.userInfo.deadline,
+								place: this.place,
+								detailsPlace: this.userInfo.detailsPlace,
+								limitPeople: this.userInfo.limitPeople,
+								content: this.content,
+								title: this.userInfo.title,
+								picture: this.picture ? this.picture.toString() : "",
+							}
+							addActivity(params).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										title: '发布成功',
+										icon: 'success',
+										duration: 2000
+									})
+									uni.navigateTo({
+										url: "/pages/index/service/intraCityActivity"
+									})
+								}
+							})
+						}
 					} else {
 						console.log('验证失败');
 					}

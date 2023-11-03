@@ -26,8 +26,8 @@
 							border="none"></u--input>
 						<u-icon slot="right" name="arrow-right"></u-icon>
 					</u-form-item> -->
-					<u-form-item label="产品价格" prop="realPrice" borderBottom>
-						<u--input v-model="userInfo.realPrice" border="none" placeholder="请填写产品价格"></u--input>
+					<u-form-item label="产品价格" prop="price" borderBottom>
+						<u--input v-model="userInfo.price" border="none" placeholder="请填写产品价格"></u--input>
 					</u-form-item>
 					<u-form-item label="选择交易方式" prop="saleType" borderBottom labelPosition="top">
 						<u-checkbox-group v-model="userInfo.saleType">
@@ -72,7 +72,7 @@
 				showType: false,
 				place: "",
 				userInfo: {
-					realPrice: '',
+					price: '',
 					saleType: [],
 					phone: '',
 					// type: '',
@@ -94,7 +94,7 @@
 					}
 				],
 				rules: {
-					realPrice: [{
+					price: [{
 						required: true,
 						message: '请填写产品价格',
 						// blur和change事件触发检验
@@ -153,7 +153,7 @@
 			if (this.itemData) {
 				this.keydata++;
 				let obj = {
-					realPrice: this.itemData.realPrice,
+					price: this.itemData.price,
 					phone: this.itemData.phone,
 					saleType: this.itemData.saleType
 				}
@@ -161,6 +161,7 @@
 				this.content = this.itemData.content
 				this.place = this.itemData.place
 				this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
+				this.picture = this.mediaList
 				console.log('this.mediaList', this.mediaList)
 				this.itemId = this.itemData.id
 			}
@@ -181,7 +182,7 @@
 						if (this.itemId) {
 							let param = {
 								id: this.itemId,
-								realPrice: this.userInfo.realPrice,
+								price: this.userInfo.price,
 								saleType: this.userInfo.saleType.toString(),
 								place: this.place,
 								content: this.content,
@@ -202,7 +203,7 @@
 							})
 						} else {
 							let param = {
-								realPrice: this.userInfo.realPrice,
+								price: this.userInfo.price,
 								saleType: this.userInfo.saleType.toString(),
 								place: this.place,
 								content: this.content,

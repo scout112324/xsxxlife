@@ -1,11 +1,14 @@
 <template>
 	<view class="part-time-item">
-		<view class="leaflet">
+		<view class="leaflet" v-if="pictureList.length>0">
 			<image
 				v-if="imgType.includes(pictureList[0].substr(pictureList[0].lastIndexOf('.') + 1, pictureList[0].length).toLowerCase())"
 				class="image" :src="pictureList[0]" mode="">
 			</image>
 			<video v-else class="image" :src="pictureList[0]" controls></video>
+		</view>
+		<view class="leaflet" v-else>
+			<image class="image" src="../../../../static/home/load.png" mode=""></image>
 		</view>
 		<view class="content">
 			<view class="title">
