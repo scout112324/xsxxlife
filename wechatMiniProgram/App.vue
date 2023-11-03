@@ -7,41 +7,32 @@
 
 		},
 		onShow: function() {
-			// uni.setTabBarBadge({
-			// 	index: 3,
-			// 	text: '99+'
-			// })
-			// uni.authorize({
-			//     scope: 'scope.userLocation',
-			//     success() {
-			//         uni.getLocation({
-			//         	type: 'wgs84',
-			//         	success: function (res) {
-			//         		console.log('当前位置的经度：' + res.longitude);
-			//         		console.log('当前位置的纬度：' + res.latitude);
-			//         	}
-			//         })
-			//     }
-			// })
 			// 获取位置信息
-			uni.getLocation({
-				type: 'gcj02',
-				success(res) {
-					uni.setStorageSync('latitude', res.latitude);
-					uni.setStorageSync('longitude', res.longitude);
-					let option = {
-						latitude: res.latitude,
-						longitude: res.longitude
-					}
-					getArea(option).then(res => {
-						if (res.statusCode === 200) {
-							uni.setStorageSync('province', res.data.result.addressComponent.province);
-							uni.setStorageSync('district', res.data.result.addressComponent.district);
+			uni.authorize({
+				scope: 'scope.userLocation',
+				success() {
+					uni.getLocation({
+						type: 'gcj02',
+						success(res) {
+							uni.setStorageSync('latitude', res.latitude);
+							uni.setStorageSync('longitude', res.longitude);
+							let option = {
+								latitude: res.latitude,
+								longitude: res.longitude
+							}
+							getArea(option).then(res => {
+								if (res.statusCode === 200) {
+									uni.setStorageSync('province', res.data.result
+										.addressComponent.province);
+									uni.setStorageSync('district', res.data.result
+										.addressComponent.district);
+								}
+							})
+						},
+						fail(e) {
+							// empty
 						}
 					})
-				},
-				fail(e) {
-					// empty
 				}
 			})
 		},

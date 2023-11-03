@@ -95,10 +95,16 @@
 			}
 		},
 		created() {
-			this.pictureList = this.itemData?.picture.split(',').length > 2 ?
-				this.itemData?.picture.split(',').slice(0, 3) :
-				this.itemData?.picture.split(',')
-			// console.log(this.pictureList)
+			console.log('this.itemData.picture', this.itemData)
+			if (this.itemData && !this.itemData.picture) {
+				this.pictureList = []
+			} else if (this.itemData.picture.split(',').length > 2) {
+				this.pictureList = this.itemData.picture.split(',').slice(0, 3)
+			} else if (this.itemData.picture.split(',').length > 1) {
+				this.pictureList = this.itemData.picture.split(',').slice(0, 2)
+			} else {
+				this.pictureList = this.itemData.picture.split(',')
+			}
 		},
 		methods: {
 			handleClick() {
