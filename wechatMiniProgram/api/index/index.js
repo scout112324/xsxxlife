@@ -10,6 +10,7 @@ const api = {
 	concatJob: 'app/job/concat',
 	houseList: 'app/house/list',
 	addHouse: 'app/house/add',
+	updateHouse: '/app/house/update',
 	findList: 'app/find/list',
 	addFind: 'app/find/add',
 	bigList: 'app/big/list',
@@ -64,6 +65,11 @@ export const houseList = (param, option) => {
 // 增加房屋转让
 export const addHouse = (param, option) => {
 	return request.post(api.addHouse, param)
+}
+
+// 编辑房屋转让
+export const updateHouse = (param, option) => {
+	return request.post(api.updateHouse, param)
 }
 
 // 查询寻人寻物列表

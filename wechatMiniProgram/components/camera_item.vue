@@ -47,10 +47,28 @@
 				type: Number,
 				default: 3
 			},
-			// pageType: {
-			// 	type: String,
-			// 	default: ""
-			// }
+			mediaList: {
+				type: Array,
+				default: []
+			}
+		},
+		watch: {
+			mediaList: {
+				handler(newVal, oldVal) {
+					if (newVal.length > 0) {
+						newVal.forEach(item => {
+							if (this.imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length)
+									.toLowerCase())) {
+								return this.imageList.push(item)
+							} else {
+								return this.videoList.push(item)
+							}
+						})
+						this.fileList = this.imageList.concat(this.videoList)
+					}
+				},
+				immediate: true
+			}
 		},
 		data() {
 			return {
@@ -72,7 +90,8 @@
 				],
 				cameraIndex: 0,
 				VideoOfImagesShow: true,
-				fileList: []
+				fileList: [],
+				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 			}
 		},
 		onReady() {
@@ -190,6 +209,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							this.imageList.splice(index, 1)
+							console.log('delect', this.imageList, this.fileList)
 							if (this.imageList.length + this.videoList.length >= this.cameraNumber) {
 								this.VideoOfImagesShow = false
 							} else {

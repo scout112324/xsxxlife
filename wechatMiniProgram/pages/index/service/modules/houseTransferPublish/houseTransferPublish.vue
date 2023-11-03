@@ -8,7 +8,9 @@
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile"></caremaItem>
+					<caremaItem :mediaList="mediaList" :cameraNumber="cameraNumber"
+						@handleUploadFile="handleUploadFile">
+					</caremaItem>
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../../../static/home/dingwei.png" mode=""></image>
@@ -17,7 +19,8 @@
 				</view>
 			</view>
 			<view class="message">
-				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
+				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx"
+					:key='keydata'>
 					<u-form-item label="价格" prop="price" borderBottom>
 						<u--input v-model="userInfo.price" border="none" placeholder="请填写产品价格"></u--input>
 					</u-form-item>
@@ -39,7 +42,8 @@
 <script>
 	import caremaItem from "@/components/camera_item.vue"
 	import {
-		addHouse
+		addHouse,
+		updateHouse
 	} from "@/api/index/index.js"
 	export default {
 		components: {
@@ -50,7 +54,7 @@
 				cameraNumber: 9,
 				content: "",
 				place: "",
-				picture: "",
+				picture: [],
 				userInfo: {
 					price: '',
 					phone: '',
@@ -82,12 +86,33 @@
 					}],
 				},
 				radio: '',
-				switchVal: false
+				switchVal: false,
+				itemData: {},
+				keydata: '1',
+				mediaList: [],
+				itemId: ""
 			}
 		},
 		onReady() {
 			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
 			this.$refs.uForm.setRules(this.rules)
+		},
+		onLoad(options) {
+			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			console.log('itemData', this.itemData)
+		},
+		mounted() {
+			this.keydata++;
+			let obj = {
+				price: this.itemData.price,
+				phone: this.itemData.phone,
+				detailsPlace: this.itemData.detailsPlace
+			}
+			this.userInfo = obj
+			this.content = this.itemData.content
+			this.place = this.itemData.place
+			this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
+			this.itemId = this.itemData.id
 		},
 		methods: {
 			keyboardheightchange(event) {
@@ -99,28 +124,53 @@
 			},
 			// 发布
 			handlePublish() {
+				this.keydata++;
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						let params = {
-							place: this.place,
-							content: this.content,
-							picture: this.picture ? this.picture.toString() : "",
-							phone: this.userInfo.phone,
-							detailsPlace: this.userInfo.detailsPlace,
-							price: this.userInfo.price
-						}
-						addHouse(params).then(res => {
-							if (res.code === 200) {
-								uni.showToast({
-									title: '发布成功',
-									icon: 'success',
-									duration: 2000
-								})
-								uni.navigateTo({
-									url: "/pages/index/service/houseTransfer"
-								})
+						if (this.itemId) {
+							let params = {
+								id: this.itemId,
+								place: this.place,
+								content: this.content,
+								picture: this.picture ? this.picture.toString() : "",
+								phone: this.userInfo.phone,
+								detailsPlace: this.userInfo.detailsPlace,
+								price: this.userInfo.price
 							}
-						})
+							updateHouse(params).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										title: '编辑成功',
+										icon: 'success',
+										duration: 2000
+									})
+									uni.navigateTo({
+										url: "/pages/index/service/houseTransfer"
+									})
+								}
+							})
+						} else {
+							let params = {
+								place: this.place,
+								content: this.content,
+								picture: this.picture ? this.picture.toString() : "",
+								phone: this.userInfo.phone,
+								detailsPlace: this.userInfo.detailsPlace,
+								price: this.userInfo.price
+							}
+							addHouse(params).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										title: '发布成功',
+										icon: 'success',
+										duration: 2000
+									})
+									uni.navigateTo({
+										url: "/pages/index/service/houseTransfer"
+									})
+								}
+							})
+						}
 					} else {
 						console.log('验证失败');
 					}

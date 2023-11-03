@@ -38,7 +38,7 @@
 								<text>{{item.price}}</text>
 							</view>
 							<view class="price" v-else></view>
-							<view class="btn">
+							<view class="btn" v-if="type!==0" @click="handleEditClick(item)">
 								<button class="edit">编辑</button>
 							</view>
 						</view>
@@ -92,6 +92,16 @@
 			this.getMyPublic()
 		},
 		methods: {
+			// 编辑
+			handleEditClick(item) {
+				switch (this.type) {
+					case 1:
+						uni.navigateTo({
+							url: `/pages/index/service/modules/houseTransferPublish/houseTransferPublish?itemData=${encodeURIComponent(JSON.stringify(item))}`
+						})
+						break
+				}
+			},
 			handlePublishTab(item) {
 				this.type = item.index
 				this.getMyPublic()
