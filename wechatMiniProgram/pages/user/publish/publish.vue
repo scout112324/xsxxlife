@@ -105,6 +105,21 @@
 							url: `/pages/index/service/modules/lookForPeoplePublish/lookForPeoplePublish?itemData=${encodeURIComponent(JSON.stringify(item))}`
 						})
 						break
+					case 3:
+						uni.navigateTo({
+							url: `/pages/unused/addUnused/addUnused?itemData=${encodeURIComponent(JSON.stringify(item))}`
+						})
+						break
+					case 4:
+						uni.navigateTo({
+							url: `/pages/index/service/modules/intraCityPublish/intraCityPublish?itemData=${encodeURIComponent(JSON.stringify(item))}`
+						})
+						break
+					case 5:
+						uni.navigateTo({
+							url: `/pages/index/service/modules/largeShipmentPublish/largeShipmentPublish?itemData=${encodeURIComponent(JSON.stringify(item))}`
+						})
+						break
 				}
 			},
 			handlePublishTab(item) {

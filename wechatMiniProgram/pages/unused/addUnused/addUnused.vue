@@ -8,7 +8,8 @@
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :pageType="pageType" :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile">
+					<caremaItem :mediaList="mediaList" :cameraNumber="cameraNumber"
+						@handleUploadFile="handleUploadFile">
 					</caremaItem>
 				</view>
 				<view class="address">
@@ -18,7 +19,8 @@
 				</view>
 			</view>
 			<view class="message">
-				<u-form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
+				<u-form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx"
+					:key='keydata'>
 					<!-- <u-form-item label="闲置类型" prop="type" borderBottom @click="showType = true;">
 						<u--input v-model="userInfo.type" disabled disabledColor="#ffffff" placeholder="请选择"
 							border="none"></u--input>
@@ -52,7 +54,8 @@
 <script>
 	import caremaItem from "@/components/camera_item.vue"
 	import {
-		addUnused
+		addUnused,
+		updateUnused
 	} from "@/api/unused/index.js"
 
 	export default {
@@ -129,12 +132,38 @@
 					// }],
 				},
 				radio: '',
-				switchVal: false
+				switchVal: false,
+				itemData: {},
+				keydata: '1',
+				mediaList: [],
+				itemId: ""
 			}
 		},
 		onReady() {
 			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
 			this.$refs.uForm.setRules(this.rules)
+		},
+		onLoad(options) {
+			if (JSON.stringify(options) != "{}") {
+				this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+				console.log('this.itemData', this.itemData)
+			}
+		},
+		mounted() {
+			if (this.itemData) {
+				this.keydata++;
+				let obj = {
+					realPrice: this.itemData.realPrice,
+					phone: this.itemData.phone,
+					saleType: this.itemData.saleType
+				}
+				this.userInfo = obj
+				this.content = this.itemData.content
+				this.place = this.itemData.place
+				this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
+				console.log('this.mediaList', this.mediaList)
+				this.itemId = this.itemData.id
+			}
 		},
 		methods: {
 			keyboardheightchange(event) {
@@ -146,28 +175,53 @@
 			},
 			// 发布
 			handlePublish() {
+				this.keydata++;
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						let param = {
-							realPrice: this.userInfo.realPrice,
-							saleType: this.userInfo.saleType.toString(),
-							place: this.place,
-							content: this.content,
-							picture: this.picture.toString(),
-							phone: this.userInfo.phone
-						}
-						addUnused(param).then(res => {
-							if(res.code===200) {
-								uni.showToast({
-									title: '发布成功',
-									icon: 'success',
-									duration: 2000
-								}) 
-								uni.switchTab({
-									url: "/pages/unused/index"
-								})
+						if (this.itemId) {
+							let param = {
+								id: this.itemId,
+								realPrice: this.userInfo.realPrice,
+								saleType: this.userInfo.saleType.toString(),
+								place: this.place,
+								content: this.content,
+								picture: this.picture.toString(),
+								phone: this.userInfo.phone
 							}
-						})
+							updateUnused(param).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										title: '编辑成功',
+										icon: 'success',
+										duration: 2000
+									})
+									uni.switchTab({
+										url: "/pages/unused/index"
+									})
+								}
+							})
+						} else {
+							let param = {
+								realPrice: this.userInfo.realPrice,
+								saleType: this.userInfo.saleType.toString(),
+								place: this.place,
+								content: this.content,
+								picture: this.picture.toString(),
+								phone: this.userInfo.phone
+							}
+							addUnused(param).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										title: '发布成功',
+										icon: 'success',
+										duration: 2000
+									})
+									uni.switchTab({
+										url: "/pages/unused/index"
+									})
+								}
+							})
+						}
 					} else {
 						console.log('验证失败');
 					}
