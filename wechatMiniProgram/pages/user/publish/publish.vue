@@ -100,6 +100,11 @@
 							url: `/pages/index/service/modules/houseTransferPublish/houseTransferPublish?itemData=${encodeURIComponent(JSON.stringify(item))}`
 						})
 						break
+					case 2:
+						uni.navigateTo({
+							url: `/pages/index/service/modules/lookForPeoplePublish/lookForPeoplePublish?itemData=${encodeURIComponent(JSON.stringify(item))}`
+						})
+						break
 				}
 			},
 			handlePublishTab(item) {

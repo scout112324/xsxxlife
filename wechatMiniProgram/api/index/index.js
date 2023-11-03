@@ -13,6 +13,7 @@ const api = {
 	updateHouse: '/app/house/update',
 	findList: 'app/find/list',
 	addFind: 'app/find/add',
+	updateFind: '/app/find/update',
 	bigList: 'app/big/list',
 	addBig: 'app/big/add',
 	activityList: 'app/activity/list',
@@ -80,6 +81,11 @@ export const findList = (param, option) => {
 // 增加寻人寻物
 export const addFind = (param, option) => {
 	return request.post(api.addFind, param)
+}
+
+// 编辑寻人寻物
+export const updateFind = (param, option) => {
+	return request.post(api.updateFind, param)
 }
 
 // 获取大件清运列表

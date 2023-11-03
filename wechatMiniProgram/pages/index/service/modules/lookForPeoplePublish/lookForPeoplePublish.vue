@@ -8,7 +8,8 @@
 				</scroll-view>
 				<!-- 上传图片 -->
 				<view class="wrap-img">
-					<caremaItem :cameraNumber="cameraNumber" @handleUploadFile="handleUploadFile"></caremaItem>
+					<caremaItem :mediaList="mediaList" :cameraNumber="cameraNumber"
+						@handleUploadFile="handleUploadFile"></caremaItem>
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../../../static/home/dingwei.png" mode=""></image>
@@ -17,7 +18,8 @@
 				</view>
 			</view>
 			<view class="message">
-				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx">
+				<u--form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx"
+					:key='keydata'>
 					<u-form-item label="联系方式" prop="phone" borderBottom>
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写你的联系方式"></u--input>
 					</u-form-item>
@@ -33,7 +35,8 @@
 <script>
 	import caremaItem from "@/components/camera_item.vue"
 	import {
-		addFind
+		addFind,
+		updateFind
 	} from "@/api/index/index.js"
 	export default {
 		components: {
@@ -65,11 +68,33 @@
 				},
 				radio: '',
 				switchVal: false,
+				itemData: {},
+				keydata: '1',
+				mediaList: [],
+				itemId: ""
 			}
 		},
 		onReady() {
 			//如果需要兼容微信小程序，并且校验规则中含有方法等，只能通过setRules方法设置规则。
 			this.$refs.uForm.setRules(this.rules)
+		},
+		onLoad(options) {
+			if (JSON.stringify(options) != "{}") {
+				this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			}
+		},
+		mounted() {
+			if (this.itemData) {
+				this.keydata++;
+				let obj = {
+					phone: this.itemData.phone,
+				}
+				this.userInfo = obj
+				this.content = this.itemData.content
+				this.place = this.itemData.place
+				this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
+				this.itemId = this.itemData.id
+			}
 		},
 		methods: {
 			keyboardheightchange(event) {
@@ -81,26 +106,49 @@
 			},
 			// 发布
 			handlePublish() {
+				this.keydata++;
 				this.$refs.uForm.validate().then(valid => {
 					if (valid) {
-						let params = {
-							place: this.place,
-							content: this.content,
-							picture: this.picture ? this.picture.toString() : "",
-							phone: this.userInfo.phone,
-						}
-						addFind(params).then(res => {
-							if (res.code === 200) {
-								uni.showToast({
-									title: '发布成功',
-									icon: 'success',
-									duration: 2000
-								})
-								uni.navigateTo({
-									url: "/pages/index/service/lookForPeople"
-								})
+						if (this.itemId) {
+							let params = {
+								id: this.itemId,
+								place: this.place,
+								content: this.content,
+								picture: this.picture ? this.picture.toString() : "",
+								phone: this.userInfo.phone,
 							}
-						})
+							updateFind(params).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										title: '编辑成功',
+										icon: 'success',
+										duration: 2000
+									})
+									uni.navigateTo({
+										url: "/pages/index/service/lookForPeople"
+									})
+								}
+							})
+						} else {
+							let params = {
+								place: this.place,
+								content: this.content,
+								picture: this.picture ? this.picture.toString() : "",
+								phone: this.userInfo.phone,
+							}
+							addFind(params).then(res => {
+								if (res.code === 200) {
+									uni.showToast({
+										title: '发布成功',
+										icon: 'success',
+										duration: 2000
+									})
+									uni.navigateTo({
+										url: "/pages/index/service/lookForPeople"
+									})
+								}
+							})
+						}
 					} else {
 						console.log('验证失败');
 					}
