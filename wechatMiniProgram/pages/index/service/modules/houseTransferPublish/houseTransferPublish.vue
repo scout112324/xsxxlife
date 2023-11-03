@@ -98,21 +98,24 @@
 			this.$refs.uForm.setRules(this.rules)
 		},
 		onLoad(options) {
-			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
-			console.log('itemData', this.itemData)
+			if (JSON.stringify(options) != "{}") {
+				this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			}
 		},
 		mounted() {
-			this.keydata++;
-			let obj = {
-				price: this.itemData.price,
-				phone: this.itemData.phone,
-				detailsPlace: this.itemData.detailsPlace
+			if (this.itemData) {
+				this.keydata++;
+				let obj = {
+					price: this.itemData.price,
+					phone: this.itemData.phone,
+					detailsPlace: this.itemData.detailsPlace
+				}
+				this.userInfo = obj
+				this.content = this.itemData.content
+				this.place = this.itemData.place
+				this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
+				this.itemId = this.itemData.id
 			}
-			this.userInfo = obj
-			this.content = this.itemData.content
-			this.place = this.itemData.place
-			this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
-			this.itemId = this.itemData.id
 		},
 		methods: {
 			keyboardheightchange(event) {

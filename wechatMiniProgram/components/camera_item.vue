@@ -208,8 +208,11 @@
 					content: "是否要删除该图片",
 					success: (res) => {
 						if (res.confirm) {
-							this.imageList.splice(index, 1)
-							console.log('delect', this.imageList, this.fileList)
+							let result = this.imageList.splice(index, 1)
+							let resPic = this.fileList.filter(item => {
+								return item !== result[0]
+							})
+							this.$emit('handleUploadFile', resPic)
 							if (this.imageList.length + this.videoList.length >= this.cameraNumber) {
 								this.VideoOfImagesShow = false
 							} else {
@@ -225,7 +228,11 @@
 					content: "是否要删除此视频",
 					success: (res) => {
 						if (res.confirm) {
-							this.videoList.splice(index, 1)
+							let result = this.videoList.splice(index, 1)
+							let resPic = this.fileList.filter(item => {
+								return item !== result[0]
+							})
+							this.$emit('handleUploadFile', resPic)
 							if (this.imageList.length + this.videoList.length >= this.cameraNumber) {
 								this.VideoOfImagesShow = false
 							} else {
