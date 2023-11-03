@@ -16,6 +16,7 @@ const api = {
 	updateFind: '/app/find/update',
 	bigList: 'app/big/list',
 	addBig: 'app/big/add',
+	updateBig: 'app/big/update',
 	activityList: 'app/activity/list',
 	addActivity: 'app/activity/add',
 	updateActivity: 'app/activity/update',
@@ -97,6 +98,11 @@ export const bigList = (param, option) => {
 // 增加大件清运
 export const addBig = (param, option) => {
 	return request.post(api.addBig, param)
+}
+
+// 编辑大件清运
+export const updateBig = (param, option) => {
+	return request.post(api.updateBig, param)
 }
 
 // 查询同城活动
