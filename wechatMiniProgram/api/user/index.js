@@ -19,6 +19,11 @@ const api = {
 	orderRecord: 'app/my/order',
 	withdrawal: 'app/withdrawal/add',
 	infoUser: 'app/user/info',
+	deleteHouse: 'app/house/delete',
+	deleteFind: 'app/find/delete',
+	deleteUnused: 'app/unused/delete',
+	deleteActivity: 'app/activity/delete',
+	deleteBig: 'app/big/delete',
 }
 
 // 更改昵称或者头像
@@ -101,4 +106,29 @@ export const withdrawal = (param, option) => {
 // 查询自己的信息
 export const infoUser = (param, option) => {
 	return request.get(api.infoUser, param)
+}
+
+// 删除房屋转让
+export const deleteHouse = (param, option) => {
+	return request.get(api.deleteHouse, param)
+}
+
+// 删除寻人寻物
+export const deleteFind = (param, option) => {
+	return request.get(api.deleteFind, param)
+}
+
+// 删除闲置交易
+export const deleteUnused = (param, option) => {
+	return request.get(api.deleteUnused, param)
+}
+
+// 删除同城活动
+export const deleteActivity = (param, option) => {
+	return request.get(api.deleteActivity, param)
+}
+
+// 删除大件清运
+export const deleteBig = (param, option) => {
+	return request.get(api.deleteBig, param)
 }

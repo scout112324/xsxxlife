@@ -38,21 +38,31 @@
 								<text>{{item.price}}</text>
 							</view>
 							<view class="price" v-else></view>
-							<view class="btn" v-if="type!==0" @click="handleEditClick(item)">
-								<button class="edit">编辑</button>
+							<view class="btn" v-if="type!==0">
+								<button class="btn-item delete" @click.stop="handleDeleteClick(item.id)">删除</button>
+								<button class="btn-item" @click.stop="handleEditClick(item)">编辑</button>
 							</view>
 						</view>
 					</view>
 				</view>
 			</block>
 		</view>
+		<uni-popup ref="alertDialog" type="dialog">
+			<uni-popup-dialog :type="msgType" cancelText="关闭" confirmText="同意" title="提示" content="确认要删除这条发布内容吗？"
+				@confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import tab from "@/components/tab.vue"
 	import {
-		myPublic
+		myPublic,
+		deleteHouse,
+		deleteFind,
+		deleteUnused,
+		deleteActivity,
+		deleteBig
 	} from "@/api/user/index.js"
 	export default {
 		components: {
@@ -85,13 +95,99 @@
 					{
 						name: '大件清运'
 					}
-				]
+				],
+				msgType: 'info',
+				itemId: ""
 			}
 		},
 		onShow() {
 			this.getMyPublic()
 		},
 		methods: {
+			dialogClose() {
+				this.$refs.alertDialog.close()
+				this.itemId = ""
+			},
+			dialogConfirm() {
+				this.$refs.alertDialog.close()
+				console.log('item', this.itemId, this.type)
+				if (this.type == 1) {
+					let params = {
+						id: this.itemId
+					}
+					deleteHouse(params).then(res => {
+						if (res.code === 200) {
+							this.getMyPublic()
+							uni.showToast({
+								title: '删除成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else if (this.type == 2) {
+					let params = {
+						id: this.itemId
+					}
+					deleteFind(params).then(res => {
+						if (res.code === 200) {
+							this.getMyPublic()
+							uni.showToast({
+								title: '删除成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else if (this.type == 3) {
+					let params = {
+						id: this.itemId
+					}
+					deleteUnused(params).then(res => {
+						if (res.code === 200) {
+							this.getMyPublic()
+							uni.showToast({
+								title: '删除成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else if (this.type == 4) {
+					let params = {
+						id: this.itemId
+					}
+					deleteActivity(params).then(res => {
+						if (res.code === 200) {
+							this.getMyPublic()
+							uni.showToast({
+								title: '删除成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				} else if (this.type == 5) {
+					let params = {
+						id: this.itemId
+					}
+					deleteBig(params).then(res => {
+						if (res.code === 200) {
+							this.getMyPublic()
+							uni.showToast({
+								title: '删除成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					})
+				}
+			},
+			// 删除
+			handleDeleteClick(id) {
+				this.$refs.alertDialog.open()
+				this.itemId = id
+			},
 			// 编辑
 			handleEditClick(item) {
 				switch (this.type) {
@@ -241,7 +337,14 @@
 						}
 
 						.btn {
-							::v-deep .edit {
+							display: flex;
+							align-items: center;
+
+							::v-deep .btn-item {
+								&.delete {
+									margin-right: 10rpx;
+								}
+
 								&::after {
 									border: none
 								}
