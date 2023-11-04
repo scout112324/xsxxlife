@@ -13,7 +13,9 @@
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../../../static/home/dingwei.png" mode=""></image>
-					<u--input class="address-name" placeholder="请输入地址" border="none" v-model="place"></u--input>
+					<uni-data-picker ellipsis popup-title="请选择所在地区" :localdata="areaTree" v-model="place"
+						@change="onchange" :clear-icon="false">
+					</uni-data-picker>
 					<image class="tiaozhuan" src="../../../../../static/unused/tiaozhuan.png" mode=""></image>
 				</view>
 			</view>
@@ -52,6 +54,9 @@
 		addBig,
 		updateBig
 	} from "@/api/index/index.js"
+	import {
+		areaData
+	} from "@/utils/area.js"
 	export default {
 		components: {
 			caremaItem
@@ -60,7 +65,15 @@
 			return {
 				cameraNumber: 9,
 				content: "",
-				place: "",
+				place: [{
+						text: `${uni.getStorageSync('province')}`,
+						value: `${uni.getStorageSync('province')}`
+					},
+					{
+						text: `${uni.getStorageSync('district')}`,
+						value: `${uni.getStorageSync('district')}`
+					}
+				],
 				picture: [],
 				showComeTime: false,
 				// comeTime: uni.$u.timeFormat(Number(new Date()), 'yyyy-mm-dd hh:MM:ss')
@@ -106,7 +119,8 @@
 				itemData: {},
 				keydata: '1',
 				mediaList: [],
-				itemId: ""
+				itemId: "",
+				areaTree: [],
 			}
 		},
 		onReady() {
@@ -114,12 +128,13 @@
 			this.$refs.uForm.setRules(this.rules)
 		},
 		onLoad(options) {
+			this.areaTree = areaData
 			if (JSON.stringify(options) != "{}") {
 				this.itemData = JSON.parse(decodeURIComponent(options.itemData))
 			}
 		},
 		mounted() {
-			if (this.itemData) {
+			if (JSON.stringify(this.itemData) != "{}") {
 				this.keydata++;
 				let obj = {
 					price: this.itemData.price,
@@ -129,13 +144,25 @@
 				}
 				this.userInfo = obj
 				this.content = this.itemData.content
-				this.place = this.itemData.place
+				this.place = this.itemData.place.split(',').map(item => {
+					return {
+						text: item,
+						value: item
+					}
+				})
 				this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
 				this.picture = this.mediaList
 				this.itemId = this.itemData.id
 			}
 		},
 		methods: {
+			onchange(e) {
+				this.place = []
+				e.detail.value.forEach(item => {
+					return this.place.push(item.text)
+				})
+				this.place = this.place.toString()
+			},
 			keyboardheightchange(event) {
 				this.bottomHeight = event.detail.height
 			},
@@ -151,7 +178,9 @@
 						if (this.itemId) {
 							let params = {
 								id: this.itemId,
-								place: this.place,
+								place: typeof(this.place) == "string" ? this.place : this.place.map(item => {
+									return item.text
+								}).toString(),
 								content: this.content,
 								picture: this.picture ? this.picture.toString() : "",
 								phone: this.userInfo.phone,
@@ -269,7 +298,7 @@
 				}
 
 				.address {
-					width: 209rpx;
+					width: 80%;
 					height: 46rpx;
 					background: #F1F1F1;
 					border-radius: 20rpx;
@@ -286,12 +315,13 @@
 						height: 21rpx;
 					}
 
-					.address-name {
-						font-size: 22rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
-						font-weight: 400;
-						color: #232624;
-						line-height: 30rpx;
+					::v-deep .input-value-border {
+						width: 100%;
+						border: none;
+					}
+
+					::v-deep .arrow-area {
+						display: none !important;
 					}
 
 					.tiaozhuan {

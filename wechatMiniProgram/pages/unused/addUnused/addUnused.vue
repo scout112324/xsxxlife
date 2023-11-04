@@ -140,7 +140,6 @@
 			this.areaTree = areaData
 			if (JSON.stringify(options) != "{}") {
 				this.itemData = JSON.parse(decodeURIComponent(options.itemData))
-				console.log('this.itemData', this.itemData)
 			}
 		},
 		mounted() {

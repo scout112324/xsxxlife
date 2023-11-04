@@ -118,7 +118,7 @@
 					this.pageNum += 1
 					let params = {
 						search: this.keyword,
-						type: this.type,
+						isStart: this.isStart,
 						pageNum: this.pageNum,
 						pageSize: this.pageSize
 					}
