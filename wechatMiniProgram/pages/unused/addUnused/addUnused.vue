@@ -197,7 +197,9 @@
 								id: this.itemId,
 								realPrice: this.userInfo.realPrice,
 								saleType: this.userInfo.saleType + "",
-								place: this.place,
+								place: typeof(this.place) == "string" ? this.place : this.place.map(item => {
+									return item.text
+								}).toString(),
 								content: this.content,
 								picture: this.picture.toString(),
 								phone: this.userInfo.phone
