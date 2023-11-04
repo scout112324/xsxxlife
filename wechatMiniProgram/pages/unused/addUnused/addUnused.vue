@@ -26,13 +26,14 @@
 							border="none"></u--input>
 						<u-icon slot="right" name="arrow-right"></u-icon>
 					</u-form-item> -->
-					<u-form-item label="产品价格" prop="price" borderBottom>
-						<u--input v-model="userInfo.price" border="none" placeholder="请填写产品价格"></u--input>
+					<u-form-item label="产品价格" prop="realPrice" borderBottom>
+						<u--input v-model="userInfo.realPrice" border="none" placeholder="请填写产品价格"></u--input>
 					</u-form-item>
 					<u-form-item label="选择交易方式" prop="saleType" borderBottom labelPosition="top">
 						<u-checkbox-group v-model="userInfo.saleType">
-							<u-checkbox :customStyle="{marginRight: '16rpx'}" v-for="(item, index) in checkboxList"
-								:key="index" :label="item.name" :name="item.value">
+							<u-checkbox shape="circle" :customStyle="{marginRight: '16rpx'}"
+								v-for="(item, index) in checkboxList" :key="index" :label="item.name"
+								:name="item.value">
 							</u-checkbox>
 						</u-checkbox-group>
 					</u-form-item>
@@ -72,7 +73,7 @@
 				showType: false,
 				place: "",
 				userInfo: {
-					price: '',
+					realPrice: '',
 					saleType: [],
 					phone: '',
 					// type: '',
@@ -94,11 +95,11 @@
 					}
 				],
 				rules: {
-					price: [{
+					realPrice: [{
 						required: true,
 						message: '请填写产品价格',
 						// blur和change事件触发检验
-						trigger: ['blur', 'change'],
+						trigger: ['blur'],
 					}],
 					phone: [{
 							required: true,
@@ -119,8 +120,9 @@
 					],
 					saleType: [{
 						type: 'array',
+						max: 1,
 						required: true,
-						message: '请至少选择一个交易类型',
+						message: '只能选择一个交易类型',
 						trigger: 'change'
 					}],
 					// type: [{
@@ -153,9 +155,9 @@
 			if (this.itemData) {
 				this.keydata++;
 				let obj = {
-					price: this.itemData.price,
+					realPrice: this.itemData.realPrice,
 					phone: this.itemData.phone,
-					saleType: this.itemData.saleType
+					saleType: this.itemData.saleType == 1 ? [1] : [0]
 				}
 				this.userInfo = obj
 				this.content = this.itemData.content
@@ -182,7 +184,7 @@
 						if (this.itemId) {
 							let param = {
 								id: this.itemId,
-								price: this.userInfo.price,
+								realPrice: this.userInfo.realPrice,
 								saleType: this.userInfo.saleType.toString(),
 								place: this.place,
 								content: this.content,
@@ -203,7 +205,7 @@
 							})
 						} else {
 							let param = {
-								price: this.userInfo.price,
+								realPrice: this.userInfo.realPrice,
 								saleType: this.userInfo.saleType.toString(),
 								place: this.place,
 								content: this.content,
