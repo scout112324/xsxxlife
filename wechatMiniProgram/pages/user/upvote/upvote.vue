@@ -3,11 +3,11 @@
 		<view class="tabs">
 			<tab :list="list" :pageType="pageType" @handleSupportTab="handleSupportTab"></tab>
 		</view>
-		<view class="list-container">
+		<scroll-view class="list-container" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 			<block v-for="item in supportListInfo" :key="item.id">
 				<userItem :itemData="item" :typeStar="type"></userItem>
 			</block>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -50,15 +50,63 @@
 					{
 						name: '资讯',
 					}
-				]
+				],
+				hasMore: true,
+				screenHeight: 0,
 			}
+		},
+		onReady() {
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 300 + 'rpx'
 		},
 		onShow() {
 			this.getSupportList()
 		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.supportListInfo = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getSupportList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					let params = {
+						search: this.keyword,
+						type: this.type,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					supportList(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.supportListInfo = this.supportListInfo.concat(res.data)
+						}
+					})
+				}
+			},
 			handleSupportTab(item) {
 				this.type = item.index
+				this.pageNum = 1
+				this.hasMore = true
+				this.supportListInfo = []
 				this.getSupportList()
 			},
 			// 获取点赞列表
@@ -91,6 +139,7 @@
 		.list-container {
 			background-color: #ffffff;
 			padding: 32rpx 28rpx;
+			width: auto;
 		}
 	}
 </style>

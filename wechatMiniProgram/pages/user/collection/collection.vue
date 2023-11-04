@@ -55,7 +55,7 @@
 			}
 		},
 		onReady() {
-			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 400 + 'rpx'
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 300 + 'rpx'
 		},
 		onShow() {
 			this.getStarList()
@@ -68,7 +68,7 @@
 			// 下拉刷新
 			refresh() {
 				this.pageNum = 1
-				this.publishListInfo = []
+				this.starListInfo = []
 				this.hasMore = true
 				setTimeout(() => {
 					this.getStarList();
