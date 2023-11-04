@@ -14,7 +14,9 @@
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../static/home/dingwei.png" mode=""></image>
-					<u--input class="address-name" placeholder="请输入地址" border="none" v-model="place"></u--input>
+					<uni-data-picker ellipsis popup-title="请选择所在地区" :localdata="areaTree" v-model="place"
+						@change="onchange" :clear-icon="false">
+					</uni-data-picker>
 					<image class="tiaozhuan" src="../../../static/unused/tiaozhuan.png" mode=""></image>
 				</view>
 			</view>
@@ -50,6 +52,9 @@
 		addUnused,
 		updateUnused
 	} from "@/api/unused/index.js"
+	import {
+		areaData
+	} from "@/utils/area.js"
 
 	export default {
 		components: {
@@ -63,12 +68,19 @@
 				picture: [],
 				// imgList: [],
 				showType: false,
-				place: "",
+				place: [{
+						text: `${uni.getStorageSync('province')}`,
+						value: `${uni.getStorageSync('province')}`
+					},
+					{
+						text: `${uni.getStorageSync('district')}`,
+						value: `${uni.getStorageSync('district')}`
+					}
+				],
 				userInfo: {
 					realPrice: '',
 					saleType: [],
 					phone: '',
-					// type: '',
 				},
 				actions: [{
 						name: '男',
@@ -123,7 +135,8 @@
 				itemData: {},
 				keydata: '1',
 				mediaList: [],
-				itemId: ""
+				itemId: "",
+				areaTree: [],
 			}
 		},
 		onReady() {
@@ -131,22 +144,28 @@
 			this.$refs.uForm.setRules(this.rules)
 		},
 		onLoad(options) {
+			this.areaTree = areaData
 			if (JSON.stringify(options) != "{}") {
 				this.itemData = JSON.parse(decodeURIComponent(options.itemData))
 				console.log('this.itemData', this.itemData)
 			}
 		},
 		mounted() {
-			if (this.itemData) {
+			if (JSON.stringify(this.itemData) != "{}") {
 				this.keydata++;
 				let obj = {
-					realPrice: this.itemData.realPrice.toString(),
+					realPrice: this.itemData.realPrice + "",
 					phone: this.itemData.phone,
 					saleType: this.itemData.saleType == 1 ? [1] : [0]
 				}
 				this.userInfo = obj
 				this.content = this.itemData.content
-				this.place = this.itemData.place
+				this.place = this.itemData.place.split(',').map(item => {
+					return {
+						text: item,
+						value: item
+					}
+				})
 				this.mediaList = this.itemData.picture ? this.itemData.picture.split(',') : []
 				this.picture = this.mediaList
 				console.log('this.mediaList', this.mediaList)
@@ -154,6 +173,13 @@
 			}
 		},
 		methods: {
+			onchange(e) {
+				this.place = []
+				e.detail.value.forEach(item => {
+					return this.place.push(item.text)
+				})
+				this.place = this.place.toString()
+			},
 			keyboardheightchange(event) {
 				this.bottomHeight = event.detail.height
 			},
@@ -170,7 +196,7 @@
 							let param = {
 								id: this.itemId,
 								realPrice: this.userInfo.realPrice,
-								saleType: this.userInfo.saleType.toString(),
+								saleType: this.userInfo.saleType + "",
 								place: this.place,
 								content: this.content,
 								picture: this.picture.toString(),
@@ -191,7 +217,7 @@
 						} else {
 							let param = {
 								realPrice: this.userInfo.realPrice,
-								saleType: this.userInfo.saleType.toString(),
+								saleType: this.userInfo.saleType + "",
 								place: this.place,
 								content: this.content,
 								picture: this.picture.toString(),
@@ -276,7 +302,7 @@
 				}
 
 				.address {
-					width: 300rpx;
+					width: 80%;
 					height: 46rpx;
 					background: #F1F1F1;
 					border-radius: 20rpx;
@@ -293,12 +319,13 @@
 						height: 21rpx;
 					}
 
-					.address-name {
-						font-size: 22rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
-						font-weight: 400;
-						color: #232624;
-						line-height: 30rpx;
+					::v-deep .input-value-border {
+						width: 100%;
+						border: none;
+					}
+
+					::v-deep .arrow-area {
+						display: none !important;
 					}
 
 					.tiaozhuan {
