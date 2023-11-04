@@ -5,8 +5,8 @@
 				<view class="address">
 					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
 					<view class="select-address">
-						<uni-data-picker popup-title="请选择所在地区" :localdata="areaTree" v-model="areas" @change="onchange"
-							:clear-icon="false">
+						<uni-data-picker style="width: 220rpx;" ellipsis popup-title="请选择所在地区" :localdata="areaTree"
+							v-model="areas" @change="onchange" :clear-icon="false">
 						</uni-data-picker>
 						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
 					</view>
@@ -64,9 +64,6 @@
 						{{communityInfo.title}}
 					</view>
 					<image class="code" :src="communityInfo.qrCode" mode=""></image>
-					<!-- <view class="code-info">
-						该二维码将在2023年9月20日失效
-					</view> -->
 				</view>
 			</view>
 		</u-modal>
@@ -76,6 +73,9 @@
 <script>
 	import infoItem from "@/components/info_item.vue"
 	import communityItem from "@/components/community_item.vue"
+	import {
+		areaData
+	} from "@/utils/area.js"
 	import {
 		login,
 		getNotice,
@@ -150,75 +150,7 @@
 					}
 				],
 				areas: [],
-				areaTree: [{
-					text: "上海市",
-					value: "上海市",
-					children: [{
-							text: "黄浦区",
-							value: "黄浦区"
-						},
-						{
-							text: "徐汇区",
-							value: "徐汇区"
-						},
-						{
-							text: "长宁区",
-							value: "长宁区"
-						},
-						{
-							text: "静安区",
-							value: "静安区"
-						},
-						{
-							text: "普陀区",
-							value: "普陀区"
-						},
-						{
-							text: "虹口区",
-							value: "虹口区"
-						},
-						{
-							text: "杨浦区",
-							value: "杨浦区"
-						},
-						{
-							text: "浦东新区",
-							value: "浦东新区"
-						},
-						{
-							text: "闵行区",
-							value: "闵行区"
-						},
-						{
-							text: "宝山区",
-							value: "宝山区"
-						},
-						{
-							text: "嘉定区",
-							value: "嘉定区"
-						},
-						{
-							text: "金山区",
-							value: "金山区"
-						},
-						{
-							text: "松江区",
-							value: "松江区"
-						},
-						{
-							text: "青浦区",
-							value: "青浦区"
-						},
-						{
-							text: "奉贤区",
-							value: "奉贤区"
-						},
-						{
-							text: "崇明区",
-							value: "崇明区"
-						}
-					],
-				}],
+				areaTree: [],
 				show: false,
 				unusedList: [],
 				communityList: [],
@@ -227,6 +159,7 @@
 			}
 		},
 		onShow() {
+			this.areaTree = areaData
 			this.areas = [{
 					text: `${uni.getStorageSync('province')}`,
 					value: `${uni.getStorageSync('province')}`
@@ -603,12 +536,6 @@
 					height: 350rpx;
 					margin: 40rpx 0 35rpx 0;
 					background: #D8D8D8;
-				}
-
-				.code-info {
-					font-size: 22rpx;
-					font-weight: 400;
-					color: #707070;
 				}
 			}
 		}
