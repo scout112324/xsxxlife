@@ -103,8 +103,7 @@
 			}
 		},
 		onReady() {
-			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 510 + 'rpx'
-			console.log(this.screenHeight)
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 400 + 'rpx'
 		},
 		onShow() {
 			this.getMyPublic()

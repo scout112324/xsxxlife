@@ -282,7 +282,7 @@
 			"path": "pages/user/collection/collection",
 			"style": {
 				"navigationBarTitleText": "收藏列表",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationBarBackgroundColor": "#FBE64D",
 				"navigationBarTextStyle": "black"
 			}
@@ -291,7 +291,7 @@
 			"path": "pages/user/upvote/upvote",
 			"style": {
 				"navigationBarTitleText": "点赞列表",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationBarBackgroundColor": "#FBE64D",
 				"navigationBarTextStyle": "black"
 			}
@@ -309,7 +309,7 @@
 			"path": "pages/user/activity/activity",
 			"style": {
 				"navigationBarTitleText": "我的活动",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}
@@ -327,7 +327,7 @@
 			"path": "pages/user/trading/trading",
 			"style": {
 				"navigationBarTitleText": "交易记录",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}

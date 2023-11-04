@@ -3,11 +3,11 @@
 		<view class="tabs">
 			<tab :list="list" :pageType="pageType" @handleStarTab="handleStarTab"></tab>
 		</view>
-		<view class="list-container">
+		<scroll-view class="list-container" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 			<block v-for="item in starListInfo" :key="item.id">
 				<userItem :itemData="item" :typeStar="type"></userItem>
 			</block>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -49,16 +49,64 @@
 					{
 						name: '资讯',
 					}
-				]
+				],
+				hasMore: true,
+				screenHeight: 0,
 			}
+		},
+		onReady() {
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 400 + 'rpx'
 		},
 		onShow() {
 			this.getStarList()
 		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.publishListInfo = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getStarList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					let params = {
+						search: this.keyword,
+						type: this.type,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					starList(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.starListInfo = this.starListInfo.concat(res.data)
+						}
+					})
+				}
+			},
 			// tab切换
 			handleStarTab(item) {
 				this.type = item.index
+				this.pageNum = 1
+				this.hasMore = true
+				this.starListInfo = []
 				this.getStarList()
 			},
 			// 获取收藏列表
@@ -91,8 +139,7 @@
 		.list-container {
 			background-color: #ffffff;
 			padding: 32rpx 28rpx;
-
-
+			width: auto;
 		}
 	}
 </style>
