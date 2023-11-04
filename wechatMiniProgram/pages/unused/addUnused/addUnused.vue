@@ -82,13 +82,6 @@
 					saleType: [],
 					phone: '',
 				},
-				actions: [{
-						name: '男',
-					},
-					{
-						name: '女',
-					}
-				],
 				checkboxList: [{
 						name: '通过平台',
 						value: 0
