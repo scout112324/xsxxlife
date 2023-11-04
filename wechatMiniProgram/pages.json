@@ -318,7 +318,7 @@
 			"path": "pages/user/publish/publish",
 			"style": {
 				"navigationBarTitleText": "我的发布",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
 			}

@@ -12,7 +12,7 @@
 		<view class="tabs">
 			<tab :list="list" :pageType="pageType" @handlePublishTab="handlePublishTab"></tab>
 		</view>
-		<view class="list-container">
+		<scroll-view class="list-container" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 			<block v-for="item in publishListInfo" :key="item.id">
 				<view class="list-item">
 					<block v-if="item.picture">
@@ -46,7 +46,7 @@
 					</view>
 				</view>
 			</block>
-		</view>
+		</scroll-view>
 		<uni-popup ref="alertDialog" type="dialog">
 			<uni-popup-dialog :type="msgType" cancelText="关闭" confirmText="同意" title="提示" content="确认要删除这条发布内容吗？"
 				@confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
@@ -71,6 +71,7 @@
 		data() {
 			return {
 				keyword: "",
+				screenHeight: 0,
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -97,13 +98,58 @@
 					}
 				],
 				msgType: 'info',
-				itemId: ""
+				itemId: "",
+				hasMore: true
 			}
+		},
+		onReady() {
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 510 + 'rpx'
+			console.log(this.screenHeight)
 		},
 		onShow() {
 			this.getMyPublic()
 		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.publishListInfo = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getMyPublic();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					let params = {
+						search: this.keyword,
+						type: this.type,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					myPublic(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.publishListInfo = this.publishListInfo.concat(res.data)
+						}
+					})
+				}
+			},
 			dialogClose() {
 				this.$refs.alertDialog.close()
 				this.itemId = ""
@@ -220,6 +266,9 @@
 			},
 			handlePublishTab(item) {
 				this.type = item.index
+				this.pageNum = 1
+				this.hasMore = true
+				this.publishListInfo = []
 				this.getMyPublic()
 			},
 			getMyPublic() {
@@ -285,6 +334,7 @@
 		.list-container {
 			background-color: #ffffff;
 			padding: 32rpx 28rpx 30rpx 28rpx;
+			width: auto;
 
 			.list-item {
 				display: flex;
