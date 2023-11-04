@@ -223,6 +223,12 @@
 							icon: 'success',
 							duration: 2000
 						})
+					} else {
+						uni.showToast({
+							title: '您已报名成功!',
+							icon: 'success',
+							duration: 2000
+						})
 					}
 				})
 			},

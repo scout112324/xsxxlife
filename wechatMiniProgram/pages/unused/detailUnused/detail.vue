@@ -16,12 +16,11 @@
 					</view>
 				</view>
 				<view class="share">
-					<uni-button type="primary" class="uni-btn" @click="handleShareClick">
+					<button class="uni-btn" open-type="share">
 						<image src="../../../static/components/zhuanfa.png" mode="aspectFit"
 							style="width: 25rpx; height: 25rpx;margin-right: 8rpx; ">
-						</image>
-						分享
-					</uni-button>
+							分享
+					</button>
 				</view>
 			</view>
 			<view class="price">
@@ -165,7 +164,6 @@
 				this.level = level
 				this.childId = id
 			},
-			handleShareClick() {},
 			// 去支付
 			handleCommuniteClick() {
 				submitWx({

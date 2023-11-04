@@ -15,18 +15,15 @@
 					</view>
 				</view>
 				<view class="share">
-					<uni-button type="primary" class="uni-btn" @click="handleShareClick">
-						<image src="../../../../../static/components/zhuanfa.png" mode="aspectFit"
-							style="width: 25rpx; height: 25rpx;margin-right: 8rpx; ">
-						</image>
-						分享
-					</uni-button>
+					<view class="item">
+						<button class="uni-btn" open-type="share">
+							<image src="../../../../../static/components/zhuanfa.png" mode="aspectFit"
+								style="width: 25rpx; height: 25rpx;margin-right: 8rpx; ">
+								分享
+						</button>
+					</view>
 				</view>
 			</view>
-			<!-- <view class="price">
-				<text class="unit">¥</text>
-				<text class="num">279000</text>
-			</view> -->
 			<view v-if="itemData.content" class="content" v-html="itemData.content"></view>
 			<view v-else class="content">
 				'暂无'
@@ -72,8 +69,8 @@
 					</view>
 				</view>
 			</view>
-			<view class="communicate">
-				<uni-button type="primary" class="uni-btn" @click="handleCommuniteClick">
+			<view class="communicate" @click="handleCommuniteClick(itemData.phone)">
+				<uni-button type="primary" class="uni-btn">
 					<image src="../../../../../static/home/lianxi.png" mode="aspectFit"
 						style="width: 34rpx; height: 31rpx;margin-right: 8rpx; ">
 					</image>
@@ -170,8 +167,17 @@
 				this.level = level
 				this.childId = id
 			},
-			handleShareClick() {},
-			handleCommuniteClick() {},
+			handleCommuniteClick(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber: phoneNumber,
+					success: (e) => {
+						console.log(e)
+					},
+					fail: (e) => {
+						console.log(e)
+					}
+				});
+			},
 			// 点赞
 			handleSupport(item) {
 				this.supportParams = {
