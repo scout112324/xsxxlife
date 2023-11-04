@@ -21,11 +21,6 @@
 			<view class="message">
 				<u-form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx"
 					:key='keydata'>
-					<!-- <u-form-item label="闲置类型" prop="type" borderBottom @click="showType = true;">
-						<u--input v-model="userInfo.type" disabled disabledColor="#ffffff" placeholder="请选择"
-							border="none"></u--input>
-						<u-icon slot="right" name="arrow-right"></u-icon>
-					</u-form-item> -->
 					<u-form-item label="产品价格" prop="realPrice" borderBottom>
 						<u--input v-model="userInfo.realPrice" border="none" placeholder="请填写产品价格"></u--input>
 					</u-form-item>
@@ -41,9 +36,6 @@
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写你的手机号码"></u--input>
 					</u-form-item>
 				</u-form>
-				<!-- <u-action-sheet :show="showType" :actions="actions" title="请选择闲置类型" @close="showType = false"
-					@select="typeSelect">
-				</u-action-sheet> -->
 			</view>
 		</view>
 		<view class="publish">
@@ -99,7 +91,7 @@
 						required: true,
 						message: '请填写产品价格',
 						// blur和change事件触发检验
-						trigger: ['blur'],
+						trigger: ['change', 'blur'],
 					}],
 					phone: [{
 							required: true,
@@ -125,13 +117,6 @@
 						message: '只能选择一个交易类型',
 						trigger: 'change'
 					}],
-					// type: [{
-					// 	type: 'string',
-					// 	max: 1,
-					// 	required: true,
-					// 	message: '请选择闲置类型',
-					// 	trigger: ['blur', 'change']
-					// }],
 				},
 				radio: '',
 				switchVal: false,
@@ -155,7 +140,7 @@
 			if (this.itemData) {
 				this.keydata++;
 				let obj = {
-					realPrice: this.itemData.realPrice,
+					realPrice: this.itemData.realPrice.toString(),
 					phone: this.itemData.phone,
 					saleType: this.itemData.saleType == 1 ? [1] : [0]
 				}
@@ -230,10 +215,6 @@
 					}
 				})
 			},
-			// typeSelect(e) {
-			// 	this.userInfo.type = e.name
-			// 	this.$refs.uForm.validateField('type')
-			// },
 		}
 	}
 </script>
