@@ -19,7 +19,7 @@
 				            transform: 'scale(1)'
 				        }" itemStyle="padding-left: 28rpx; padding-right: 28rpx; height: 88rpx;"></u-tabs>
 		</view>
-		<view class="activity-list">
+		<scroll-view class="activity-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 			<block v-for="item in activityListInfo" :key="item.id">
 				<view class="activity-item">
 					<view class="leaflet">
@@ -57,7 +57,7 @@
 					</view>
 				</view>
 			</block>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -86,12 +86,57 @@
 				pageNum: 1,
 				pageSize: 10,
 				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
+				hasMore: true,
+				screenHeight: 0,
 			}
+		},
+		onReady() {
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 380 + 'rpx'
 		},
 		onShow() {
 			this.getActivityList()
 		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.activityListInfo = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getActivityList();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					let params = {
+						search: this.keyword,
+						type: this.type,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					activityList(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.activityListInfo = this.activityListInfo.concat(res.data)
+						}
+					})
+				}
+			},
 			// 搜索
 			handleConfirm() {
 				this.getActivityList()
@@ -116,6 +161,9 @@
 			},
 			handleTab(item) {
 				this.isStart = item.index
+				this.pageNum = 1
+				this.hasMore = true
+				this.activityListInfo = []
 				this.getActivityList()
 			}
 		}
@@ -174,6 +222,7 @@
 			overflow-y: auto;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			border-radius: 20rpx;
+			width: auto;
 
 			.activity-item {
 				height: 636rpx;

@@ -19,7 +19,7 @@
 				            transform: 'scale(1)'
 				        }" itemStyle="padding-left: 28rpx; padding-right: 28rpx; height: 88rpx;"></u-tabs>
 		</view>
-		<view class="list-container">
+		<scroll-view class="list-container" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 			<block v-for="item in tradingList" :key="item.id">
 				<view class="list-item">
 					<view class="header">
@@ -52,11 +52,10 @@
 					</view>
 					<view class="footer">
 						<button class="communicate">联系卖家</button>
-						<button class="delete">删除订单</button>
 					</view>
 				</view>
 			</block>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -85,13 +84,58 @@
 				type: 0,
 				pageNum: 1,
 				pageSize: 10,
-				tradingList: []
+				tradingList: [],
+				hasMore: true,
+				screenHeight: 0,
 			}
+		},
+		onReady() {
+			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 380 + 'rpx'
 		},
 		onShow() {
 			this.getOrderRecord()
 		},
+		onPullDownRefresh() {
+			// 下拉刷新
+			this.refresh()
+		},
 		methods: {
+			// 下拉刷新
+			refresh() {
+				this.pageNum = 1
+				this.tradingList = []
+				this.hasMore = true
+				setTimeout(() => {
+					this.getOrderRecord();
+					// 停止下拉刷新
+					uni.stopPullDownRefresh()
+				}, 100)
+			},
+			// 上拉加载更多
+			handleToLower() {
+				if (this.hasMore) {
+					this.pageNum += 1
+					let params = {
+						search: this.keyword,
+						type: this.type,
+						pageNum: this.pageNum,
+						pageSize: this.pageSize
+					}
+					orderRecord(params).then(res => {
+						if (res.code == 200) {
+							if (res.data.length === 0) {
+								this.pageNum -= 1
+								this.hasMore = false
+								uni.showToast({
+									title: "没有数据了",
+									icon: "none"
+								});
+							}
+							this.tradingList = this.tradingList.concat(res.data)
+						}
+					})
+				}
+			},
 			// 搜索
 			handleConfirm() {
 				this.getOrderRecord()
@@ -103,6 +147,9 @@
 			},
 			handleTabClick(item) {
 				this.type = item.index
+				this.pageNum = 1
+				this.hasMore = true
+				this.tradingList = []
 				this.getOrderRecord()
 			},
 			getOrderRecord() {
@@ -174,6 +221,7 @@
 			overflow-y: auto;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			border-radius: 20rpx;
+			width: auto;
 
 			.list-item {
 				height: 315rpx;
@@ -245,10 +293,8 @@
 				.footer {
 					display: flex;
 					justify-content: flex-end;
-					align-items: center;
 
-					::v-deep .communicate,
-					::v-deep .delete {
+					::v-deep .communicate {
 						&::after {
 							border: none
 						}
@@ -265,10 +311,6 @@
 						font-size: 25rpx;
 						font-weight: 400;
 						color: #4D504F;
-					}
-
-					::v-deep .delete {
-						margin-left: 16rpx;
 					}
 				}
 			}
