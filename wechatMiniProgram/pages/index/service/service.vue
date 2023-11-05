@@ -41,37 +41,7 @@
 				},
 				screenHeight: 0,
 				text: "发布闲置后支持线上线下交易啦～",
-				serviceData: [{
-						id: 1,
-						name: "通下水道",
-						url: "../../../static/home/tongxiashuidao.png"
-					},
-					{
-						id: 2,
-						name: "家电维修",
-						url: "../../../static/home/jiadianweixiu.png"
-					},
-					{
-						id: 3,
-						name: "大件清运",
-						url: "../../../static/home/dajianqingyun.png"
-					},
-					{
-						id: 4,
-						name: "维修水电",
-						url: "../../../static/home/weixiushuidian.png"
-					},
-					{
-						id: 5,
-						name: "防水漏水",
-						url: "../../../static/home/fangshuiloushui.png"
-					},
-					{
-						id: 6,
-						name: "开锁",
-						url: "../../../static/home/lock.png"
-					},
-				],
+				serviceData: [],
 			}
 		},
 		onShow() {
@@ -87,7 +57,7 @@
 			},
 			handleClickService(item) {
 				uni.navigateTo({
-					url: `/pages/index/service/modules/serviceDetail/serviceDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					url: `${item.iconTo}?itemData=${encodeURIComponent(JSON.stringify(item))}`
 				})
 			},
 			handleBack() {
