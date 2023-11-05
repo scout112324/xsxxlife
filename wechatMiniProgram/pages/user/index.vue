@@ -6,9 +6,11 @@
 		<view class="user-info">
 			<view class="user">
 				<button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-					<image class="avatar" :src="avatarUrl"></image>
+					<image v-if="avatarUrl" class="avatar" :src="avatarUrl"></image>
+					<image v-else class="avatar" src="../../static/avatar.png" mode=""></image>
 				</button>
-				<input type="nickname" class="nickname" placeholder="请输入昵称" />
+				<input type="nickname" v-model="nickname" class="nickname" placeholder="请输入昵称"
+					@confirm="handleConfirmChange" @blur="handleBlur" />
 			</view>
 		</view>
 		<view class="user-list">
@@ -56,12 +58,13 @@
 <script>
 	import {
 		infoUser,
-		withdrawal
+		withdrawal,
+		updateUser
 	} from "@/api/user/index.js"
 	export default {
 		data() {
 			return {
-				avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
+				avatarUrl: "",
 				nickname: "",
 				titleStyle: {
 					fontWeight: 500,
@@ -159,8 +162,10 @@
 				infoUser().then(res => {
 					if (res.code === 200) {
 						this.myInfo = res.data
-						// this.avatarUrl = res.data.phone
+						this.avatarUrl = res.data.photo
+						this.nickname = res.data.nickname
 						this.money = res.data.realMoney
+						console.log(this.avatarUrl, this.nickname)
 					}
 				})
 			},
@@ -169,6 +174,31 @@
 					avatarUrl
 				} = e.detail
 				this.avatarUrl = avatarUrl
+				this.updateUserInfo()
+			},
+			handleConfirmChange(e) {
+				this.nickname = e.detail.value
+				this.updateUserInfo()
+			},
+			handleBlur() {
+				this.updateUserInfo()
+			},
+			// 更改微信昵称和头像
+			updateUserInfo() {
+				let params = {
+					photo: this.avatarUrl,
+					nickname: this.nickname
+				}
+				updateUser(params).then(res => {
+					if (res.code === 200) {
+						this.getInfoUser()
+						uni.showToast({
+							title: '修改成功',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				})
 			},
 			handleJumpDetail(name) {
 				switch (name) {
