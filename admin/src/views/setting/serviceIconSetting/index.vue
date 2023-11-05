@@ -71,10 +71,10 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="排序" prop="iconSort">
-          <el-input v-model="form.iconSort" placeholder="请介绍群类型"/>
+          <el-input v-model="form.iconSort" placeholder="请填写顺序"/>
         </el-form-item>
         <el-form-item label="跳转的url" prop="iconTo">
-          <el-input v-model="form.iconTo" placeholder="请介绍群类型"/>
+          <el-input v-model="form.iconTo" placeholder="请填写路径"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
