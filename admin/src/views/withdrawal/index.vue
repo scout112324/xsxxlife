@@ -243,6 +243,11 @@ export default {
 .container {
   padding: 20px;
 
+  .list-img {
+    width: 100px;
+    height: 100px;
+  }
+
   .footer {
     text-align: right;
     margin: 20px;
