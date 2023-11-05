@@ -19,8 +19,8 @@
 				<u-notice-bar :text="text" :step="true"></u-notice-bar>
 			</view>
 			<view class="service">
-				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item.name)">
-					<image class="icon" :src="item.icon" mode=""></image>
+				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item)">
+					<image class="icon" :src="item.url" mode=""></image>
 					<view class="title">
 						{{item.name}}
 					</view>
@@ -102,53 +102,7 @@
 				},
 				// cityname: "上海市",
 				text: ["发布闲置后支持线上线下交易啦～", "111"],
-				tabListInfo: [],
-				serviceData: [{
-						id: 1,
-						name: "综合服务",
-						icon: "../../static/home/zonghefuwu.png"
-					},
-					{
-						id: 2,
-						name: "附近社群",
-						icon: "../../static/home/fujinshequn.png"
-					},
-					{
-						id: 3,
-						name: "兼职入口",
-						icon: "../../static/home/jianzhirukou.png"
-					},
-					{
-						id: 4,
-						name: "房屋转让",
-						icon: "../../static/home/fangwuzhuanrang.png"
-					},
-					{
-						id: 5,
-						name: "寻人寻物",
-						icon: "../../static/home/xunrenxunwu.png"
-					},
-					{
-						id: 6,
-						name: "闲置交易",
-						icon: "../../static/home/xianzhijiaoyi.png"
-					},
-					{
-						id: 7,
-						name: "同城活动",
-						icon: "../../static/home/tongchenghuodong.png"
-					},
-					{
-						id: 8,
-						name: "大件清运",
-						icon: "../../static/home/dajianqingyun.png"
-					},
-					{
-						id: 9,
-						name: "闲置专区",
-						icon: "../../static/home/mianfeixianzhijiaoyi.png"
-					}
-				],
+				serviceData: [],
 				areas: [],
 				areaTree: [],
 				show: false,
@@ -176,9 +130,6 @@
 			} else {
 				this.goLogin()
 			}
-			// if (this.$store.state.changeCity) {
-			// 	this.cityname = this.$store.state.storeCityName
-			// }
 		},
 		created() {
 			// 获取公告数据
@@ -228,7 +179,7 @@
 			getTabList() {
 				tabList().then(res => {
 					if (res.code === 200) {
-						this.tabListInfo = res.data
+						this.serviceData = res.data
 					}
 				})
 			},
@@ -269,55 +220,15 @@
 				})
 			},
 			// 点击不同的服务切换到不同的服务界面
-			handleClickService(name) {
-				switch (name) {
-					case "综合服务":
-						uni.navigateTo({
-							url: "/pages/index/service/service"
-						})
-						break;
-					case "附近社群":
-						uni.navigateTo({
-							url: "/pages/index/service/community"
-						})
-						break;
-					case "兼职入口":
-						uni.navigateTo({
-							url: "/pages/index/service/partTime"
-						})
-						break;
-					case "房屋转让":
-						uni.navigateTo({
-							url: "/pages/index/service/houseTransfer"
-						})
-						break;
-					case "寻人寻物":
-						uni.navigateTo({
-							url: "/pages/index/service/lookForPeople"
-						})
-						break;
-					case "闲置交易":
-						uni.switchTab({
-							url: "/pages/unused/index"
-						})
-						break;
-					case "闲置专区":
-						uni.switchTab({
-							url: "/pages/unused/index"
-						})
-						break;
-					case "同城活动":
-						uni.navigateTo({
-							url: "/pages/index/service/intraCityActivity"
-						})
-						break;
-					case "大件清运":
-						uni.navigateTo({
-							url: "/pages/index/service/largeShipmentClearance"
-						})
-						break;
-					default:
-						return
+			handleClickService(item) {
+				if (item.name == '闲置交易' || item.name == '闲置专区') {
+					uni.switchTab({
+						url: item.iconTo
+					})
+				} else {
+					uni.navigateTo({
+						url: item.iconTo
+					})
 				}
 			}
 		}
@@ -361,10 +272,6 @@
 				::v-deep .arrow-area {
 					display: none;
 				}
-
-				// display: flex;
-				// justify-content: space-between;
-				// align-items: center;
 
 				.xiala {
 					width: 16rpx;
