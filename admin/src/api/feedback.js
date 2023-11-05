@@ -26,3 +26,21 @@ export function orderList(query) {
     params: query
   })
 }
+
+// 获取提现列表
+export function withdrawalList(query) {
+  return request({
+    url: '/web/withdrawal/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 修改提现状态
+export function withdrawalStatus(query) {
+  return request({
+    url: '/web/withdrawal/status',
+    method: 'get',
+    params: query
+  })
+}
