@@ -98,3 +98,39 @@ export function deleteChatMsg(query) {
     params: query
   })
 }
+
+// 获取icon列表（不分页）综合服务
+export function intservList(query) {
+  return request({
+    url: '/web/intserv/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 新增icon列表（不分页）综合服务
+export function addIntserv(data) {
+  return request({
+    url: '/web/intserv/add',
+    method: 'post',
+    data: data
+  })
+}
+
+// 编辑icon列表（不分页）综合服务
+export function updateIntserv(data) {
+  return request({
+    url: '/web/intserv/update',
+    method: 'post',
+    data: data
+  })
+}
+
+// 删除icon列表（不分页）综合服务
+export function deleteIntserv(query) {
+  return request({
+    url: '/web/intserv/delete',
+    method: 'get',
+    params: query
+  })
+}

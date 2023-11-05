@@ -12,7 +12,7 @@
         </el-button>
       </el-col>
     </el-row>
-    <el-table v-loading="loading" :data="iconList">
+    <el-table v-loading="loading" :data="intservList">
       <el-table-column type="index" width="50" align="center"></el-table-column>
       <el-table-column show-overflow-tooltip label="名字" align="center" prop="name"/>
       <el-table-column label="图片" align="center" width="200">
@@ -85,17 +85,17 @@
   </div>
 </template>
 <script>
-import { addIcon, iconList, updateIcon, deleteIcon } from '@/api/setting/setting'
+import { addIntserv, intservList, updateIntserv, deleteIntserv } from '@/api/setting/setting'
 import { getToken } from '@/utils/auth'
 
 export default {
-  name: 'accountSetting',
+  name: 'serviceIconSetting',
   data() {
     return {
       // 遮罩层
       loading: true,
       // 公告表格数据
-      iconList: [],
+      intservList: [],
       // 弹出层标题
       diaTitle: '',
       // 是否显示弹出层
@@ -117,9 +117,9 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.loading = true
-      iconList().then(response => {
+      intservList().then(response => {
           if (response.code === 200) {
-            this.iconList = response.data
+            this.intservList = response.data
             this.loading = false
           }
         }
@@ -165,7 +165,7 @@ export default {
           iconSort: this.form.iconSort,
           iconTo: this.form.iconTo
         }
-        updateIcon(params).then(response => {
+        updateIntserv(params).then(response => {
           if (response.code === 200) {
             this.$modal.msgSuccess('修改成功')
             this.open = false
@@ -177,7 +177,7 @@ export default {
       } else {
         this.$refs['form'].validate(valid => {
           if (valid) {
-            addIcon(this.form).then(response => {
+            addIntserv(this.form).then(response => {
               this.$modal.msgSuccess('新增成功')
               this.open = false
               this.getList()
@@ -189,7 +189,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       this.$modal.confirm('是否确认icon').then(function() {
-        return deleteIcon({ id: row.id })
+        return deleteIntserv({ id: row.id })
       }).then(() => {
         this.getList()
         this.$modal.msgSuccess('删除成功')
