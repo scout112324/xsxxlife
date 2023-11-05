@@ -99,7 +99,7 @@
 		},
 		onLoad(options) {
 			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
-			this.pictureList = this.itemData?.picture.split(',')
+			this.pictureList = this.itemData.picture ? this.itemData.picture.split(',') : []
 		},
 		data() {
 			return {

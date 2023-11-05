@@ -6,25 +6,12 @@
 			</view>
 			<view class="header">
 				<view class="user-info"></view>
-				<!-- <view class="user-info">
-					<image class="avatar" src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png"
-						mode=""></image>
-					<view class="info">
-						<view class="nickname">
-							Ketty Perry
-						</view>
-						<view class="address">
-							上海市静安区
-						</view>
-					</view>
-				</view> -->
 				<view class="share">
-					<uni-button type="primary" class="uni-btn" @click="handleShareClick">
+					<button class="uni-btn" open-type="share">
 						<image src="../../../static/components/zhuanfa.png" mode="aspectFit"
 							style="width: 25rpx; height: 25rpx;margin-right: 8rpx; ">
-						</image>
-						分享
-					</uni-button>
+							分享
+					</button>
 				</view>
 			</view>
 			<view class="content" v-html="itemData.content"></view>
@@ -98,7 +85,7 @@
 		},
 		onLoad(options) {
 			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
-			this.pictureList = this.itemData?.picture.split(',')
+			this.pictureList = this.itemData.picture ? this.itemData.picture.split(',') : []
 		},
 		data() {
 			return {
@@ -166,7 +153,6 @@
 				this.level = level
 				this.childId = id
 			},
-			handleShareClick() {},
 			handleCommuniteClick() {},
 			// 点赞
 			handleSupport(item) {
