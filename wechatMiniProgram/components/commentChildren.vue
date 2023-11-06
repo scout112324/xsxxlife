@@ -2,9 +2,7 @@
 	<view class="children">
 		<view class="user-info">
 			<image v-if="itemData.photo" class="avatar" :src="itemData.photo" mode=""></image>
-			<image v-else class="avatar"
-				src="https://bpic.588ku.com/element_origin_min_pic/20/11/04/6b53830d8c8582ddc0f6fc2eabf67cac.jpg"
-				mode=""></image>
+			<image v-else class="avatar" src="../static/avatar.png" mode=""></image>
 			<view class="name">
 				{{itemData.nickname}}
 				<text class="address">{{itemData.toUsername}}</text>

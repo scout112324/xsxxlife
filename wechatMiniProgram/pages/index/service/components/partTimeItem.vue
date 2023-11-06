@@ -21,7 +21,7 @@
 			<view class="user">
 				<image v-if="itemData.photo" class="avatar" :src="itemData.photo" mode=""></image>
 				<image v-else class="avatar"
-					src="https://tupian.qqw21.com/article/UploadPic/2021-3/202132022173036062.png" mode=""></image>
+					src="../../../../static/avatar.png" mode=""></image>
 				<view class="nickname">
 					{{itemData.nickname}}
 				</view>
