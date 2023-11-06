@@ -94,7 +94,7 @@
 			</view>
 			<view class="communicate" @click="handleCommuniteClick(itemData.phone)">
 				<uni-button type="primary" class="uni-btn">
-					<image src="../../../../../static/home/lianxi.png" mode="aspectFit"
+					<image src="../../../../../static/home/dianhua.png" mode="aspectFit"
 						style="width: 34rpx; height: 31rpx;margin-right: 8rpx; ">
 					</image>
 					联系卖家

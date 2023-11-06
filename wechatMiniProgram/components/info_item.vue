@@ -3,8 +3,7 @@
 		<view class="avatar" v-if="showPrice">
 			<image v-if="itemData.photo" class="image" :src="itemData.photo" mode="">
 			</image>
-			<image v-else class="image"
-				src="https://tse4-mm.cn.bing.net/th/id/OIP-C.u1D8WJbUIIXMV2w-qa4r5wAAAA?pid=ImgDet&rs=1" mode="">
+			<image v-else class="image" src="../static/avatar.png" mode="">
 			</image>
 		</view>
 		<view class="info">

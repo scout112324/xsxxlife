@@ -105,7 +105,7 @@
 				</view>
 			</view>
 			<view class="communicate">
-				<u-button text="立即报名" @click="handleCommuniteClick"></u-button>
+				<!-- <u-button text="立即报名" @click="handleCommuniteClick"></u-button> -->
 			</view>
 		</view>
 	</view>

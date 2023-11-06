@@ -28,8 +28,8 @@
 						{{itemData.nickname || '管理'}}
 					</view>
 				</view>
-				<view class="btn">
-					<button class="add">联系TA</button>
+				<view class="btn" @click="handleCommuniteClick(itemData.userId)">
+					<button class="add" v-if="typeStar==3">联系TA</button>
 				</view>
 			</view>
 		</view>
@@ -61,6 +61,14 @@
 				pictureList: [],
 				pictureUrl: ""
 			}
+		},
+		methods: {
+			// 联系卖家
+			handleCommuniteClick(userId) {
+				uni.navigateTo({
+					url: `/pages/user/chat/chat?userId=${userId}`
+				})
+			},
 		}
 	}
 </script>

@@ -27,7 +27,7 @@
 				</view>
 			</view>
 			<view class="right">
-				<button class="add" @click="handlePart">立即报名</button>
+				<button class="add" @click="handlePart">进入详情</button>
 			</view>
 		</view>
 	</view>

@@ -15,12 +15,13 @@
 						</view>
 					</view>
 				</view>
-				<view class="share">
-					<button class="uni-btn" open-type="share">
-						<image src="../../../static/components/zhuanfa.png" mode="aspectFit"
-							style="width: 25rpx; height: 25rpx;margin-right: 8rpx; ">
-							分享
-					</button>
+				<view class="share" @click="handleCommuniteClick(itemData.userId)">
+					<uni-button type="primary" class="uni-btn">
+						<image src="../../../static/home/lianxi.png" mode="aspectFit"
+							style="width: 34rpx; height: 31rpx;margin-right: 8rpx; ">
+						</image>
+						联系卖家
+					</uni-button>
 				</view>
 			</view>
 			<view class="price">
@@ -71,7 +72,7 @@
 				</view>
 			</view>
 			<view class="communicate">
-				<u-button text="立即下单" @click="handleCommuniteClick"></u-button>
+				<u-button text="立即下单" @click="handleOrderClick"></u-button>
 			</view>
 		</view>
 	</view>
@@ -164,8 +165,14 @@
 				this.level = level
 				this.childId = id
 			},
+			// 联系卖家
+			handleCommuniteClick(userId) {
+				uni.navigateTo({
+					url: `/pages/user/chat/chat?userId=${userId}`
+				})
+			},
 			// 去支付
-			handleCommuniteClick() {
+			handleOrderClick() {
 				submitWx({
 					id: this.itemData.id
 				}).then(res => {

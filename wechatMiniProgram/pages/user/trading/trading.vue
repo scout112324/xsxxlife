@@ -51,7 +51,7 @@
 						</view>
 					</view>
 					<view class="footer">
-						<button class="communicate">联系卖家</button>
+						<button class="communicate" @click="handleCommuniteClick(item.userId)">联系卖家</button>
 					</view>
 				</view>
 			</block>
@@ -100,6 +100,12 @@
 			this.refresh()
 		},
 		methods: {
+			// 联系卖家
+			handleCommuniteClick(userId) {
+				uni.navigateTo({
+					url: `/pages/user/chat/chat?userId=${userId}`
+				})
+			},
 			// 下拉刷新
 			refresh() {
 				this.pageNum = 1
