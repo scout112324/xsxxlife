@@ -134,3 +134,12 @@ export function deleteIntserv(query) {
     params: query
   })
 }
+
+// 获取统计
+export function homeList(query) {
+  return request({
+    url: '/web/home/list',
+    method: 'get',
+    params: query
+  })
+}

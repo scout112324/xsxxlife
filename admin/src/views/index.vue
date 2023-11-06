@@ -1,24 +1,26 @@
 <template>
   <div class="app-container home">
-      <div class="container">
-        <div class="list-container">
-          <div :class="['item',`item-${index}`]" v-for="(item,index) in equipData" :key="item.id">
-            <div class="left-item">
-              <img class="icon" :src="item.icon">
+    <div class="container">
+      <div class="list-container">
+        <div :class="['item',`item-${index}`]" v-for="(item,index) in equipData" :key="item.id">
+          <div class="left-item">
+            <img class="icon" :src="item.icon">
+          </div>
+          <div class="right-item">
+            <div class="equipment-name">
+              <h3>{{ item.name }}</h3>
             </div>
-            <div class="right-item">
-              <div class="equipment-name">
-                <h3>{{ item.name }}</h3>
-              </div>
-              <div class="equipment-number">{{ item.number }}</div>
-            </div>
+            <div class="equipment-number">{{ item.number }}</div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
+import {homeList} from "@/api/setting/setting"
+
 export default {
   name: "Index",
   data() {
@@ -51,10 +53,20 @@ export default {
       ],
     };
   },
+  created() {
+    this.getHomeList()
+  },
   methods: {
-    goTarget(href) {
-      window.open(href, "_blank");
-    }
+    getHomeList() {
+      homeList().then(res=>{
+        if(res.code===200) {
+          this.equipData[0].number = res.data.allPublic
+          this.equipData[1].number = res.data.todayPublic
+          this.equipData[2].number = res.data.allUser
+          this.equipData[3].number = res.data.todayUser
+        }
+      })
+    },
   }
 };
 </script>
