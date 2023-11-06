@@ -1,6 +1,6 @@
 {
-    "name" : "figma",
-    "appid" : "",
+    "name" : "testuniapp",
+    "appid" : "__UNI__66DEE07",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -38,7 +38,7 @@
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
-					"<uses-permission android:name=\"android.permission.CALL_PHONE\"/>"
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>"
                 ]
             },
             /* ios打包配置 */
@@ -56,13 +56,13 @@
             "urlCheck" : false
         },
         "usingComponents" : true,
-		// 小程序定位配置
-		"permission": {
-		  "scope.userLocation": {
-		   "desc": "你的位置信息将用于小程序位置接口的效果展示"
-		  }
-		 },
-		 "requiredPrivateInfos": ["getLocation", "chooseLocation"]
+        // 小程序定位配置
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
+            }
+        },
+        "requiredPrivateInfos" : [ "getLocation", "chooseLocation" ]
     },
     "mp-alipay" : {
         "usingComponents" : true
