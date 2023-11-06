@@ -6,7 +6,8 @@
 					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
 					<view class="select-address">
 						<uni-data-picker style="width: 220rpx;" ellipsis popup-title="请选择所在地区" :localdata="areaTree"
-							v-model="areas" @change="onchange" :clear-icon="false">
+							v-model="areas" @change="onchange" @nodeclick="onnodeclick" @popupclosed="chageClosed"
+							:clear-icon="false">
 						</uni-data-picker>
 						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
 					</view>
@@ -110,10 +111,20 @@
 				unusedList: [],
 				communityList: [],
 				communityInfo: {},
-				pageType: "unused"
+				pageType: "unused",
+				nodeData: {}
 			}
 		},
 		onShow() {
+			// 微信授权登录
+			let openId = uni.getStorageSync('openId')
+			if (openId) {
+				return
+			} else {
+				this.goLogin()
+			}
+		},
+		created() {
 			this.areaTree = areaData
 			this.areas = [{
 					text: `${uni.getStorageSync('province')}`,
@@ -124,33 +135,29 @@
 					value: `${uni.getStorageSync('district')}`
 				}
 			]
-			placeUser({
-				place: this.areas.map(item => {
-					return item.value
-				}).toString()
-			}).then(res => {
-				if (res.code === 200) {
-					console.log(`${this.areas[0].value}${this.areas[1].value}`)
-				}
-			})
-			// 微信授权登录
-			let openId = uni.getStorageSync('openId')
-			if (openId) {
-				return
-			} else {
-				this.goLogin()
-			}
-		},
-		created() {
+			this.changePlaceUser()
 			// 获取公告数据
 			this.getNoticeData()
 			this.getTabList()
 			// 获取闲置列表
-			this.getUnusedList()
+			// this.getUnusedList()
 			// 获取附近社群
-			this.getCrowdList()
+			// this.getCrowdList()
 		},
 		methods: {
+			// 位置修改
+			changePlaceUser() {
+				placeUser({
+					place: this.areas.map(item => {
+						return item.value
+					}).toString()
+				}).then(res => {
+					if (res.code === 200) {
+						this.getCrowdList()
+						this.getUnusedList()
+					}
+				})
+			},
 			// 点赞,收藏状态改变
 			unusedChangeStatus() {
 				this.getUnusedList()
@@ -218,6 +225,28 @@
 			},
 			handleConfirm() {
 				this.show = false
+			},
+			chageClosed() {
+				//处理不同步
+				this.$nextTick(() => {
+					if (this.nodeData.parent_value) {
+						if (this.nodeData.parent_value == '上海市') {
+							this.areas = [{
+								text: this.nodeData.parent_value,
+								value: this.nodeData.parent_value
+							}, {
+								text: this.nodeData.text,
+								value: this.nodeData.value
+							}]
+						}
+					} else {
+						this.areas = [this.nodeData]
+					}
+					this.changePlaceUser()
+				});
+			},
+			onnodeclick(node) {
+				this.nodeData = node
 			},
 			onchange(e) {
 				this.areas = e.detail.value
