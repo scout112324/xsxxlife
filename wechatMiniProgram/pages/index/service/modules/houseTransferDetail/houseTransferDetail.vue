@@ -352,6 +352,7 @@
 				margin: 25rpx 0;
 				width: 100%;
 				overflow-x: hidden;
+				min-height: 150rpx;
 			}
 
 			.product-image {

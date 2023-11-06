@@ -19,9 +19,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="others">
+		<!-- <view class="others">
 			没有想要的类目？试试<text class="communicate">联系我们</text>
-		</view>
+		</view> -->
 	</view>
 </template>
 

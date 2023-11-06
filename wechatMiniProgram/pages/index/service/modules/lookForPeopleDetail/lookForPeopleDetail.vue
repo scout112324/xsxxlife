@@ -23,8 +23,9 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="itemData.content" class="content" v-html="itemData.content"></view>
-			<view v-else class="content">
+			<view v-if="itemData.content" :class="['content',{'occupy-cot': pictureList.length==0}]"
+				v-html="itemData.content"></view>
+			<view v-else :class="['content',{'occupy-cot': pictureList.length==0}]">
 				'暂无'
 			</view>
 			<view class="product-image" v-if="pictureList && pictureList.length>0">
@@ -328,6 +329,10 @@
 				color: #232624;
 				line-height: 44rpx;
 				margin: 25rpx 0;
+
+				&.occupy-cot {
+					min-height: 640rpx;
+				}
 			}
 
 			.product-image {

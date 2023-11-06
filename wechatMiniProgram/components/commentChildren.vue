@@ -12,9 +12,6 @@
 			{{itemData.content}}
 		</view>
 		<view class="btn">
-			<!-- <view class="time">
-				40分钟前
-			</view> -->
 			<view class="record" @click="handleChildrenRecord(itemData.id)">
 				回复
 			</view>

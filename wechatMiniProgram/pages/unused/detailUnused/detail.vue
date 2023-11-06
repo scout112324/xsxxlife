@@ -27,7 +27,7 @@
 				<text class="unit">¥</text>
 				<text class="num">{{itemData.price || '暂无'}}</text>
 			</view>
-			<view class="content">
+			<view :class="['content',{'occupy-cot': pictureList.length==0}]">
 				{{itemData.content || '暂无'}}
 			</view>
 			<view class="product-image" v-if="pictureList && pictureList.length>0">
@@ -337,6 +337,10 @@
 				color: #232624;
 				line-height: 44rpx;
 				margin: 25rpx 0;
+
+				&.occupy-cot {
+					min-height: 560rpx;
+				}
 			}
 
 			.product-image {

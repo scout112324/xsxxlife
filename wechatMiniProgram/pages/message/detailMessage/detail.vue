@@ -4,16 +4,6 @@
 			<view class="title">
 				{{itemData.title}}
 			</view>
-			<view class="header">
-				<view class="user-info"></view>
-				<view class="share">
-					<button class="uni-btn" open-type="share">
-						<image src="../../../static/components/zhuanfa.png" mode="aspectFit"
-							style="width: 25rpx; height: 25rpx;margin-right: 8rpx; ">
-							分享
-					</button>
-				</view>
-			</view>
 			<view class="content" v-html="itemData.content"></view>
 			<view class="product-image" v-if="pictureList && pictureList.length>0">
 				<block v-for="(item,index) in pictureList" :key="index">
@@ -54,14 +44,12 @@
 						{{itemData.commentCount || 0}}
 					</view>
 				</view>
-			</view>
-			<view class="communicate">
-				<uni-button type="primary" class="uni-btn" @click="handleCommuniteClick">
-					<image src="../../../static/home/lianxi.png" mode="aspectFit"
-						style="width: 34rpx; height: 31rpx;margin-right: 8rpx; ">
-					</image>
-					联系TA
-				</uni-button>
+				<view class="item" @click.stop>
+					<button class="share" open-type="share">
+						<image class="image" src="../../../static/components/zhuanfa.png" mode=""></image>
+						<text class="num">{{itemData.giveCount || 0}}</text>
+					</button>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -153,7 +141,6 @@
 				this.level = level
 				this.childId = id
 			},
-			handleCommuniteClick() {},
 			// 点赞
 			handleSupport(item) {
 				this.supportParams = {
@@ -242,57 +229,6 @@
 				margin-bottom: 32rpx;
 			}
 
-			.header {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-
-				.user-info {
-					display: flex;
-					align-items: center;
-
-					.avatar {
-						width: 72rpx;
-						height: 72rpx;
-						border-radius: 36rpx;
-					}
-
-					.info {
-						margin-left: 14rpx;
-
-						.nickname {
-							font-size: 30rpx;
-							font-weight: 500;
-							color: #232624;
-							line-height: 42rpx;
-						}
-
-						.address {
-							margin-top: 6rpx;
-							font-size: 24rpx;
-							font-family: PingFangSC-Regular, PingFang SC;
-							font-weight: 400;
-							color: #707070;
-							line-height: 33rpx;
-						}
-					}
-
-				}
-
-				.share {
-					::v-deep .uni-btn {
-						height: 59rpx;
-						background: #FFD100;
-						border-radius: 30rpx;
-
-						padding: 14rpx 25rpx;
-						box-sizing: border-box;
-						display: flex;
-						align-items: center;
-					}
-				}
-			}
-
 			.content {
 				font-size: 28rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
@@ -300,6 +236,7 @@
 				color: #232624;
 				line-height: 44rpx;
 				margin: 25rpx 0;
+				min-height: 650rpx;
 			}
 
 			.product-image {
@@ -334,6 +271,8 @@
 			.btns {
 				display: flex;
 				align-items: center;
+				justify-content: space-between;
+				width: 100%;
 
 				.item {
 					display: flex;
@@ -352,19 +291,31 @@
 						color: #232624;
 						line-height: 33rpx;
 					}
-				}
-			}
 
-			.communicate {
-				::v-deep .uni-btn {
-					height: 74rpx;
-					background: #FFD100;
-					border-radius: 46rpx;
+					.share {
+						display: flex;
+						align-items: center;
+						background-color: transparent;
+						padding: 0;
 
-					padding: 14rpx 25rpx;
-					box-sizing: border-box;
-					display: flex;
-					align-items: center;
+						&::after {
+							border: none;
+						}
+
+						.image {
+							width: 40rpx;
+							height: 40rpx;
+							margin-right: 12rpx;
+						}
+
+						.num {
+							font-size: 24rpx;
+							font-family: PingFangSC-Medium, PingFang SC;
+							font-weight: 500;
+							color: #232624;
+							line-height: 33rpx;
+						}
+					}
 				}
 			}
 		}

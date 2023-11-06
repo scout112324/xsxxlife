@@ -14,7 +14,7 @@
 					<video v-else class="image" :src="pictureList[0]" controls></video>
 				</view>
 				<view v-else class="product-image">
-					<image class="image" src="../../../static/avatar.png" mode=""></image>
+					<image class="image" src="../../static/home/load.png" mode=""></image>
 				</view>
 				<view class="price">
 					<text class="unit">¥</text>
