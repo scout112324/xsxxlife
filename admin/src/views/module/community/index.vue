@@ -37,6 +37,7 @@
       </el-table-column>
       <el-table-column label="人数" align="center" prop="total"/>
       <el-table-column show-overflow-tooltip label="介绍" align="center" prop="introduce"/>
+      <el-table-column label="位置" align="center" prop="place"/>
       <el-table-column label="二维码地址" align="center" width="200">
         <template slot-scope="scope">
           <img class="list-img" :src="scope.row.qrCode">
@@ -94,7 +95,7 @@
 
     <!-- 添加或修改用户配置对话框 -->
     <el-dialog class="common-dialog" :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入标题"/>
         </el-form-item>
@@ -120,6 +121,9 @@
         </el-form-item>
         <el-form-item label="介绍" prop="introduce">
           <el-input v-model="form.introduce" placeholder="请介绍群类型"/>
+        </el-form-item>
+        <el-form-item label="位置" prop="place">
+          <el-input v-model="form.place" placeholder="请填写位置"/>
         </el-form-item>
         <el-form-item label="二维码地址" prop="qrCode">
           <el-upload
@@ -157,8 +161,8 @@
   </div>
 </template>
 <script>
-import { addCrowd, crowdList, updateCrowd, deleteCrowd } from '@/api/module/community'
-import { getToken } from '@/utils/auth'
+import {addCrowd, crowdList, updateCrowd, deleteCrowd} from '@/api/module/community'
+import {getToken} from '@/utils/auth'
 
 export default {
   name: 'Announce',
@@ -198,7 +202,7 @@ export default {
       // 上传地址
       uploadAction: process.env.VUE_APP_SERVER_URL + '/web/icon/upload',
 
-      uploadHeader: { 'Authorization': getToken() },
+      uploadHeader: {'Authorization': getToken()},
       // 图片根目录
       imagePath: ''
     }
@@ -233,13 +237,22 @@ export default {
     // 状态修改
     handleStatusChange(row) {
       let text = row.isShow == '0' ? '展示' : '不展示'
-      this.$modal.confirm('确认要' + text + '在首页吗？').then(function() {
+      this.$modal.confirm('确认要' + text + '在首页吗？').then(function () {
         return updateCrowd(
-          { id: row.id, title: row.title, total: row.total, introduce: row.introduce, url: row.url, qrCode: row.qrCode, isShow: row.isShow }
+          {
+            id: row.id,
+            title: row.title,
+            total: row.total,
+            introduce: row.introduce,
+            place: row.place,
+            url: row.url,
+            qrCode: row.qrCode,
+            isShow: row.isShow
+          }
         )
       }).then(() => {
         this.$modal.msgSuccess(text + '成功')
-      }).catch(function() {
+      }).catch(function () {
         row.isShow = row.isShow === '0' ? '1' : '0'
       })
     },
@@ -254,6 +267,7 @@ export default {
         title: '',
         total: 0,
         introduce: '',
+        place: '',
         isShow: 0,
         url: "",
         qrCode: ""
@@ -273,6 +287,7 @@ export default {
       this.$set(this.form, 'title', row.title)
       this.$set(this.form, 'total', row.total)
       this.$set(this.form, 'introduce', row.introduce)
+      this.$set(this.form, 'place', row.place)
       this.$set(this.form, 'isShow', String(row.isShow))
       this.$set(this.form, 'url', row.url)
       this.$set(this.form, 'qrCode', row.qrCode)
@@ -285,6 +300,7 @@ export default {
           title: this.form.title,
           total: this.form.total,
           introduce: this.form.introduce,
+          place: this.form.place,
           isShow: this.form.isShow,
           url: this.form.url,
           qrCode: this.form.qrCode
@@ -312,8 +328,8 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$modal.confirm('是否确认删除附近社群').then(function() {
-        return deleteCrowd({ id: row.id })
+      this.$modal.confirm('是否确认删除附近社群').then(function () {
+        return deleteCrowd({id: row.id})
       }).then(() => {
         this.getList()
         this.$modal.msgSuccess('删除成功')

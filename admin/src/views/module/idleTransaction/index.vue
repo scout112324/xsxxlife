@@ -264,7 +264,7 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$modal.confirm('是否确认删除附近社群').then(function () {
+      this.$modal.confirm('是否确认删除闲置交易').then(function () {
         return deleteUnused({id: row.id})
       }).then(() => {
         this.getList()
