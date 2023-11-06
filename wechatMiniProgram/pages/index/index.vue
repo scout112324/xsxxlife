@@ -124,6 +124,13 @@
 					value: `${uni.getStorageSync('district')}`
 				}
 			]
+			placeUser({
+				place: `${this.areas[0].value}${this.areas[1].value}`
+			}).then(res => {
+				if (res.code === 200) {
+					console.log(`${this.areas[0].value}${this.areas[1].value}`)
+				}
+			})
 			// 微信授权登录
 			let openId = uni.getStorageSync('openId')
 			if (openId) {
@@ -214,7 +221,7 @@
 				this.areas = e.detail.value
 				let place = e.detail.value.map(item => {
 					return item.value
-				}).toString()
+				}).toString().replace(/\,/g, '')
 				let params = {
 					place: place
 				}
