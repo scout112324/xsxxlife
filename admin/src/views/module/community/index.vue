@@ -107,6 +107,7 @@
             :show-file-list="false"
             :headers="uploadHeader"
             :on-success="handleUploadSuccess"
+            accept=".bmp, .jpg, .jpeg, .png, .gif"
           >
             <img
               v-if="form.url"
@@ -133,6 +134,7 @@
             :show-file-list="false"
             :headers="uploadHeader"
             :on-success="qrCodeUploadSuccess"
+            accept=".bmp, .jpg, .jpeg, .png, .gif"
           >
             <img
               v-if="form.qrCode"
@@ -204,7 +206,7 @@ export default {
 
       uploadHeader: {'Authorization': getToken()},
       // 图片根目录
-      imagePath: ''
+      imagePath: '',
     }
   },
   created() {

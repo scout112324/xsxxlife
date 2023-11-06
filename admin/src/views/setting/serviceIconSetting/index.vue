@@ -53,7 +53,7 @@
         <el-form-item label="名字" prop="name">
           <el-input v-model="form.name" placeholder="请输入名字"/>
         </el-form-item>
-        <el-form-item label="地址" prop="url">
+        <el-form-item label="icon地址" prop="url">
           <el-upload
             :action="uploadAction"
             list-type="picture-card"
@@ -61,6 +61,7 @@
             :show-file-list="false"
             :headers="uploadHeader"
             :on-success="handleUploadSuccess"
+            accept=".bmp, .jpg, .jpeg, .png, .gif"
           >
             <img
               v-if="form.url"

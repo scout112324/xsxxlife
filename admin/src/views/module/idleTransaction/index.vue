@@ -28,7 +28,7 @@
       <el-table-column label="价格" align="center" prop="realPrice"/>
       <el-table-column show-overflow-tooltip label="内容" align="center" prop="content"/>
       <el-table-column label="图片" align="center" width="200">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="scope.row.picture">
           <div class="img-container" v-for="(pic,index) in scope.row.picture.split(',')" :key="index">
             <img v-if="imgType.includes(pic.substr(pic.lastIndexOf('.') + 1, pic.length).toLowerCase())"
                  class="list-img"
