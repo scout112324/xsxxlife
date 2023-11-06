@@ -102,7 +102,6 @@
 					fontWeight: 500,
 					color: "#131313"
 				},
-				// cityname: "上海市",
 				text: ["发布闲置后支持线上线下交易啦～", "111"],
 				serviceData: [],
 				areas: [],
@@ -139,10 +138,6 @@
 			// 获取公告数据
 			this.getNoticeData()
 			this.getTabList()
-			// 获取闲置列表
-			// this.getUnusedList()
-			// 获取附近社群
-			// this.getCrowdList()
 		},
 		methods: {
 			// 位置修改
@@ -260,11 +255,6 @@
 					if (res.code === 200) {
 						this.getCrowdList()
 						this.getUnusedList()
-						uni.showToast({
-							title: '位置修改成功',
-							icon: 'success',
-							duration: 2000
-						})
 					}
 				})
 			},

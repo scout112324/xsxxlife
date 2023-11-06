@@ -341,7 +341,7 @@
 					}
 
 					.msg-img {
-						max-width: 400rpx;
+						max-width: 200rpx;
 						border-radius: 20rpx;
 					}
 
