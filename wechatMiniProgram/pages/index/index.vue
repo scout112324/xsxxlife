@@ -125,7 +125,9 @@
 				}
 			]
 			placeUser({
-				place: `${this.areas[0].value}${this.areas[1].value}`
+				place: this.areas.map(item => {
+					return item.value
+				}).toString()
 			}).then(res => {
 				if (res.code === 200) {
 					console.log(`${this.areas[0].value}${this.areas[1].value}`)
@@ -221,7 +223,7 @@
 				this.areas = e.detail.value
 				let place = e.detail.value.map(item => {
 					return item.value
-				}).toString().replace(/\,/g, '')
+				})
 				let params = {
 					place: place
 				}
