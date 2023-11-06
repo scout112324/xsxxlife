@@ -72,6 +72,9 @@
 			}, 2000)
 
 		},
+		destroyed() {
+			uni.$emit('changeReadStatus', this.userId)
+		},
 		data() {
 			return {
 				// socket是否开启

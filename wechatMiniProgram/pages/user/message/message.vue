@@ -70,8 +70,17 @@
 				userId: ""
 			}
 		},
-		onShow() {
+		created() {
 			this.getMsgList()
+		},
+		onLoad() {
+			uni.$on('changeReadStatus', (userId) => {
+				this.userId = userId
+				this.handleRead()
+			})
+		},
+		onUnload() {
+			uni.$off('changeReadStatus')
 		},
 		methods: {
 			handleRead() {
