@@ -23,6 +23,7 @@ const api = {
 	entryActivity: 'app/activity/entry',
 	intservInfoHome: 'app/home/intservInfo',
 	intservHome: 'app/home/intserv',
+	placeUser: 'app/user/place',
 }
 
 // 登录
@@ -133,4 +134,9 @@ export const intservInfoHome = (param, option) => {
 // 获取综合服务的icon
 export const intservHome = (param, option) => {
 	return request.get(api.intservHome, param)
+}
+
+// 更改用户的地址
+export const placeUser = (param, option) => {
+	return request.get(api.placeUser, param)
 }

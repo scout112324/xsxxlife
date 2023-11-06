@@ -81,7 +81,8 @@
 		getNotice,
 		tabList,
 		getUnused,
-		getCrowd
+		getCrowd,
+		placeUser
 	} from '@/api/index/index.js'
 	export default {
 		components: {
@@ -211,7 +212,23 @@
 			},
 			onchange(e) {
 				this.areas = e.detail.value
-				console.log('onchange:', e);
+				let place = e.detail.value.map(item => {
+					return item.value
+				}).toString()
+				let params = {
+					place: place
+				}
+				placeUser(params).then(res => {
+					if (res.code === 200) {
+						this.getCrowdList()
+						this.getUnusedList()
+						uni.showToast({
+							title: '位置修改成功',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				})
 			},
 			// 点击更多跳转到闲置列表
 			handleMoreClick() {
