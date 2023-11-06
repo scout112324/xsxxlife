@@ -105,22 +105,6 @@
 			}
 		},
 		onShow() {
-			// // 数组倒叙 主要是应对后端传过来的数据
-			// for (var i = 0; i < this.msg.length; i++) {
-			// 	//时间间隔处理
-			// 	if (i < this.msg.length - 1) { //这里表示头部时间还是显示一下
-			// 		let t = dateTime.spaceTime(this.oldTime, this.msg[i].createTime);
-			// 		if (t) {
-			// 			this.oldTime = t;
-			// 		}
-			// 		this.msg[i].createTime = t;
-			// 	}
-			// 	// 获取图片，为下面的预览做准备
-			// 	if (this.msg[i].TextType == 1) {
-			// 		this.imgMsg.unshift(this.msg[i].sendText)
-			// 	}
-			// 	this.unshiftmsg.unshift(this.msg[i]);
-			// }
 			// 跳转到最后一条数据 与前面的:id进行对照
 			this.$nextTick(function() {
 				this.scrollToView = 'msg' + (this.chatList.length - 1)
@@ -275,16 +259,8 @@
 					type: e.type,
 					msg: e.type == 1 ? JSON.stringify(e.message) : e.message,
 					acceptUserId: this.userId,
-					// "sendName": "゛时光い",
-					// "receviceName": "xpq",
-					// "sendText": e.message,
-					// "createTime": new Date(),
-					// "updateTime": new Date(),
-					// "chatmState": 1,
-					// "TextType": e.type
 				};
 				// 发送给服务器消息
-				// onSendWS(JSON.stringify(data));
 				if (this.socketOpen) {
 					let that = this
 					uni.sendSocketMessage({
