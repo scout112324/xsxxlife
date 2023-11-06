@@ -189,7 +189,7 @@
 					this.$nextTick(function() {
 						this.scrollToView = 'msg' + (this.chatList.length - 1)
 					})
-					if (type == 1 && msg.fileType == 'image') {
+					if (obj.type == 1 && obj.msg.fileType == 'image') {
 						this.imgMsg.push(msg.tempFilePath);
 					}
 				});
@@ -215,6 +215,7 @@
 						} else {
 							this.chatList = msgList
 						}
+						this.goBottom()
 					}
 				})
 			},
@@ -295,7 +296,7 @@
 			},
 			//输入框高度
 			heights(e) {
-				this.inputh = e * 2;
+				this.inputh = Number(e * 2 + 20).toString();
 				this.goBottom();
 			},
 			// 滚动到底部
@@ -318,10 +319,7 @@
 			height: 100%;
 
 			.chat-main {
-				padding-left: 32rpx;
-				padding-right: 32rpx;
-				padding-top: 20rpx;
-				// padding-bottom: 120rpx;  //获取动态高度
+				padding: 32rpx;
 				display: flex;
 				flex-direction: column;
 			}
