@@ -22,13 +22,6 @@
 								:src="JSON.parse(item.msg).tempFilePath" class="msg-img" mode="widthFix"></video>
 							<!-- <image :src="item.msg" class="msg-img" mode="widthFix"></image> -->
 						</view>
-						<!-- 音频 -->
-						<!-- <view class="message" v-if="item.type == 2" @tap="playVoice(item.msg.voice)">	
-							<view class="msg-text voice" :style="{width:item.msg.time*4+'rpx'}">
-								<image src="../../../static/chat/camera.png" class="voice-img"></image>
-								{{item.msg.time}}″
-							</view>
-						</view> -->
 					</view>
 					<view class="msg-m msg-right" v-if="item.sendType != 0">
 						<image v-if="item.myPhoto" class="user-img" :src="item.myPhoto"></image>
@@ -43,13 +36,6 @@
 							<video v-if="JSON.parse(item.msg).fileType=='video'"
 								:src="JSON.parse(item.msg).tempFilePath" class="msg-img" mode="widthFix"></video>
 						</view>
-						<!-- 音频 -->
-						<!-- <view class="message" v-if="item.type == 2" @tap="playVoice(item.msg.voice)">
-							<view class="msg-text voice" :style="{width:item.msg.time*4+'rpx'}">
-								{{item.msg.time}}″
-								<image src="../../../static/chat/voice.png" class="voice-img"></image>
-							</view>
-						</view> -->
 					</view>
 				</view>
 			</view>
@@ -246,11 +232,6 @@
 						}
 					}
 				});
-			},
-			//音频播放
-			playVoice(e) {
-				innerAudioContext.src = e;
-				innerAudioContext.onPlay(() => {});
 			},
 			//接受输入内容
 			inputs(e) {

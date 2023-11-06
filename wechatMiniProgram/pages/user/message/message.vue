@@ -201,6 +201,7 @@
 		.message-list {
 			background-color: #ffffff;
 			margin: 20rpx 0;
+			padding-bottom: 20rpx;
 
 			.message-item {
 				height: 173rpx;
