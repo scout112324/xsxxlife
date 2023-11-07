@@ -178,8 +178,11 @@
 					this.$nextTick(function() {
 						this.scrollToView = 'msg' + (this.chatList.length - 1)
 					})
-					if (obj.type == 1 && obj.msg.fileType == 'image') {
-						this.imgMsg.push(msg.tempFilePath);
+					if (obj.type == 1) {
+						let msgInfo = JSON.parse(obj.msg)
+						if (msgInfo.fileType == 'image') {
+							this.imgMsg.push(msgInfo.tempFilePath);
+						}
 					}
 				});
 			},
@@ -197,7 +200,10 @@
 							// 数组倒叙 主要是应对后端传过来的数据
 							msgList.forEach(item => {
 								if (item.type == 1) {
-									this.imgMsg.unshift(item.msg)
+									let msgInfo = JSON.parse(item.msg)
+									if (msgInfo.fileType == 'image') {
+										this.imgMsg.unshift(msgInfo.tempFilePath);
+									}
 								}
 								return this.chatList.unshift(item)
 							})
@@ -213,14 +219,12 @@
 			},
 			// 进行图片的预览
 			previewImg(e) {
-				// console.log('imgMsg', e, this.imgMsg)
 				let index = 0;
 				for (let i = 0; i < this.imgMsg.length; i++) {
 					if (this.imgMsg[i] == e.tempFilePath) {
 						index = i;
 					}
 				}
-				// console.log("index", index)
 				// 预览图片
 				uni.previewImage({
 					current: index,
@@ -274,8 +278,11 @@
 				this.$nextTick(function() {
 					this.scrollToView = 'msg' + (this.chatList.length - 1)
 				})
-				if (e.type == 1 && e.message.fileType == 'image') {
-					this.imgMsg.push(e.message.tempFilePath);
+				if (e.type == 1) {
+					let msgInfo = JSON.parse(e.msg)
+					if (msgInfo.fileType == 'image') {
+						this.imgMsg.push(msgInfo.tempFilePath);
+					}
 				}
 			},
 			//输入框高度
