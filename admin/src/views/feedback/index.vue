@@ -20,8 +20,13 @@
       <el-table-column show-overflow-tooltip label="类型" align="center" prop="type"/>
       <el-table-column label="内容" align="center" prop="content"></el-table-column>
       <el-table-column label="图片" align="center" width="200">
-        <template slot-scope="scope">
-          <img class="list-img" :src="scope.row.picture">
+        <template slot-scope="scope" v-if="scope.row.picture">
+          <div class="img-container" v-for="(pic,index) in scope.row.picture.split(',')" :key="index">
+            <img v-if="imgType.includes(pic.substr(pic.lastIndexOf('.') + 1, pic.length).toLowerCase())"
+                 class="list-img"
+                 :src="pic">
+            <video v-else class="list-img" :src="pic" controls></video>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="电话" align="center" prop="phone"></el-table-column>
@@ -105,7 +110,8 @@ export default {
 
       uploadHeader: {'Authorization': getToken()},
       // 图片根目录
-      imagePath: ''
+      imagePath: '',
+      imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
     }
   },
   created() {
