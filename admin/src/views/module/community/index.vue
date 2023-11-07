@@ -124,7 +124,13 @@
           <el-input v-model="form.introduce" placeholder="请介绍群类型"/>
         </el-form-item>
         <el-form-item label="位置" prop="place">
-          <el-input v-model="form.place" placeholder="请填写位置(市，区，街道之前以逗号分隔)"/>
+          <el-cascader
+            :options="options"
+            :props="{ checkStrictly: true }"
+            clearable
+            popper-class="popper"
+            v-model="form.place"
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="二维码地址" prop="qrCode">
           <el-upload
@@ -165,6 +171,7 @@
 <script>
 import {addCrowd, crowdList, updateCrowd, deleteCrowd} from '@/api/module/community'
 import {getToken} from '@/utils/auth'
+import {areaData} from "@/utils/area"
 
 export default {
   name: 'Announce',
@@ -179,7 +186,9 @@ export default {
       // 是否显示弹出层
       open: false,
       // 表单参数
-      form: {},
+      form: {
+        place: []
+      },
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -207,9 +216,11 @@ export default {
       uploadHeader: {'Authorization': getToken()},
       // 图片根目录
       imagePath: '',
+      options: []
     }
   },
   created() {
+    this.options = areaData
     this.getList()
   },
   methods: {
@@ -218,7 +229,6 @@ export default {
       this.loading = true
       crowdList(this.queryParams).then(response => {
           if (response.code === 200) {
-            console.log(response)
             this.crowdList = response.rows
             this.total = response.total
             this.loading = false
@@ -269,7 +279,7 @@ export default {
         title: '',
         total: 0,
         introduce: '',
-        place: '',
+        place: [],
         isShow: 0,
         url: "",
         qrCode: ""
@@ -289,7 +299,7 @@ export default {
       this.$set(this.form, 'title', row.title)
       this.$set(this.form, 'total', row.total)
       this.$set(this.form, 'introduce', row.introduce)
-      this.$set(this.form, 'place', row.place)
+      this.$set(this.form, 'place', row.place ? row.place.split(',') : [])
       this.$set(this.form, 'isShow', String(row.isShow))
       this.$set(this.form, 'url', row.url)
       this.$set(this.form, 'qrCode', row.qrCode)
@@ -302,7 +312,7 @@ export default {
           title: this.form.title,
           total: this.form.total,
           introduce: this.form.introduce,
-          place: this.form.place,
+          place: this.form.place.toString(),
           isShow: this.form.isShow,
           url: this.form.url,
           qrCode: this.form.qrCode
@@ -319,7 +329,16 @@ export default {
       } else {
         this.$refs['form'].validate(valid => {
           if (valid) {
-            addCrowd(this.form).then(response => {
+            const params = {
+              title: this.form.title,
+              total: this.form.total,
+              introduce: this.form.introduce,
+              place: this.form.place.toString(),
+              isShow: this.form.isShow,
+              url: this.form.url,
+              qrCode: this.form.qrCode
+            }
+            addCrowd(params).then(response => {
               this.$modal.msgSuccess('新增成功')
               this.open = false
               this.getList()
@@ -358,6 +377,42 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.popper {
+  .el-cascader-panel {
+    .el-radio {
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+
+    .el-checkbox {
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+
+    .el-radio__input {
+      margin-top: 10px;
+      margin-left: 8px;
+    }
+
+    .el-checkbox__input {
+      margin-top: 2px;
+      margin-left: 8px;
+    }
+
+    .el-cascader-node__postfix {
+      top: 10px;
+    }
+  }
+}
+
 .container {
   padding: 20px;
 

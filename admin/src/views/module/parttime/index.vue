@@ -113,7 +113,13 @@
           <el-input v-model="form.label" placeholder="请输入标签"/>
         </el-form-item>
         <el-form-item label="地点" prop="place">
-          <el-input v-model="form.place" placeholder="请填写位置(市，区，街道之前以逗号分隔)"/>
+          <el-cascader
+            :options="options"
+            :props="{ checkStrictly: true }"
+            clearable
+            popper-class="popper"
+            v-model="form.place"
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="用户的id" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户的id"/>
@@ -163,6 +169,7 @@
 <script>
 import {addJob, jobList, updateJob, deleteJob} from '@/api/module/partTime'
 import {getToken} from '@/utils/auth'
+import {areaData} from "@/utils/area"
 
 export default {
   name: 'Announce',
@@ -177,7 +184,9 @@ export default {
       // 是否显示弹出层
       open: false,
       // 表单参数
-      form: {},
+      form: {
+        place: []
+      },
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -204,10 +213,12 @@ export default {
 
       uploadHeader: {'Authorization': getToken()},
       // 图片根目录
-      imagePath: ''
+      imagePath: '',
+      options: []
     }
   },
   created() {
+    this.options = areaData
     this.getList()
   },
   methods: {
@@ -236,7 +247,7 @@ export default {
     },
     // 状态修改
     handleStatusChange(row) {
-      let text = row.status == '0' ? '已发布' : '未发布'
+      let text = row.status == '0' ? '发布' : '取消发布'
       this.$modal.confirm('确认要' + text + '吗？').then(function () {
         return updateJob(
           {
@@ -272,7 +283,7 @@ export default {
       this.form = {
         title: '',
         label: '',
-        place: '',
+        place: [],
         userId: '',
         price: '',
         wx: '',
@@ -299,7 +310,7 @@ export default {
       this.noticeId = row.id
       this.$set(this.form, 'title', row.title)
       this.$set(this.form, 'label', row.label)
-      this.$set(this.form, 'place', row.place)
+      this.$set(this.form, 'place', row.place ? row.place.split(',') : [])
       this.$set(this.form, 'userId', row.userId)
       this.$set(this.form, 'price', row.price)
       this.$set(this.form, 'wx', row.wx)
@@ -318,7 +329,7 @@ export default {
           id: this.noticeId,
           title: this.form.title,
           label: this.form.label,
-          place: this.form.place,
+          place: this.form.place.toString(),
           userId: this.form.userId,
           price: this.form.price,
           wx: this.form.wx,
@@ -342,7 +353,22 @@ export default {
       } else {
         this.$refs['form'].validate(valid => {
           if (valid) {
-            addJob(this.form).then(response => {
+            const params = {
+              title: this.form.title,
+              label: this.form.label,
+              place: this.form.place.toString(),
+              userId: this.form.userId,
+              price: this.form.price,
+              wx: this.form.wx,
+              phone: this.form.phone,
+              jobContent: this.form.jobContent,
+              priceContent: this.form.priceContent,
+              needContent: this.form.needContent,
+              timeContent: this.form.timeContent,
+              detailsPlace: this.form.detailsPlace,
+              status: this.form.status,
+            }
+            addJob(params).then(response => {
               this.$modal.msgSuccess('新增成功')
               this.open = false
               this.getList()
