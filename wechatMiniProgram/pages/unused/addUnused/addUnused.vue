@@ -24,7 +24,7 @@
 				<u-form labelPosition="left" :model="userInfo" :rules="rules" ref="uForm" labelWidth="240rpx"
 					:key='keydata'>
 					<u-form-item label="产品价格" prop="realPrice" borderBottom>
-						<u--input v-model="userInfo.realPrice" border="none" placeholder="请填写产品价格"></u--input>
+						<u--input v-model="userInfo.realPrice" border="none" placeholder="请填写产品价格(元)"></u--input>
 					</u-form-item>
 					<u-form-item label="选择交易方式" prop="saleType" borderBottom labelPosition="top">
 						<u-checkbox-group v-model="userInfo.saleType">

@@ -6,6 +6,7 @@
 			<view class="name">
 				{{itemData.nickname}}
 				<text class="address">{{itemData.toUsername}}</text>
+				<text class="seller address" v-if="item.seller">楼主</text>
 			</view>
 		</view>
 		<view class="content">
@@ -69,6 +70,9 @@
 					line-height: 37rpx;
 					background-color: #F6F6F6;
 					margin-left: 6rpx;
+					&.seller {
+						font-size: 22rpx;
+					}
 				}
 			}
 		}

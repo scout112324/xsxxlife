@@ -28,7 +28,7 @@
 						<u-icon slot="right" name="arrow-right"></u-icon>
 					</u-form-item>
 					<u-form-item label="价格" prop="price" borderBottom>
-						<u--input v-model="userInfo.price" border="none" placeholder="请填写产品价格"></u--input>
+						<u--input v-model="userInfo.price" border="none" placeholder="请填写产品价格(元)"></u--input>
 					</u-form-item>
 					<u-form-item label="联系电话" prop="phone" borderBottom>
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写联系电话"></u--input>
