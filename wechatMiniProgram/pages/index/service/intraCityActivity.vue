@@ -6,7 +6,8 @@
 			</view>
 		</u-navbar>
 		<view class="part-time-container">
-			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
+			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm"
+				@clear="handleConfirm">
 			</uni-easyinput>
 		</view>
 		<scroll-view class="part-time-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">

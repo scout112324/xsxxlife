@@ -6,7 +6,8 @@
 			</view>
 		</u-navbar>
 		<view class="message-container">
-			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
+			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm"
+				@clear="handleConfirm">
 			</uni-easyinput>
 			<view class="clear" @click="handleClearMsg">
 				<image class="icon" src="../../../static/user/clear.png" mode=""></image>

@@ -320,7 +320,7 @@
 
 			.image-list {
 				display: flex;
-				justify-content: space-between;
+				justify-content: flex-start;
 				flex-wrap: nowrap;
 
 				.good {
@@ -328,6 +328,9 @@
 					height: 184rpx;
 					border-radius: 10rpx;
 					border: 1rpx solid rgba(151, 151, 151, 0.17);
+					&:nth-child(2) {
+						margin: 0 10rpx;
+					}
 				}
 			}
 

@@ -6,7 +6,8 @@
 			</view>
 		</u-navbar>
 		<view class="activity-container">
-			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
+			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm"
+				@clear="handleConfirm">
 			</uni-easyinput>
 		</view>
 		<view class="tabs">

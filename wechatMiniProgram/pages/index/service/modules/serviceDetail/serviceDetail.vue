@@ -6,7 +6,8 @@
 			</view>
 		</u-navbar>
 		<view class="service-detail-container">
-			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
+			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm"
+				@clear="handleConfirm">
 			</uni-easyinput>
 		</view>
 		<view class="service-detail-list" v-if="serviceInfo && serviceInfo.id">

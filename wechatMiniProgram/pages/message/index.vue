@@ -4,7 +4,8 @@
 			<view class="u-nav-slot" slot="left"></view>
 		</u-navbar>
 		<view class="unused-container">
-			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm">
+			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm"
+				@clear="handleConfirm">
 			</uni-easyinput>
 		</view>
 		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
