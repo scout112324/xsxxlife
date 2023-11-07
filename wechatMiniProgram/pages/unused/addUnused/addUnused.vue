@@ -93,8 +93,9 @@
 				],
 				rules: {
 					realPrice: [{
+						type: 'number',
 						required: true,
-						message: '请填写产品价格',
+						message: '请填写产品价格(必须是数字)',
 						// blur和change事件触发检验
 						trigger: ['change', 'blur'],
 					}],
@@ -212,7 +213,9 @@
 							let param = {
 								realPrice: this.userInfo.realPrice,
 								saleType: this.userInfo.saleType + "",
-								place: this.place,
+								place: typeof(this.place) == "string" ? this.place : this.place.map(item => {
+									return item.text
+								}).toString(),
 								content: this.content,
 								picture: this.picture.toString(),
 								phone: this.userInfo.phone
