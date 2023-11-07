@@ -87,8 +87,8 @@
 					text: '维修水电',
 					value: '维修水电'
 				}, {
-					text: '放水漏水',
-					value: '放水漏水'
+					text: '防水漏水',
+					value: '防水漏水'
 				}],
 				imgList: [],
 				pageType: "feedback",
