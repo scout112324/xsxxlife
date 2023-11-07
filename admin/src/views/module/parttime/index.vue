@@ -113,7 +113,7 @@
           <el-input v-model="form.label" placeholder="请输入标签"/>
         </el-form-item>
         <el-form-item label="地点" prop="place">
-          <el-input v-model="form.place" placeholder="请输入地点"/>
+          <el-input v-model="form.place" placeholder="请填写位置(市，区，街道之前以逗号分隔)"/>
         </el-form-item>
         <el-form-item label="用户的id" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户的id"/>

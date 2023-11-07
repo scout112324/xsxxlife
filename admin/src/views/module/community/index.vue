@@ -124,7 +124,7 @@
           <el-input v-model="form.introduce" placeholder="请介绍群类型"/>
         </el-form-item>
         <el-form-item label="位置" prop="place">
-          <el-input v-model="form.place" placeholder="请填写位置"/>
+          <el-input v-model="form.place" placeholder="请填写位置(市，区，街道之前以逗号分隔)"/>
         </el-form-item>
         <el-form-item label="二维码地址" prop="qrCode">
           <el-upload
