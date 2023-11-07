@@ -208,15 +208,6 @@
 			}
 		},
 		{
-			"path": "pages/index/service/idleTransaction",
-			"style": {
-				"navigationBarTitleText": "闲置交易",
-				"enablePullDownRefresh": true,
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "black"
-			}
-		},
-		{
 			"path": "pages/index/service/intraCityActivity",
 			"style": {
 				"navigationBarTitleText": "同城活动",
