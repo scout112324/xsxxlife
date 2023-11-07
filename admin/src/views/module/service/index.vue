@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column label="联系电话" align="center" prop="phone"/>
       <el-table-column label="详细地址" align="center" prop="detailsPlace"/>
-      <el-table-column label="综合服务模块的id" align="center" prop="intservId"/>
+      <el-table-column label="综合服务icon的id" align="center" prop="intservId"/>
       <el-table-column label="综合服务模块的名称" align="center" prop="moduleName"/>
       <el-table-column
         label="操作"
@@ -113,7 +113,7 @@
         <el-form-item label="详细地址" prop="detailsPlace">
           <el-input v-model="form.detailsPlace" placeholder="请输入详细地址"/>
         </el-form-item>
-        <el-form-item label="综合服务模块的id" prop="intservId">
+        <el-form-item label="综合服务icon的id" prop="intservId">
           <el-input v-model="form.intservId" placeholder="请输入综合服务模块的id"/>
         </el-form-item>
       </el-form>

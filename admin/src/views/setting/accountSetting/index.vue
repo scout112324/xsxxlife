@@ -13,8 +13,7 @@
       </el-col>
     </el-row>
     <el-table v-loading="loading" :data="iconList">
-      <el-table-column type="index" width="50" align="center"></el-table-column>
-      <el-table-column show-overflow-tooltip label="名字" align="center" prop="name"/>
+      <el-table-column label="名字" align="center" prop="name"/>
       <el-table-column label="图片" align="center" width="200">
         <template slot-scope="scope">
           <img class="list-img" :src="scope.row.url">
