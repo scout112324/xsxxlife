@@ -7,8 +7,8 @@
 					:id="'msg'+ index">
 					<view class="chat-time" v-if="item.time != ''">{{item.time}}</view>
 					<view class="msg-m msg-left" v-if="item.sendType ==  0">
-						<image v-if="item.sendPhoto" class="user-img" src="../../../static/chat/avatar.png"></image>
-						<image v-else class="user-img" src="../../../static/chat/avatar.png"></image>
+						<image v-if="item.sendPhoto" class="user-img" :src="item.sendPhoto"></image>
+						<image v-else class="user-img" src="../../../static/avatar.png"></image>
 						<view class="message" v-if="item.type == 0">
 							<!-- 文字 -->
 							<view class="msg-text">{{item.msg}}</view>
@@ -25,7 +25,7 @@
 					</view>
 					<view class="msg-m msg-right" v-if="item.sendType != 0">
 						<image v-if="item.myPhoto" class="user-img" :src="item.myPhoto"></image>
-						<image v-else class="user-img" src="../../../static/chat/avatar.png"></image>
+						<image v-else class="user-img" src="../../../static/avatar.png"></image>
 						<view class="message" v-if="item.type == 0">
 							<view class="msg-text">{{item.msg}}</view>
 						</view>
