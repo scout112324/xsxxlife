@@ -90,8 +90,9 @@
 						trigger: ['blur', 'change'],
 					}],
 					price: [{
+						type: 'number',
 						required: true,
-						message: '请填写价格',
+						message: '请填写价格(必须为数字)',
 						trigger: ['blur', 'change'],
 					}],
 					phone: [{
@@ -202,7 +203,9 @@
 							})
 						} else {
 							let params = {
-								place: this.place,
+								place: typeof(this.place) == "string" ? this.place : this.place.map(item => {
+									return item.text
+								}).toString(),
 								content: this.content,
 								picture: this.picture ? this.picture.toString() : "",
 								phone: this.userInfo.phone,

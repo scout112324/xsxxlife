@@ -213,7 +213,9 @@
 							let params = {
 								startTime: this.userInfo.startTime,
 								endTime: this.userInfo.deadline,
-								place: this.place,
+								place: typeof(this.place) == "string" ? this.place : this.place.map(item => {
+									return item.text
+								}).toString(),
 								detailsPlace: this.userInfo.detailsPlace,
 								limitPeople: this.userInfo.limitPeople,
 								content: this.content,

@@ -161,7 +161,9 @@
 							})
 						} else {
 							let params = {
-								place: this.place,
+								place: typeof(this.place) == "string" ? this.place : this.place.map(item => {
+									return item.text
+								}).toString(),
 								content: this.content,
 								picture: this.picture ? this.picture.toString() : "",
 								phone: this.userInfo.phone,
