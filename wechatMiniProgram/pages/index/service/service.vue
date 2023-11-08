@@ -19,9 +19,13 @@
 				</view>
 			</view>
 		</view>
-		<!-- <view class="others">
-			没有想要的类目？试试<text class="communicate">联系我们</text>
-		</view> -->
+		<view class="others">
+			没有想要的类目？试试
+			<button class="btn-contact" open-type="contact" style="margin: 0;">
+				<text class="communicate">联系我们</text>
+			</button>
+
+		</view>
 	</view>
 </template>
 
@@ -142,11 +146,23 @@
 		}
 
 		.others {
-			text-align: center;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			font-size: 28rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #4D504F;
+
+			.btn-contact {
+				background-color: transparent;
+				font-size: 28rpx;
+				padding: 0;
+				
+				&::after {
+					border: none
+				}
+			}
 
 			.communicate {
 				color: #3B8DDA;
