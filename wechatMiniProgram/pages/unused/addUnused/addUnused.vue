@@ -245,9 +245,12 @@
 <style lang="scss" scoped>
 	.publish-page {
 		background-color: #F3F6F5;
+		height: 100vh;
 
 		.container {
 			padding: 24rpx 15rpx;
+			max-height: calc(100vh - 198rpx);
+			overflow-y: auto;
 
 			.wrap-card {
 				min-height: 663rpx;
@@ -352,6 +355,8 @@
 
 
 		.publish {
+			position: fixed;
+			bottom: 0;
 			width: 750rpx;
 			height: 168rpx;
 			background: #FFFFFF;
