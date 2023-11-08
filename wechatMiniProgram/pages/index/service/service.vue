@@ -8,7 +8,7 @@
 		<view class="occupy"></view>
 		<view class="content-page">
 			<view class="notice">
-				<u-notice-bar :text="text"></u-notice-bar>
+				<u-notice-bar :text="text" :step="true"></u-notice-bar>
 			</view>
 			<view class="service">
 				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item)">
@@ -31,7 +31,8 @@
 
 <script>
 	import {
-		intservHome
+		intservHome,
+		getNotice
 	} from "@/api/index/index.js"
 	export default {
 		onReady() {
@@ -44,14 +45,24 @@
 					color: "#131313"
 				},
 				screenHeight: 0,
-				text: "发布闲置后支持线上线下交易啦～",
+				text: ["发布闲置后支持线上线下交易啦～", "111"],
 				serviceData: [],
 			}
 		},
 		onShow() {
 			this.getIntservHome()
+			// 获取公告数据
+			this.getNoticeData()
 		},
 		methods: {
+			// 获取公告
+			getNoticeData() {
+				getNotice().then(res => {
+					if (res.code === 200) {
+						this.text = res.data
+					}
+				})
+			},
 			getIntservHome() {
 				intservHome().then(res => {
 					if (res.code === 200) {
@@ -158,7 +169,7 @@
 				background-color: transparent;
 				font-size: 28rpx;
 				padding: 0;
-				
+
 				&::after {
 					border: none
 				}
