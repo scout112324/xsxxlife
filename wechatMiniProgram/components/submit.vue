@@ -78,23 +78,6 @@
 					this.$emit('heights', data.height);
 				}).exec();
 			},
-			//切换音频
-			records() {
-				//切换的时候关闭其他界面
-				this.ismore = false
-				this.isemoji = false
-				//切换高度
-				setTimeout(() => {
-					this.getElementHeight();
-				}, 10)
-				if (this.isrecord) {
-					this.isrecord = false;
-					this.toc = require("../static/chat/voice.png");
-				} else {
-					this.isrecord = true;
-					this.toc = require("../static/chat/wechat.png");
-				}
-			},
 			// 表情
 			emoji() {
 				this.isemoji = !this.isemoji;
