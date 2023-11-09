@@ -14,7 +14,6 @@
 					mode=""></image>
 				<view class="name">
 					{{item.nickname}}
-					<text class="address">{{item.place}}</text>
 					<text class="seller address" v-if="item.seller">楼主</text>
 				</view>
 			</view>
@@ -22,6 +21,7 @@
 				{{item.content}}
 			</view>
 			<view class="btn">
+				<text class="time">{{item.place}}</text>
 				<view class="record" @click="handleRecord(item.id)">
 					回复
 				</view>
@@ -31,7 +31,7 @@
 			</block>
 			<view class="more" @click="handleMoreComment(item.id,index)" v-if="item.count!=0">
 				<view class="unfold">
-					共{{item.count}}条回复---
+					共{{item.count}}条回复--
 				</view>
 				<!-- <uni-icons type="bottom" size="13" v-if="childrenList.length==0"></uni-icons>
 				<uni-icons type="top" size="13" v-else></uni-icons> -->
@@ -190,12 +190,14 @@
 
 
 				.address {
-					font-size: 18rpx;
+					font-size: 28rpx;
 					font-weight: 400;
-					color: #949494;
+					color: #232624;
 					line-height: 37rpx;
 					background-color: #F6F6F6;
 					margin-left: 6rpx;
+					padding: 10rpx;
+					border-radius: 30rpx;
 
 					&.seller {
 						font-size: 22rpx;
@@ -226,12 +228,12 @@
 			align-items: center;
 
 			.time {
-				color: rgba(147, 153, 163, 0.60);
+				color: #949494;
 			}
 
 			.record {
 				color: #FFBD3C;
-				margin-left: 20rpx;
+				margin-left: 10rpx;
 			}
 		}
 
