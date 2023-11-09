@@ -61,6 +61,9 @@
 		withdrawal,
 		updateUser
 	} from "@/api/user/index.js"
+	import {
+		uploadFiles
+	} from "@/api/upload.js"
 	export default {
 		data() {
 			return {
@@ -165,7 +168,6 @@
 						this.avatarUrl = res.data.photo
 						this.nickname = res.data.nickname
 						this.money = res.data.realMoney
-						console.log(this.avatarUrl, this.nickname)
 					}
 				})
 			},
@@ -173,8 +175,26 @@
 				const {
 					avatarUrl
 				} = e.detail
-				this.avatarUrl = avatarUrl
-				this.updateUserInfo()
+				this.uploadImages(avatarUrl)
+			},
+			uploadImages(imgPath) {
+				uni.uploadFile({
+					url: uploadFiles().url,
+					method: "POST",
+					header: {
+						'Content-Type': 'multipart/form-data',
+						'openId': uni.getStorageSync('openId')
+					},
+					filePath: imgPath,
+					name: 'file',
+					success: (res) => {
+						let imgData = JSON.parse(res.data); //微信和头条支持
+						if (imgData.code == 200) {
+							this.avatarUrl = imgData.data.url
+							this.updateUserInfo()
+						}
+					}
+				})
 			},
 			handleConfirmChange(e) {
 				this.nickname = e.detail.value
