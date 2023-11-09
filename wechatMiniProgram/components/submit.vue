@@ -2,17 +2,10 @@
 	<view>
 		<view class="submit">
 			<view class="submit-chat">
-				<!-- <view class="bt-img" @tap="records">
-					<image :src="toc"></image>
-				</view> -->
 				<!-- 文本框 -->
 				<textarea auto-height="true" class="chat-send btn" :class="{displaynone:isrecord}" @input="inputs"
 					@focus="focus" @keyboardheightchange="keyboardheightchange" v-model="msg" :show-confirm-bar="false"
 					:adjust-position="false"></textarea>
-				<view class="record btn" :class="{displaynone:!isrecord}" @touchstart="touchstart" @touchend="touchend"
-					@touchmove="touchmove">
-					按住说话
-				</view>
 				<view class="bt-img" @tap="emoji">
 					<image src="../static/chat/emoji.png"></image>
 				</view>
@@ -42,18 +35,6 @@
 					<image src="../static/chat/camera.png"></image>
 					<view class="more-list-title">拍摄</view>
 				</view>
-				<!-- <view class="more-list" @tap="sendImg('video')">
-					<image src="../static/chat/video.png"></image>
-					<view class="more-list-title">视频</view>
-				</view> -->
-			</view>
-		</view>
-		<view class="voice-bg" :class="{displaynone:!voicebg}">
-			<view class="voice-bg-len">
-				<view class="voice-bg-time" :style="{width:vlength/0.6+'%'}">
-					{{vlength}}″
-				</view>
-				<view class="voice-del">上滑取消录音</view>
 			</view>
 		</view>
 	</view>
@@ -138,14 +119,6 @@
 			inputs(e) {
 				var chatm = e.detail.value;
 				var pos = chatm.indexOf('\n');
-				// console.log(chatm.length)
-				// 检索字符串没有数据，返回-1
-				// if (pos != -1 && chatm.length > 1) {
-				// this.$emit('inputs', this.msg);
-				// setTimeout(() => {
-				// 	this.msg = '';
-				// }, 0)
-				// }
 				if (chatm.length > 1) {
 					this.showCamera = false
 				} else {
@@ -163,7 +136,6 @@
 				setTimeout(() => {
 					this.getElementHeight()
 				}, 10)
-				// console.log('keyboardheightchange', e.detail.height)
 			},
 			// 输入框聚焦
 			focus() {
@@ -184,12 +156,6 @@
 			},
 			// 表情内发送
 			emojiSend() {
-				// if (this.msg.length > 0) {
-				// 	this.$emit('inputs', this.msg);
-				// 	setTimeout(() => {
-				// 		this.msg = '';
-				// 	}, 0)
-				// }
 
 				if (this.msg.length > 0) {
 					//0为表情和文字
@@ -227,7 +193,6 @@
 					count: count, //默认9
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: [e], //从相册选择
-					// success: function (res) { //用function的方式会找不到send方法
 					success: (res) => {
 						if (res.type == 'image') {
 							let igmFile = res.tempFiles;
@@ -235,16 +200,11 @@
 								return this.uploadImages(item)
 							})
 						} else if (res.type == 'video') {
-							console.log('video', res)
 							let videoFile = res.tempFiles;
 							videoFile.forEach(item => {
 								return this.uploadVideo(item)
 							})
 						}
-						// const filePaths = res.tempFiles;
-						// for (let i = 0; i < filePaths.length; i++) {
-						// 	this.send(filePaths[i], 1)
-						// }
 					}
 				});
 			},
@@ -272,7 +232,6 @@
 								width: item.width
 							}
 							this.send(filePaths, 1)
-							console.log('filePaths', filePaths)
 						}
 					}
 				})
@@ -297,59 +256,9 @@
 								tempFilePath: imgData.data.url
 							}
 							this.send(filePaths, 1)
-							console.log('filePaths', filePaths)
 						}
 					}
 				})
-			},
-			//音频处理
-			//开始录音
-			touchstart(e) {
-				// console.log("开始录音")
-				// console.log("点击产生数据", e)
-				this.pageY = e.changedTouches[0].pageY;
-				this.voicebg = true;
-				let i = 1;
-				this.timer = setInterval(() => {
-					this.vlength = i;
-					i++;
-					// console.log("计时器开始工作,第几秒", i)
-					//结束计时
-					if (i > 60) {
-						clearInterval(this.timer);
-						this.touchend();
-					}
-				}, 1000)
-				recorderManager.start();
-			},
-			//删除录音
-			touchmove(e) {
-				// console.log("滑动到的y轴高度：",e.changedTouches[0].pageY);
-				if (this.pageY - e.changedTouches[0].pageY > 100) {
-					// 关闭录音界面
-					this.voicebg = false;
-				}
-			},
-			// 结束录音
-			touchend() {
-				// console.log("结束录音")
-				clearInterval(this.timer);
-				recorderManager.stop();
-				// recorderManager.onStop(function(res) {
-				recorderManager.onStop((res) => {
-					let data = {
-						voice: res.tempFilePath,
-						time: this.vlength
-					}
-					if (this.voicebg) {
-						this.send(data, 2);
-					}
-					// //时长归位
-					this.vlength = 0;
-					this.voicebg = false;
-					// console.log('recorder stop' + JSON.stringify(res));
-					// self.voicePath = res.tempFilePath;
-				});
 			},
 			//发送
 			send(msg, type) {
@@ -504,47 +413,6 @@
 				color: rgba(39, 40, 50, 0.5);
 				line-height: 34rpx;
 			}
-		}
-	}
-
-	.voice-bg {
-		height: 100%;
-		width: 100%;
-		background-color: rgba(0, 0, 0, 0.3);
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		z-index: 1001;
-
-		.voice-bg-len {
-			height: 84rpx;
-			width: 600rpx;
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			margin: auto;
-			background-color: rgba(255, 255, 255, 0.2);
-			border-radius: 42rpx;
-			text-align: center;
-		}
-
-		.voice-bg-time {
-			display: inline-block;
-			min-width: 120rpx;
-			line-height: 84rpx;
-			background-color: rgba(255, 228, 49, 1);
-			border-radius: 42rpx;
-		}
-
-		.voice-del {
-			position: absolute;
-			bottom: -480rpx;
-			width: 100%;
-			text-align: center;
-			color: #fff;
-			font-size: 28rpx;
 		}
 	}
 </style>
