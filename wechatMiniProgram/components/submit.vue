@@ -60,6 +60,10 @@
 </template>
 
 <script>
+	import {
+		uploadFiles,
+		uploadBatchFiles
+	} from "@/api/upload.js"
 	// 引入组件
 	import emoji from '../emoji/emoji.vue'
 	// 录音
@@ -219,18 +223,84 @@
 					count = 1;
 				}
 				uni.chooseMedia({
+					maxDuration: 60,
 					count: count, //默认9
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: [e], //从相册选择
 					// success: function (res) { //用function的方式会找不到send方法
 					success: (res) => {
-						// console.log(res)
-						const filePaths = res.tempFiles;
-						for (let i = 0; i < filePaths.length; i++) {
-							this.send(filePaths[i], 1)
+						if (res.type == 'image') {
+							let igmFile = res.tempFiles;
+							igmFile.forEach(item => {
+								return this.uploadImages(item)
+							})
+						} else if (res.type == 'video') {
+							console.log('video', res)
+							let videoFile = res.tempFiles;
+							videoFile.forEach(item => {
+								return this.uploadVideo(item)
+							})
 						}
+						// const filePaths = res.tempFiles;
+						// for (let i = 0; i < filePaths.length; i++) {
+						// 	this.send(filePaths[i], 1)
+						// }
 					}
 				});
+			},
+			// 上传视频
+			uploadVideo(item) {
+				uni.uploadFile({
+					url: uploadFiles().url,
+					method: "POST",
+					header: {
+						'Content-Type': 'multipart/form-data',
+						'openId': uni.getStorageSync('openId')
+					},
+					filePath: item.tempFilePath,
+					name: 'file',
+					success: (res) => {
+						let imgData = JSON.parse(res.data); //微信和头条支持
+						if (imgData.code === 200) {
+							let filePaths = {
+								duration: item.duration,
+								fileType: item.fileType,
+								height: item.height,
+								size: item.size,
+								tempFilePath: imgData.data.url,
+								thumbTempFilePath: item.thumbTempFilePath,
+								width: item.width
+							}
+							this.send(filePaths, 1)
+							console.log('filePaths', filePaths)
+						}
+					}
+				})
+			},
+			// 上传图片
+			uploadImages(item) {
+				uni.uploadFile({
+					url: uploadFiles().url,
+					method: "POST",
+					header: {
+						'Content-Type': 'multipart/form-data',
+						'openId': uni.getStorageSync('openId')
+					},
+					filePath: item.tempFilePath,
+					name: 'file',
+					success: (res) => {
+						let imgData = JSON.parse(res.data); //微信和头条支持
+						if (imgData.code === 200) {
+							let filePaths = {
+								fileType: item.fileType,
+								size: item.size,
+								tempFilePath: imgData.data.url
+							}
+							this.send(filePaths, 1)
+							console.log('filePaths', filePaths)
+						}
+					}
+				})
 			},
 			//音频处理
 			//开始录音
