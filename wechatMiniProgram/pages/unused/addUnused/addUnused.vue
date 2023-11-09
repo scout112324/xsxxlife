@@ -197,18 +197,26 @@
 								picture: this.picture.toString(),
 								phone: this.userInfo.phone
 							}
-							updateUnused(param).then(res => {
-								if (res.code === 200) {
-									uni.showToast({
-										title: '编辑成功',
-										icon: 'success',
-										duration: 2000
-									})
-									uni.switchTab({
-										url: "/pages/unused/index"
-									})
-								}
-							})
+							if (!!this.picture.toString() && !!this.content) {
+								updateUnused(param).then(res => {
+									if (res.code === 200) {
+										uni.showToast({
+											title: '编辑成功',
+											icon: 'success',
+											duration: 2000
+										})
+										uni.switchTab({
+											url: "/pages/unused/index"
+										})
+									}
+								})
+							} else {
+								uni.showToast({
+									title: '有描述和图片/视频才能发布哦~',
+									icon: 'none',
+									duration: 2000
+								})
+							}
 						} else {
 							let param = {
 								realPrice: this.userInfo.realPrice,
@@ -220,18 +228,26 @@
 								picture: this.picture.toString(),
 								phone: this.userInfo.phone
 							}
-							addUnused(param).then(res => {
-								if (res.code === 200) {
-									uni.showToast({
-										title: '发布成功',
-										icon: 'success',
-										duration: 2000
-									})
-									uni.switchTab({
-										url: "/pages/unused/index"
-									})
-								}
-							})
+							if (!!this.picture.toString() && !!this.content) {
+								addUnused(param).then(res => {
+									if (res.code === 200) {
+										uni.showToast({
+											title: '发布成功',
+											icon: 'success',
+											duration: 2000
+										})
+										uni.switchTab({
+											url: "/pages/unused/index"
+										})
+									}
+								})
+							} else {
+								uni.showToast({
+									title: '有描述和图片/视频才能发布哦~',
+									icon: 'none',
+									duration: 2000
+								})
+							}
 						}
 					} else {
 						console.log('验证失败');

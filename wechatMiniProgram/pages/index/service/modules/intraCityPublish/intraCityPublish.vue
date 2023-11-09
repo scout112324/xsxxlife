@@ -197,18 +197,26 @@
 								title: this.userInfo.title,
 								picture: this.picture ? this.picture.toString() : "",
 							}
-							updateActivity(params).then(res => {
-								if (res.code === 200) {
-									uni.showToast({
-										title: '编辑成功',
-										icon: 'success',
-										duration: 2000
-									})
-									uni.navigateTo({
-										url: "/pages/index/service/intraCityActivity"
-									})
-								}
-							})
+							if (!!this.picture.toString() && !!this.content) {
+								updateActivity(params).then(res => {
+									if (res.code === 200) {
+										uni.showToast({
+											title: '编辑成功',
+											icon: 'success',
+											duration: 2000
+										})
+										uni.navigateTo({
+											url: "/pages/index/service/intraCityActivity"
+										})
+									}
+								})
+							} else {
+								uni.showToast({
+									title: '有描述和图片/视频才能发布哦~',
+									icon: 'none',
+									duration: 2000
+								})
+							}
 						} else {
 							let params = {
 								startTime: this.userInfo.startTime,
@@ -222,18 +230,26 @@
 								title: this.userInfo.title,
 								picture: this.picture ? this.picture.toString() : "",
 							}
-							addActivity(params).then(res => {
-								if (res.code === 200) {
-									uni.showToast({
-										title: '发布成功',
-										icon: 'success',
-										duration: 2000
-									})
-									uni.navigateTo({
-										url: "/pages/index/service/intraCityActivity"
-									})
-								}
-							})
+							if (!!this.picture.toString() && !!this.content) {
+								addActivity(params).then(res => {
+									if (res.code === 200) {
+										uni.showToast({
+											title: '发布成功',
+											icon: 'success',
+											duration: 2000
+										})
+										uni.navigateTo({
+											url: "/pages/index/service/intraCityActivity"
+										})
+									}
+								})
+							} else {
+								uni.showToast({
+									title: '有描述和图片/视频才能发布哦~',
+									icon: 'none',
+									duration: 2000
+								})
+							}
 						}
 					} else {
 						console.log('验证失败');

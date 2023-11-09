@@ -147,18 +147,26 @@
 								picture: this.picture ? this.picture.toString() : "",
 								phone: this.userInfo.phone,
 							}
-							updateFind(params).then(res => {
-								if (res.code === 200) {
-									uni.showToast({
-										title: '编辑成功',
-										icon: 'success',
-										duration: 2000
-									})
-									uni.navigateTo({
-										url: "/pages/index/service/lookForPeople"
-									})
-								}
-							})
+							if (!!this.picture.toString() && !!this.content) {
+								updateFind(params).then(res => {
+									if (res.code === 200) {
+										uni.showToast({
+											title: '编辑成功',
+											icon: 'success',
+											duration: 2000
+										})
+										uni.navigateTo({
+											url: "/pages/index/service/lookForPeople"
+										})
+									}
+								})
+							} else {
+								uni.showToast({
+									title: '有描述和图片/视频才能发布哦~',
+									icon: 'none',
+									duration: 2000
+								})
+							}
 						} else {
 							let params = {
 								place: typeof(this.place) == "string" ? this.place : this.place.map(item => {
@@ -168,18 +176,26 @@
 								picture: this.picture ? this.picture.toString() : "",
 								phone: this.userInfo.phone,
 							}
-							addFind(params).then(res => {
-								if (res.code === 200) {
-									uni.showToast({
-										title: '发布成功',
-										icon: 'success',
-										duration: 2000
-									})
-									uni.navigateTo({
-										url: "/pages/index/service/lookForPeople"
-									})
-								}
-							})
+							if (!!this.picture.toString() && !!this.content) {
+								addFind(params).then(res => {
+									if (res.code === 200) {
+										uni.showToast({
+											title: '发布成功',
+											icon: 'success',
+											duration: 2000
+										})
+										uni.navigateTo({
+											url: "/pages/index/service/lookForPeople"
+										})
+									}
+								})
+							} else {
+								uni.showToast({
+									title: '有描述和图片/视频才能发布哦~',
+									icon: 'none',
+									duration: 2000
+								})
+							}
 						}
 					} else {
 						console.log('验证失败');
