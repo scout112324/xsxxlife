@@ -2,10 +2,12 @@
 	import {
 		getArea
 	} from "@/api/common.js"
+	import store from '@/store/index.js';
 	export default {
 		onLaunch: function() {
 
 		},
+
 		onShow: function() {
 			// 获取位置信息
 			uni.authorize({
@@ -26,6 +28,21 @@
 										.addressComponent.province);
 									uni.setStorageSync('district', res.data.result
 										.addressComponent.district);
+
+									let addressComponent = res.data.result
+										.addressComponent;
+									store.commit('SET_PROVINCE', addressComponent.province);
+									store.commit('SET_DISTRICT', addressComponent.district);
+									let defaultAreas = [{
+											text: `${addressComponent.province}`,
+											value: `${addressComponent.province}`
+										},
+										{
+											text: `${addressComponent.district}`,
+											value: `${addressComponent.district}`
+										}
+									];
+									store.commit('SET_DEFAULTAREAS', defaultAreas);
 								}
 							})
 						},

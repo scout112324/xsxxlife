@@ -85,6 +85,10 @@
 		getCrowd,
 		placeUser
 	} from '@/api/index/index.js'
+	import {
+		mapState
+	} from 'vuex' //引入mapState
+
 	export default {
 		components: {
 			infoItem,
@@ -111,7 +115,8 @@
 				communityList: [],
 				communityInfo: {},
 				pageType: "unused",
-				nodeData: {}
+				nodeData: {},
+				isUserSelectedArea: false, // 用户是否修改过定位区域
 			}
 		},
 		onShow() {
@@ -125,19 +130,26 @@
 		},
 		created() {
 			this.areaTree = areaData
-			this.areas = [{
-					text: `${uni.getStorageSync('province')}`,
-					value: `${uni.getStorageSync('province')}`
-				},
-				{
-					text: `${uni.getStorageSync('district')}`,
-					value: `${uni.getStorageSync('district')}`
-				}
-			]
 			this.changePlaceUser()
 			// 获取公告数据
 			this.getNoticeData()
 			this.getTabList()
+		},
+		computed: {
+			...mapState({
+				province: state => state.app.province,
+				district: state => state.app.district,
+				defaultAreas: state => state.app.defaultAreas,
+			}),
+		},
+		watch: {
+			defaultAreas(newVal, oldVal) {
+
+				if (!this.isUserSelectedArea) {
+					// 用户没有修改定位，则设置默认定位地址
+					this.areas = newVal;
+				}
+			},
 		},
 		methods: {
 			// 位置修改
@@ -222,6 +234,7 @@
 				this.show = false
 			},
 			chageClosed() {
+				this.isUserSelectedArea = true;
 				//处理不同步
 				this.$nextTick(() => {
 					if (this.nodeData.parent_value) {
@@ -244,6 +257,7 @@
 				this.nodeData = node
 			},
 			onchange(e) {
+				this.isUserSelectedArea = true;
 				this.areas = e.detail.value
 				let place = e.detail.value.map(item => {
 					return item.value
