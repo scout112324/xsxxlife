@@ -9,9 +9,7 @@
 		<block v-for="(item,index) in parentList" :key="item.id">
 			<view class="user-info">
 				<image v-if="item.photo" class="avatar" :src="item.photo" mode=""></image>
-				<image v-else class="avatar"
-					src="https://bpic.588ku.com/element_origin_min_pic/20/11/04/6b53830d8c8582ddc0f6fc2eabf67cac.jpg"
-					mode=""></image>
+				<image v-else class="avatar" src="../static/avatar.png" mode=""></image>
 				<view class="name">
 					{{item.nickname}}
 					<text class="seller address" v-if="item.seller">楼主</text>
