@@ -9,7 +9,7 @@
 							v-model="areas" @change="onchange" @nodeclick="onnodeclick" @popupclosed="chageClosed"
 							:clear-icon="false">
 						</uni-data-picker>
-						<image class="xiala" src="../../static/home/xiala.png" mode=""></image>
+						<!-- <image class="xiala" src="../../static/home/xiala.png" mode=""></image> -->
 					</view>
 				</view>
 			</view>

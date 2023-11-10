@@ -28,7 +28,7 @@
 			<view v-else class="content">
 				'暂无'
 			</view>
-			<view class="image-list" v-if="pictureList && pictureList.length>0" @click.stop>
+			<view class="image-list" v-if="pictureList && pictureList.length>0">
 				<block v-for="(item,index) in pictureList" :key="index">
 					<image v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
 						class="good" :src="item" mode="">
