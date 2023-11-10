@@ -130,6 +130,15 @@
 		},
 		created() {
 			this.areaTree = areaData
+			this.areas = [{
+					text: `${uni.getStorageSync('province')}`,
+					value: `${uni.getStorageSync('province')}`
+				},
+				{
+					text: `${uni.getStorageSync('district')}`,
+					value: `${uni.getStorageSync('district')}`
+				}
+			]
 			this.changePlaceUser()
 			// 获取公告数据
 			this.getNoticeData()
@@ -144,6 +153,7 @@
 		},
 		watch: {
 			defaultAreas(newVal, oldVal) {
+				console.log(newVal, oldVal)
 
 				if (!this.isUserSelectedArea) {
 					// 用户没有修改定位，则设置默认定位地址
