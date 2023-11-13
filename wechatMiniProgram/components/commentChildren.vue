@@ -5,6 +5,7 @@
 			<image v-else class="avatar" src="../static/avatar.png" mode=""></image>
 			<view class="name">
 				{{itemData.nickname}}
+				<image v-if="itemData.toUsername" class="tiaozhuan" src="../static/home/tiaozhuan.png" mode=""></image>
 				<text class="address">{{itemData.toUsername || ''}}</text>
 				<text class="seller address" v-if="item.seller">楼主</text>
 			</view>
@@ -63,17 +64,22 @@
 
 
 				.address {
-					font-size: 18rpx;
+					font-size: 26rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
 					color: #949494;
 					line-height: 37rpx;
-					background-color: #F6F6F6;
-					margin-left: 6rpx;
 
 					&.seller {
 						font-size: 22rpx;
+						background-color: #F6F6F6;
 					}
+				}
+
+				.tiaozhuan {
+					width: 10rpx;
+					height: 17rpx;
+					margin: 0 10rpx;
 				}
 			}
 		}
