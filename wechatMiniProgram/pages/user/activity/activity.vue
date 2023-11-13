@@ -22,7 +22,7 @@
 		</view>
 		<scroll-view class="activity-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 			<block v-for="item in activityListInfo" :key="item.id">
-				<view class="activity-item">
+				<view class="activity-item" @click="handleDetailClick(item)">
 					<view class="leaflet">
 						<block v-if="item.picture">
 							<image
@@ -166,6 +166,11 @@
 				this.hasMore = true
 				this.activityListInfo = []
 				this.getActivityList()
+			},
+			handleDetailClick(item) {
+				uni.navigateTo({
+					url: `/pages/index/service/modules/intraCityDetail/intraCityDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+				})
 			}
 		}
 	}

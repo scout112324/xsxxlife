@@ -22,7 +22,7 @@
 		</view>
 		<scroll-view class="list-container" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 			<block v-for="item in tradingList" :key="item.id">
-				<view class="list-item">
+				<view class="list-item" @click="handleDetailClick(item)">
 					<view class="header">
 						<image v-if="item.photo" class="avatar" src="../../../static/avatar.png" mode=""></image>
 						<image v-else class="avatar" src="../../../static/avatar.png" mode=""></image>
@@ -52,7 +52,7 @@
 						</view>
 					</view>
 					<view class="footer">
-						<button class="communicate" @click="handleCommuniteClick(item.userId)">联系卖家</button>
+						<button class="communicate" @click.stop="handleCommuniteClick(item.userId)">联系卖家</button>
 					</view>
 				</view>
 			</block>
@@ -170,6 +170,12 @@
 					if (res.code === 200) {
 						this.tradingList = res.data
 					}
+				})
+			},
+			handleDetailClick(item) {
+				uni.navigateTo({
+					url: `/pages/unused/detailUnused/detail?itemData=${encodeURIComponent(JSON.stringify(item))
+				}`
 				})
 			}
 		}
