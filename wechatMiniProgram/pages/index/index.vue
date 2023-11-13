@@ -290,9 +290,13 @@
 			},
 			// 点击不同的服务切换到不同的服务界面
 			handleClickService(item) {
-				if (item.name == '闲置交易' || item.name == '闲置专区') {
-					uni.switchTab({
+				if (item.name == '闲置交易') {
+					uni.redirectTo({
 						url: item.iconTo
+					})
+				} else if (item.name == '闲置专区') {
+					uni.redirectTo({
+						url: `${item.iconTo}?type=free`,
 					})
 				} else {
 					uni.navigateTo({

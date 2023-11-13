@@ -4,6 +4,7 @@ const api = {
 	addUnused: 'app/unused/add',
 	updateUnused: 'app/unused/update',
 	listUnused: 'app/unused/list',
+	freeUnused: 'app/unused/list/free'
 }
 
 // 增加闲置物品
@@ -19,4 +20,9 @@ export const updateUnused = (param, option) => {
 // 获取闲置物品
 export const listUnused = (param, option) => {
 	return request.get(api.listUnused, param)
+}
+
+// 查询闲置物品免费
+export const freeUnused = (param, option) => {
+	return request.get(api.freeUnused, param)
 }

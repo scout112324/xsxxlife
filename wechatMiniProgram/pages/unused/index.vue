@@ -4,7 +4,8 @@
 			<view class="u-nav-slot" slot="left"></view>
 		</u-navbar>
 		<view class="unused-container">
-			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm" @clear="handleConfirm">
+			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm"
+				@clear="handleConfirm">
 			</uni-easyinput>
 		</view>
 		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
@@ -21,7 +22,8 @@
 
 <script>
 	import {
-		listUnused
+		listUnused,
+		freeUnused
 	} from "@/api/unused/index.js"
 	import infoItem from "@/components/info_item.vue"
 
@@ -48,10 +50,13 @@
 				pageNum: 1,
 				pageSize: 50,
 				unusedList: [],
-				hasMore: true
+				hasMore: true,
+				type: ""
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			console.log('type', options.type)
+			this.type = options.type ? options.type : ""
 			uni.$on('changeUnused', this.getUnusedList)
 		},
 		onUnload() {
@@ -85,19 +90,35 @@
 						pageNum: this.pageNum,
 						pageSize: this.pageSize
 					}
-					listUnused(params).then(res => {
-						if (res.code == 200) {
-							if (res.data.length === 0) {
-								this.pageNum -= 1
-								this.hasMore = false
-								uni.showToast({
-									title: "没有数据了",
-									icon: "none"
-								});
+					if (this.type == 'free') {
+						freeUnused(params).then(res => {
+							if (res.code == 200) {
+								if (res.data.length === 0) {
+									this.pageNum -= 1
+									this.hasMore = false
+									uni.showToast({
+										title: "没有数据了",
+										icon: "none"
+									});
+								}
+								this.unusedList = this.unusedList.concat(res.data)
 							}
-							this.unusedList = this.unusedList.concat(res.data)
-						}
-					})
+						})
+					} else {
+						listUnused(params).then(res => {
+							if (res.code == 200) {
+								if (res.data.length === 0) {
+									this.pageNum -= 1
+									this.hasMore = false
+									uni.showToast({
+										title: "没有数据了",
+										icon: "none"
+									});
+								}
+								this.unusedList = this.unusedList.concat(res.data)
+							}
+						})
+					}
 				}
 			},
 			// 获取闲置物品列表
@@ -107,11 +128,19 @@
 					pageNum: this.pageNum,
 					pageSize: this.pageSize
 				}
-				listUnused(params).then(res => {
-					if (res.code == 200) {
-						this.unusedList = res.data
-					}
-				})
+				if (this.type == 'free') {
+					freeUnused(params).then(res => {
+						if (res.code == 200) {
+							this.unusedList = res.data
+						}
+					})
+				} else {
+					listUnused(params).then(res => {
+						if (res.code == 200) {
+							this.unusedList = res.data
+						}
+					})
+				}
 			},
 			// 搜索
 			handleConfirm() {
