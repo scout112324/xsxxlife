@@ -27,7 +27,7 @@
     <el-table v-loading="loading" :data="userList">
       <el-table-column type="index" width="50" align="center"></el-table-column>
       <el-table-column label="用户id" align="center" prop="id"/>
-      <el-table-column label="昵称" align="center" prop="nickName"></el-table-column>
+      <el-table-column label="昵称" align="center" prop="nickname"></el-table-column>
       <el-table-column label="openId" align="center" prop="openId"></el-table-column>
       <el-table-column label="头像" align="center" width="200">
         <template slot-scope="scope">
