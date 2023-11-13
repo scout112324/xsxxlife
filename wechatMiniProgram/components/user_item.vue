@@ -1,5 +1,5 @@
 <template>
-	<view class="user-item">
+	<view class="user-item" @click="handleDetailClick(itemData)">
 		<image
 			v-if="pictureUrl && imgType.includes(pictureUrl.substr(pictureUrl.lastIndexOf('.') + 1, pictureUrl.length).toLowerCase())"
 			class="image" :src="pictureUrl" mode=""></image>
@@ -28,7 +28,7 @@
 						{{itemData.nickname || '管理'}}
 					</view>
 				</view>
-				<view class="btn" @click="handleCommuniteClick(itemData.userId)">
+				<view class="btn" @click.stop="handleCommuniteClick(itemData.userId)">
 					<button class="add" v-if="typeStar==3">联系TA</button>
 				</view>
 			</view>
@@ -69,6 +69,39 @@
 					url: `/pages/user/chat/chat?userId=${userId}`
 				})
 			},
+			handleDetailClick(item) {
+				if (this.typeStar == 0) {
+					uni.navigateTo({
+						url: `/pages/index/service/modules/partTimeDetail/partTimeDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					})
+				} else if (this.typeStar == 1) {
+					uni.navigateTo({
+						url: `/pages/index/service/modules/houseTransferDetail/houseTransferDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					})
+				} else if (this.typeStar == 2) {
+					uni.navigateTo({
+						url: `/pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					})
+				} else if (this.typeStar == 3) {
+					uni.navigateTo({
+						url: `/pages/unused/detailUnused/detail?itemData=${encodeURIComponent(JSON.stringify(item))
+					}`
+					})
+				} else if (this.typeStar == 4) {
+					uni.navigateTo({
+						url: `/pages/index/service/modules/intraCityDetail/intraCityDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					})
+				} else if (this.typeStar == 5) {
+					uni.navigateTo({
+						url: `/pages/index/service/modules/largeShipmentDetail/largeShipmentDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					})
+				} else if (this.typeStar == 6) {
+					uni.navigateTo({
+						url: `/pages/message/detailMessage/detail?itemData=${encodeURIComponent(JSON.stringify(item))
+					}`
+					})
+				}
+			}
 		}
 	}
 </script>

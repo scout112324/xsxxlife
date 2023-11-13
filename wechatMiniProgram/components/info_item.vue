@@ -21,7 +21,7 @@
 				</view>
 				<view class="price" v-if="pageType!='findPeople'">
 					<text class="unit">￥</text>
-					<text>{{itemData.price || '暂无'}}</text>
+					<text>{{itemData.price || '0'}}</text>
 				</view>
 			</view>
 			<view v-if="itemData.content" class="content" v-html="itemData.content"></view>
