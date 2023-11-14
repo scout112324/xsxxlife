@@ -29,8 +29,11 @@
 						<view class="content">
 							{{item.content}}
 						</view>
-						<view class="status">
+						<view class="status" v-if="type!==3">
 							{{item.payStatus==0 ? '待支付' : '已支付'}}
+						</view>
+						<view class="status" v-else>
+							已卖出
 						</view>
 					</view>
 					<view class="container">
@@ -51,7 +54,7 @@
 							</text>
 						</view>
 					</view>
-					<view class="footer">
+					<view class="footer" v-if="type!==3">
 						<button class="communicate" @click.stop="handleCommuniteClick(item.userId)">联系卖家</button>
 					</view>
 				</view>
@@ -237,7 +240,6 @@
 			width: auto;
 
 			.list-item {
-				height: 315rpx;
 				background-color: #ffffff;
 				border-radius: 24rpx;
 				margin-bottom: 20rpx;
