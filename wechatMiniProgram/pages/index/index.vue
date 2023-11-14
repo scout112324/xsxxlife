@@ -7,7 +7,7 @@
 					<view class="select-address">
 						<uni-data-picker style="width: 220rpx;" ellipsis popup-title="请选择所在地区" :localdata="areaTree"
 							v-model="areas" @change="onchange" @nodeclick="onnodeclick" @popupclosed="chageClosed"
-							:clear-icon="false">
+							@popupopened="changeOpened" :clear-icon="false">
 						</uni-data-picker>
 						<!-- <image class="xiala" src="../../static/home/xiala.png" mode=""></image> -->
 					</view>
@@ -30,7 +30,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="life-circle">
+			<view class="life-circle" v-if="showDataPicker">
 				<view class="title">
 					<image class="life" src="../../static/home/shenghuoquanbiaoti.png" mode=""></image>
 					<view class="more" @click="handleMoreClick">
@@ -45,7 +45,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="attachment-community">
+			<view class="attachment-community" v-if="showDataPicker">
 				<view class="title">
 					<image class="life" src="../../static/home/shequnbiaoti.png" mode=""></image>
 					<view class="more"></view>
@@ -117,6 +117,7 @@
 				pageType: "unused",
 				nodeData: {},
 				isUserSelectedArea: false, // 用户是否修改过定位区域
+				showDataPicker: true
 			}
 		},
 		onShow() {
@@ -243,8 +244,12 @@
 			handleConfirm() {
 				this.show = false
 			},
+			changeOpened() {
+				this.showDataPicker = false
+			},
 			chageClosed() {
 				this.isUserSelectedArea = true;
+				this.showDataPicker = true
 				//处理不同步
 				this.$nextTick(() => {
 					if (this.nodeData.parent_value) {
@@ -306,7 +311,7 @@
 
 <style lang="scss" scoped>
 	::v-deep .uni-data-tree-dialog {
-		top: 50%;
+		top: 45%;
 	}
 
 	.home-page {
