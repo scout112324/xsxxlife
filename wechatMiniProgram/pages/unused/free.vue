@@ -1,7 +1,9 @@
 <template>
 	<view class="unused-page">
-		<u-navbar title="闲置" leftIcon="" :titleStyle="titleStyle" placeholder>
-			<view class="u-nav-slot" slot="left"></view>
+		<u-navbar title="闲置专区" :titleStyle="titleStyle" placeholder>
+			<view class="u-nav-slot" slot="left">
+				<u-icon name="arrow-left" size="18" @click="handleBack"></u-icon>
+			</view>
 		</u-navbar>
 		<view class="unused-container">
 			<uni-easyinput prefixIcon="search" v-model="keyword" placeholder="请输入搜索关键字" @confirm="handleConfirm"
@@ -22,7 +24,7 @@
 
 <script>
 	import {
-		listUnused
+		freeUnused
 	} from "@/api/unused/index.js"
 	import infoItem from "@/components/info_item.vue"
 
@@ -86,7 +88,7 @@
 						pageNum: this.pageNum,
 						pageSize: this.pageSize
 					}
-					listUnused(params).then(res => {
+					freeUnused(params).then(res => {
 						if (res.code == 200) {
 							if (res.data.length === 0) {
 								this.pageNum -= 1
@@ -108,7 +110,7 @@
 					pageNum: this.pageNum,
 					pageSize: this.pageSize
 				}
-				listUnused(params).then(res => {
+				freeUnused(params).then(res => {
 					if (res.code == 200) {
 						this.unusedList = res.data
 					}
@@ -131,6 +133,11 @@
 			handlePublishClick() {
 				uni.navigateTo({
 					url: "/pages/unused/addUnused/addUnused"
+				})
+			},
+			handleBack() {
+				uni.switchTab({
+					url: "/pages/index/index"
 				})
 			}
 		}

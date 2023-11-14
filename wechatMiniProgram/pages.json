@@ -53,6 +53,15 @@
 			}
 		},
 		{
+			"path": "pages/unused/free",
+			"style": {
+				"navigationBarTitleText": "闲置专区",
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
 			"path": "pages/unused/detailUnused/detail",
 			"style": {
 				"navigationBarTitleText": "闲置详情",

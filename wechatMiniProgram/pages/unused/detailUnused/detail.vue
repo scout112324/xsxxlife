@@ -25,7 +25,7 @@
 			</view>
 			<view class="price">
 				<text class="unit">¥</text>
-				<text class="num">{{itemData.price || '暂无'}}</text>
+				<text class="num">{{itemData.price || '0'}}</text>
 			</view>
 			<view :class="['content',{'occupy-cot': pictureList.length==0}]">
 				{{itemData.content || '暂无'}}
