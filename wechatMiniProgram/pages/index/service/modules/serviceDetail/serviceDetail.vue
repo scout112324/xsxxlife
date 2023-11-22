@@ -90,9 +90,10 @@
 				this.getIntservInfoHome()
 			},
 			handleBack() {
-				uni.navigateTo({
-					url: "/pages/index/service/service"
-				})
+				uni.navigateBack()
+				// uni.navigateTo({
+				// 	url: "/pages/index/service/service"
+				// })
 			},
 			// 拨打电话
 			handlePhoneCall(phoneNumber) {
