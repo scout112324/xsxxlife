@@ -289,6 +289,21 @@
 								icon: 'success',
 								duration: 2000
 							})
+							this.userInfo = {
+								name: '',
+								account: '',
+							}
+							this.show = false
+						} else {
+							uni.showToast({
+								title: '无可提现金额',
+								icon: 'error',
+								duration: 2000
+							})
+							this.userInfo = {
+								name: '',
+								account: '',
+							}
 							this.show = false
 						}
 					})
