@@ -29,9 +29,9 @@
 						{{communityInfo.title}}
 					</view>
 					<image class="code" :src="communityInfo.qrCode" mode=""></image>
-					<!-- <view class="code-info">
-						该二维码将在2023年9月20日失效
-					</view> -->
+					<view class="code-info">
+						请保存二维码后用微信客户端扫码入群
+					</view>
 				</view>
 			</view>
 		</u-modal>

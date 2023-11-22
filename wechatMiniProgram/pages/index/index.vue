@@ -65,6 +65,9 @@
 						{{communityInfo.title}}
 					</view>
 					<image class="code" :src="communityInfo.qrCode" mode=""></image>
+					<view class="code-info">
+						请保存二维码后用微信客户端扫码入群
+					</view>
 				</view>
 			</view>
 		</u-modal>
@@ -517,6 +520,12 @@
 					height: 350rpx;
 					margin: 40rpx 0 35rpx 0;
 					background: #D8D8D8;
+				}
+
+				.code-info {
+					font-size: 22rpx;
+					font-weight: 400;
+					color: #707070;
 				}
 			}
 		}
