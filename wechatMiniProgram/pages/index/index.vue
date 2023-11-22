@@ -349,6 +349,10 @@
 				::v-deep .arrow-area {
 					display: none;
 				}
+				
+				::v-deep .selected-list {
+					overflow-x: auto;
+				}
 
 				.xiala {
 					width: 16rpx;
