@@ -33,6 +33,9 @@
 								:name="item.value">
 							</u-checkbox>
 						</u-checkbox-group>
+						<view class="tips">
+							通过平台可以平台上聊天,然后平台交易;线下个人交易需要留下手机号，然后自行联系
+						</view>
 					</u-form-item>
 					<u-form-item label="手机号" prop="phone" borderBottom>
 						<u--input v-model="userInfo.phone" border="none" placeholder="请填写你的手机号码"></u--input>
@@ -357,6 +360,11 @@
 				border-radius: 20rpx;
 				margin: 20rpx 0;
 				padding: 0 30rpx 20rpx 30rpx;
+				.tips {
+					margin-top: 20rpx;
+					color: #949494;
+					font-size: 28rpx;
+				}
 
 				::v-deep .u-form-item__body__right {
 					margin: 10rpx 0;
