@@ -6,7 +6,8 @@
 		<scroll-view v-if="supportListInfo.length>0" class="list-container" :style="{'height':screenHeight}" scroll-y
 			@scrolltolower="handleToLower">
 			<block v-for="item in supportListInfo" :key="item.id">
-				<userItem :itemData="item" :typeStar="type"></userItem>
+				<userItem :itemData="type===100 ? Object.values(item)[0] : item"
+					:typeStar="type===100 ? Object.keys(item)[0] : type"></userItem>
 			</block>
 		</scroll-view>
 		<view class="occupy" v-else>
@@ -33,12 +34,14 @@
 		},
 		data() {
 			return {
-				type: 0,
+				type: 100,
 				pageNum: 1,
 				pageSize: 10,
 				supportListInfo: [],
 				pageType: 'support',
 				list: [{
+						name: '全部'
+					}, {
 						name: '兼职'
 					}, {
 						name: '房屋转让'
@@ -108,7 +111,11 @@
 				}
 			},
 			handleSupportTab(item) {
-				this.type = item.index
+				if(item.index > 0) {
+					this.type = item.index - 1
+				}else {
+					this.type = 100
+				}
 				this.pageNum = 1
 				this.hasMore = true
 				this.supportListInfo = []
