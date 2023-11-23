@@ -129,8 +129,8 @@
 			// 微信授权登录
 			let openId = uni.getStorageSync('openId')
 			if (openId) {
-				// 有值
-				return
+				this.getCrowdList()
+				this.getUnusedList()
 			} else {
 				// 没有值
 				uni.showLoading({
