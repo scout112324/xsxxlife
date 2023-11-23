@@ -16,7 +16,8 @@
 		<scroll-view v-if="publishListInfo.length>0" class="list-container" :style="{'height':screenHeight}" scroll-y
 			@scrolltolower="handleToLower">
 			<block v-for="item in publishListInfo" :key="item.id">
-				<publishItem :itemData="item" :type="type" @handleDataChange="handleDataChange"></publishItem>
+				<publishItem :itemData="type===100 ? Object.values(item)[0] : item"
+					:type="type===100 ? Object.keys(item)[0] : type" @handleDataChange="handleDataChange"></publishItem>
 			</block>
 		</scroll-view>
 		<view class="occupy" v-else>
@@ -46,12 +47,14 @@
 					color: "#131313"
 				},
 				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
-				type: 0,
+				type: 100,
 				pageNum: 1,
 				pageSize: 10,
 				publishListInfo: [],
 				pageType: "publish",
 				list: [{
+						name: '全部'
+					}, {
 						name: '兼职'
 					}, {
 						name: '房屋转让'
@@ -118,7 +121,11 @@
 				}
 			},
 			handlePublishTab(item) {
-				this.type = item.index
+				if (item.index > 0) {
+					this.type = item.index - 1
+				} else {
+					this.type = 100
+				}
 				this.pageNum = 1
 				this.hasMore = true
 				this.publishListInfo = []

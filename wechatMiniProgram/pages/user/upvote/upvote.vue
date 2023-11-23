@@ -111,9 +111,9 @@
 				}
 			},
 			handleSupportTab(item) {
-				if(item.index > 0) {
+				if (item.index > 0) {
 					this.type = item.index - 1
-				}else {
+				} else {
 					this.type = 100
 				}
 				this.pageNum = 1
