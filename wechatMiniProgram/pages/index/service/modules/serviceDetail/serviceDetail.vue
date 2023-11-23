@@ -262,8 +262,7 @@
 				position: absolute;
 				width: 80%;
 				left: 50%;
-				top: 20%;
-				transform: translate(-50%, 50%);
+				transform: translate(-50%, 100%);
 				text-align: center;
 				font-size: 28rpx;
 				font-family: PingFangSC-Regular, PingFang SC;

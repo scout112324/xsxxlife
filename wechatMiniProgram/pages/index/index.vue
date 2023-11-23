@@ -3,7 +3,8 @@
 		<u-navbar title="线上线下" placeholder leftIcon="" :titleStyle="titleStyle">
 			<view class="u-nav-slot" slot="left">
 				<view class="address">
-					<image class="dingwei" src="../../static/home/dingwei.png" mode=""></image>
+					<image @click="handleAddressClick" class="dingwei" src="../../static/home/dingwei.png" mode="">
+					</image>
 					<view class="select-address">
 						<uni-data-picker style="width: 220rpx;" ellipsis popup-title="请选择所在地区" :localdata="areaTree"
 							v-model="areas" @change="onchange" @nodeclick="onnodeclick" @popupclosed="chageClosed"
@@ -166,6 +167,25 @@
 			},
 		},
 		methods: {
+			handleAddressClick() {
+				this.areas = [{
+						text: `${uni.getStorageSync('province')}`,
+						value: `${uni.getStorageSync('province')}`
+					},
+					{
+						text: `${uni.getStorageSync('district')}`,
+						value: `${uni.getStorageSync('district')}`
+					}
+				]
+				let areaAddress = this.areas.map(item => {
+					return item.value
+				}).toString()
+				uni.showToast({
+					title: `系统已为您自动定位到${areaAddress}`,
+					duration: 2000,
+					icon: 'none',
+				});
+			},
 			// 位置修改
 			changePlaceUser() {
 				placeUser({
@@ -349,7 +369,7 @@
 				::v-deep .arrow-area {
 					display: none;
 				}
-				
+
 				::v-deep .selected-list {
 					overflow-x: auto;
 				}
