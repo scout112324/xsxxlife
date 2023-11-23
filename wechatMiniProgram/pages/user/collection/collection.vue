@@ -3,11 +3,16 @@
 		<view class="tabs">
 			<tab :list="list" :pageType="pageType" @handleStarTab="handleStarTab"></tab>
 		</view>
-		<scroll-view class="list-container" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+		<scroll-view class="list-container" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower"
+			v-if="starListInfo.length>0">
 			<block v-for="item in starListInfo" :key="item.id">
 				<userItem :itemData="item" :typeStar="type"></userItem>
 			</block>
 		</scroll-view>
+		<view class="occupy" v-else>
+			<image class="occupy-image" src="../../../static/occupy.png" mode=""></image>
+			<text>暂无数据~~</text>
+		</view>
 	</view>
 </template>
 
@@ -140,6 +145,21 @@
 			background-color: #ffffff;
 			padding: 32rpx 28rpx;
 			width: auto;
+		}
+
+		.occupy {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			height: calc(100vh - 100rpx);
+			padding-top: 200rpx;
+			box-sizing: border-box;
+
+			.occupy-image {
+				width: 200rpx;
+				height: 200rpx;
+				margin-bottom: 20rpx;
+			}
 		}
 	}
 </style>

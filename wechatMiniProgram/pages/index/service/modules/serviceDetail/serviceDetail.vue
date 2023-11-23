@@ -256,14 +256,13 @@
 		}
 
 		.occupy {
-			height: 100%;
 			position: relative;
 
 			.occupy-text {
 				position: absolute;
 				width: 80%;
 				left: 50%;
-				top: 10%;
+				top: 20%;
 				transform: translate(-50%, 50%);
 				text-align: center;
 				font-size: 28rpx;

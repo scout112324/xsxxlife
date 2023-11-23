@@ -276,37 +276,50 @@
 			// 确认
 			handleConfirm() {
 				this.$refs.uForm.validate().then(res => {
-					let params = {
-						money: this.money,
-						name: this.userInfo.name,
-						phone: this.userInfo.account,
-						nickname: this.userInfo.nickname
-					}
-					withdrawal(params).then(res => {
-						if (res.code === 200) {
-							uni.showToast({
-								title: '提现成功',
-								icon: 'success',
-								duration: 2000
-							})
-							this.userInfo = {
-								name: '',
-								account: '',
-							}
-							this.show = false
-						} else {
-							uni.showToast({
-								title: '无可提现金额',
-								icon: 'error',
-								duration: 2000
-							})
-							this.userInfo = {
-								name: '',
-								account: '',
-							}
-							this.show = false
+					if (this.money == 0) {
+						uni.showToast({
+							title: '无可提现金额',
+							icon: 'error',
+							duration: 2000
+						})
+						this.userInfo = {
+							name: '',
+							account: '',
 						}
-					})
+						this.show = false
+					} else {
+						let params = {
+							money: this.money,
+							name: this.userInfo.name,
+							phone: this.userInfo.account,
+							nickname: this.userInfo.nickname
+						}
+						withdrawal(params).then(res => {
+							if (res.code === 200) {
+								uni.showToast({
+									title: '提现成功',
+									icon: 'success',
+									duration: 2000
+								})
+								this.userInfo = {
+									name: '',
+									account: '',
+								}
+								this.show = false
+							} else {
+								uni.showToast({
+									title: '无可提现金额',
+									icon: 'error',
+									duration: 2000
+								})
+								this.userInfo = {
+									name: '',
+									account: '',
+								}
+								this.show = false
+							}
+						})
+					}
 				}).catch(errors => {
 					console.log('校验失败')
 				})

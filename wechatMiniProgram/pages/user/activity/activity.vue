@@ -20,7 +20,8 @@
 				            transform: 'scale(1)'
 				        }" itemStyle="padding-left: 28rpx; padding-right: 28rpx; height: 88rpx;"></u-tabs>
 		</view>
-		<scroll-view class="activity-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+		<scroll-view v-if="activityListInfo.length>0" class="activity-list" :style="{'height':screenHeight}" scroll-y
+			@scrolltolower="handleToLower">
 			<block v-for="item in activityListInfo" :key="item.id">
 				<view class="activity-item" @click="handleDetailClick(item)">
 					<view class="leaflet">
@@ -59,6 +60,10 @@
 				</view>
 			</block>
 		</scroll-view>
+		<view class="occupy" v-else>
+			<image class="occupy-image" src="../../../static/occupy.png" mode=""></image>
+			<text>暂无数据~~</text>
+		</view>
 	</view>
 </template>
 
@@ -316,5 +321,20 @@
 				}
 			}
 		}
+		.occupy {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			height: calc(100vh - 100rpx);
+			padding-top: 200rpx;
+			box-sizing: border-box;
+		
+			.occupy-image {
+				width: 200rpx;
+				height: 200rpx;
+				margin-bottom: 20rpx;
+			}
+		}
+
 	}
 </style>

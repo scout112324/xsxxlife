@@ -13,7 +13,8 @@
 		<view class="tabs">
 			<tab :list="list" :pageType="pageType" @handlePublishTab="handlePublishTab"></tab>
 		</view>
-		<scroll-view class="list-container" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+		<scroll-view v-if="publishListInfo.length>0" class="list-container" :style="{'height':screenHeight}" scroll-y
+			@scrolltolower="handleToLower">
 			<block v-for="item in publishListInfo" :key="item.id">
 				<view class="list-item">
 					<block v-if="item.picture">
@@ -48,6 +49,10 @@
 				</view>
 			</block>
 		</scroll-view>
+		<view class="occupy" v-else>
+			<image class="occupy-image" src="../../../static/occupy.png" mode=""></image>
+			<text>暂无数据~~</text>
+		</view>
 		<uni-popup ref="alertDialog" type="dialog">
 			<uni-popup-dialog :type="msgType" cancelText="关闭" confirmText="同意" title="提示" content="确认要删除这条发布内容吗？"
 				@confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
@@ -416,6 +421,21 @@
 						}
 					}
 				}
+			}
+		}
+
+		.occupy {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			height: calc(100vh - 100rpx);
+			padding-top: 200rpx;
+			box-sizing: border-box;
+
+			.occupy-image {
+				width: 200rpx;
+				height: 200rpx;
+				margin-bottom: 20rpx;
 			}
 		}
 	}

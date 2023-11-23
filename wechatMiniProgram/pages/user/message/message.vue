@@ -14,7 +14,7 @@
 				<text class="word">清除未读</text>
 			</view>
 		</view>
-		<view class="message-list">
+		<view class="message-list" v-if="msgList.length>0">
 			<view class="message-item" @click="handleJumpChat(item.userId)" v-for="item in msgList" :key="item.userId"
 				@longpress="handleLongpress(item.userId)">
 				<uni-badge class="uni-badge-left-margin" :text="item.unReadCount" absolute="rightTop" size="small">
@@ -37,6 +37,10 @@
 					{{item.time}}
 				</view>
 			</view>
+		</view>
+		<view class="occupy" v-else>
+			<image class="occupy-image" src="../../../static/occupy.png" mode=""></image>
+			<text>暂无数据~~</text>
 		</view>
 		<u-popup :show="show" mode="center" @close="handleClose">
 			<view class="popup_container" @click.stop="handleRead">
@@ -270,6 +274,21 @@
 					font-weight: 400;
 					color: #C4C4C4;
 				}
+			}
+		}
+
+		.occupy {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			height: calc(100vh - 100rpx);
+			padding-top: 200rpx;
+			box-sizing: border-box;
+
+			.occupy-image {
+				width: 200rpx;
+				height: 200rpx;
+				margin-bottom: 20rpx;
 			}
 		}
 	}

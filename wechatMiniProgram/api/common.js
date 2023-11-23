@@ -94,7 +94,7 @@ export const wxPayment = (option) => {
 export const getArea = (option) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: `http://api.map.baidu.com/geocoder?location=${option.latitude},${option.longitude}&output=json`,
+			url: `https://api.map.baidu.com/geocoder?location=${option.latitude},${option.longitude}&output=json`,
 			success: res => resolve(res),
 			fail: res => reject(res)
 		})
