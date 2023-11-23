@@ -76,6 +76,7 @@
 </template>
 
 <script>
+	import request from "@/utils/request/index.js"
 	import infoItem from "@/components/info_item.vue"
 	import communityItem from "@/components/community_item.vue"
 	import {
@@ -128,8 +129,13 @@
 			// 微信授权登录
 			let openId = uni.getStorageSync('openId')
 			if (openId) {
+				// 有值
 				return
 			} else {
+				// 没有值
+				uni.showLoading({
+					title: '加载中'
+				});
 				this.goLogin()
 			}
 		},
@@ -144,7 +150,6 @@
 					value: `${uni.getStorageSync('district')}`
 				}
 			]
-			this.changePlaceUser()
 			// 获取公告数据
 			this.getNoticeData()
 			this.getTabList()
@@ -211,6 +216,7 @@
 			},
 			// 微信授权登录
 			goLogin() {
+				let that = this;
 				uni.login({
 					provider: 'weixin',
 					success(res) {
@@ -220,6 +226,9 @@
 						}).then(res => {
 							if (res.code === 200) {
 								uni.setStorageSync('openId', res.data)
+								uni.hideLoading();
+								request.header.openId = res.data;
+								that.changePlaceUser();
 							}
 						})
 					}
