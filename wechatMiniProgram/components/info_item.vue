@@ -24,36 +24,39 @@
 					<text>{{itemData.price || '0'}}</text>
 				</view>
 			</view>
-			<view v-if="itemData.content" class="content" v-html="itemData.content"></view>
-			<view v-else class="content">
-				'暂无'
-			</view>
-			<view class="image-list" v-if="pictureList && pictureList.length>0">
-				<block v-for="(item,index) in pictureList" :key="index">
-					<image v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
-						class="good" :src="item" mode="">
-					</image>
-					<video v-else class="good" :src="item" controls></video>
-				</block>
+			<view class="content-box">
+				<view v-if="itemData.content" class="content" v-html="itemData.content"></view>
+				<view v-else class="content">
+					'暂无'
+				</view>
+				<view class="image-list" v-if="pictureList && pictureList.length>0">
+					<block v-for="(item,index) in pictureList" :key="index">
+						<image
+							v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
+							class="good" :src="item" mode="">
+						</image>
+						<video v-else class="good" :src="item" controls></video>
+					</block>
+				</view>
 			</view>
 			<view class="footer">
-				<view class="item" @click.stop="handleSupport(itemData)">
+				<view class="sub-item" @click.stop="handleSupport(itemData)">
 					<image v-if="itemData.support" class="image" src="../static/components/dianzan_set.png" mode="">
 					</image>
 					<image v-else class="image" src="../static/components/dianzan.png" mode=""></image>
 					<text class="num">{{itemData.supportCount}}</text>
 				</view>
-				<view class="item" @click.stop="handleStar(itemData)">
+				<view class="sub-item" @click.stop="handleStar(itemData)">
 					<image v-if="itemData.star" class="image" src="../static/components/shoucang_set.png" mode="">
 					</image>
 					<image v-else class="image" src="../static/components/shoucang.png" mode=""></image>
 					<text class="num">{{itemData.starCount}}</text>
 				</view>
-				<view class="item">
+				<view class="sub-item">
 					<image class="image" src="../static/components/pinglun.png" mode=""></image>
 					<text class="num">{{itemData.commentCount}}</text>
 				</view>
-				<view class="item" @click.stop>
+				<view class="sub-item" @click.stop>
 					<button class="share" open-type="share">
 						<image class="image" src="../static/components/zhuanfa.png" mode=""></image>
 						<text class="num">{{itemData.giveCount}}</text>
@@ -238,7 +241,7 @@
 <style lang="scss" scoped>
 	.item {
 		display: flex;
-		margin: 31rpx 10rpx;
+		margin: 50rpx 10rpx;
 
 		.avatar {
 			margin-right: 14rpx;
@@ -287,7 +290,7 @@
 					font-size: 36rpx;
 					font-family: PingFangSC-Semibold, PingFang SC;
 					font-weight: 600;
-					color: #D30303;
+					color: #000000;
 					line-height: 30rpx;
 
 					.unit {
@@ -296,50 +299,54 @@
 				}
 			}
 
-			.content {
-				font-size: 28rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-				color: #232624;
-				line-height: 44rpx;
-				margin: 20rpx 0;
+			.content-box {
+				.content {
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #232624;
+					line-height: 44rpx;
+					margin: 20rpx 0;
 
-				width: 100%;
-				overflow: hidden;
-				word-break: break-all;
-				/* break-all(允许在单词内换行。) */
-				text-overflow: ellipsis;
-				/* 超出部分省略号 */
-				display: -webkit-box;
-				/** 对象作为伸缩盒子模型显示 **/
-				-webkit-box-orient: vertical;
-				/** 设置或检索伸缩盒对象的子元素的排列方式 **/
-				-webkit-line-clamp: 2;
-				/** 显示的行数 **/
-			}
+					width: 100%;
+					overflow: hidden;
+					word-break: break-all;
+					/* break-all(允许在单词内换行。) */
+					text-overflow: ellipsis;
+					/* 超出部分省略号 */
+					display: -webkit-box;
+					/** 对象作为伸缩盒子模型显示 **/
+					-webkit-box-orient: vertical;
+					/** 设置或检索伸缩盒对象的子元素的排列方式 **/
+					-webkit-line-clamp: 2;
+					/** 显示的行数 **/
+				}
 
-			.image-list {
-				display: flex;
-				justify-content: flex-start;
-				flex-wrap: nowrap;
+				.image-list {
+					display: flex;
+					justify-content: flex-start;
+					flex-wrap: nowrap;
 
-				.good {
-					width: 184rpx;
-					height: 184rpx;
-					border-radius: 10rpx;
-					border: 1rpx solid rgba(151, 151, 151, 0.17);
-					&:nth-child(2) {
-						margin: 0 10rpx;
+					.good {
+						width: 184rpx;
+						height: 184rpx;
+						border-radius: 10rpx;
+						border: 1rpx solid rgba(151, 151, 151, 0.17);
+
+						&:nth-child(2) {
+							margin: 0 10rpx;
+						}
 					}
 				}
 			}
 
 			.footer {
 				display: flex;
-				justify-content: flex-end;
+				justify-content: space-between;
 				align-items: center;
+				margin: 50rpx 0;
 
-				.item {
+				.sub-item {
 					display: flex;
 					align-items: center;
 

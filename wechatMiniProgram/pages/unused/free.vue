@@ -174,7 +174,7 @@
 		}
 
 		.unused-list {
-			margin: 21rpx 15rpx;
+			padding: 21rpx 15rpx;
 			background: #FFFFFF;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			border-radius: 20rpx;
