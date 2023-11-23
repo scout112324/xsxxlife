@@ -8,7 +8,7 @@
 		<view class="occupy"></view>
 		<view class="content-page">
 			<view class="notice">
-				<u-notice-bar :text="text" :step="true"></u-notice-bar>
+				<u-notice-bar :text="text" :step="true" @click="handleClickNotice"></u-notice-bar>
 			</view>
 			<view class="service">
 				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item)">
@@ -45,7 +45,8 @@
 					color: "#131313"
 				},
 				screenHeight: 0,
-				text: ["发布闲置后支持线上线下交易啦～", "111"],
+				text: [],
+				newText: [],
 				serviceData: [],
 			}
 		},
@@ -59,9 +60,25 @@
 			getNoticeData() {
 				getNotice().then(res => {
 					if (res.code === 200) {
-						this.text = res.data
+						this.newText = res.data
+						this.text = res.data.map(item => {
+							return item.content
+						})
 					}
 				})
+			},
+			handleClickNotice(item) {
+				if (this.newText[item].url == null) {
+					return
+				} else {
+					console.log('handleClickNotice', item, this.newText[item])
+					uni.navigateTo({
+						url: `${this.newText[item].url}`,
+						fail(err) {
+							console.log(err)
+						}
+					})
+				}
 			},
 			getIntservHome() {
 				intservHome().then(res => {
