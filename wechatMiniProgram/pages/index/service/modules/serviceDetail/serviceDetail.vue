@@ -44,6 +44,15 @@
 				</view>
 			</view>
 		</view>
+		<view class="occupy" v-else>
+			<view class="occupy-text">
+				<text>管理员正在努力挖掘功能中，您可以</text>
+				<button class="btn-contact" open-type="contact" style="margin: 0;">
+					<text class="communicate">联系管理员</text>
+				</button>
+				<text>反馈您的需求或者拉上朋友成为其中一员~~</text>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -242,6 +251,49 @@
 						height: 40rpx;
 						margin-left: -5rpx;
 					}
+				}
+			}
+		}
+
+		.occupy {
+			height: 100%;
+			position: relative;
+
+			.occupy-text {
+				position: absolute;
+				width: 80%;
+				left: 50%;
+				top: 10%;
+				transform: translate(-50%, 50%);
+				text-align: center;
+				font-size: 28rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #4D504F;
+				line-height: 100rpx;
+
+				.btn-contact {
+					display: inline-block;
+					background-color: transparent;
+					font-size: 28rpx;
+					padding: 0;
+					line-height: 40rpx;
+					position: relative;
+					top: 10rpx;
+
+					&::after {
+						border: none
+					}
+				}
+
+				text {
+					display: inline-block;
+					height: 40rpx;
+				}
+
+				.communicate {
+					color: #3B8DDA;
+					border-bottom: 1px solid #3B8DDA;
 				}
 			}
 		}
