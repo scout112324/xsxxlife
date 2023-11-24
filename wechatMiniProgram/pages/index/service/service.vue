@@ -71,8 +71,7 @@
 				if (this.newText[item].url == null) {
 					return
 				} else {
-					console.log('handleClickNotice', item, this.newText[item])
-					uni.navigateTo({
+					uni.switchTab({
 						url: `${this.newText[item].url}`,
 						fail(err) {
 							console.log(err)
@@ -88,7 +87,7 @@
 				})
 			},
 			handleClickService(item) {
-				uni.switchTab({
+				uni.navigateTo({
 					url: `${item.iconTo}?itemData=${encodeURIComponent(JSON.stringify(item))}`
 				})
 			},
