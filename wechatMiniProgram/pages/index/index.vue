@@ -460,9 +460,9 @@
 					margin-bottom: 33rpx;
 
 					.icon {
-						width: 68rpx;
-						height: 60rpx;
-						margin-bottom: 17rpx;
+						width: 78rpx;
+						height: 78rpx;
+						margin-bottom: 7rpx;
 					}
 
 					.free {
