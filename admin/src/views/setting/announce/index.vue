@@ -14,7 +14,8 @@
     </el-row>
     <el-table v-loading="loading" :data="noticeList">
       <el-table-column type="index" width="50" align="center"></el-table-column>
-      <el-table-column show-overflow-tooltip label="内容" align="center" key="content" prop="content" />
+      <el-table-column show-overflow-tooltip label="内容" align="center" prop="content" />
+      <el-table-column label="路径" align="center" prop="url" />
       <el-table-column label="状态" align="center" key="status">
         <template slot-scope="scope">
           <el-switch
@@ -73,7 +74,10 @@
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="内容">
-          <el-input v-model="form.content" placeholder="请输入用户昵称"/>
+          <el-input v-model="form.content" placeholder="请输入内容"/>
+        </el-form-item>
+        <el-form-item label="路径">
+          <el-input v-model="form.url" placeholder="请输入路径"/>
         </el-form-item>
         <el-form-item label="状态" v-if="noticeId">
           <el-radio-group v-model="form.status">
@@ -153,7 +157,7 @@ export default {
       console.log(row.status)
       let text = row.status == "0" ? "启用" : "禁用";
       this.$modal.confirm('确认要' + text + '公告吗？').then(function () {
-        return updateNotice({id:row.id,content:row.content,status: row.status});
+        return updateNotice({id:row.id,content:row.content,url:row.url,status: row.status});
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");
       }).catch(function () {
@@ -169,6 +173,7 @@ export default {
     reset() {
       this.form = {
         content: "",
+        url: "",
         status: 0,
       };
     },
@@ -184,6 +189,7 @@ export default {
       this.title = "修改公告";
       this.noticeId = row.id
       this.$set(this.form, 'content', row.content)
+      this.$set(this.form, 'url', row.url)
       this.$set(this.form, 'status', String(row.status))
     },
     /** 提交按钮 */
@@ -192,6 +198,7 @@ export default {
         const params = {
           id: this.noticeId,
           content: this.form.content,
+          url: this.form.url,
           status: this.form.status
         }
         console.log(params)
