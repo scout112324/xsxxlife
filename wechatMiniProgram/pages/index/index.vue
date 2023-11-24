@@ -251,7 +251,7 @@
 					return
 				} else {
 					console.log('handleClickNotice', item, this.newText[item])
-					uni.navigateTo({
+					uni.switchTab({
 						url: `${this.newText[item].url}`,
 						fail(err) {
 							console.log(err)

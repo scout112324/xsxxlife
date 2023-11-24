@@ -88,7 +88,7 @@
 				})
 			},
 			handleClickService(item) {
-				uni.navigateTo({
+				uni.switchTab({
 					url: `${item.iconTo}?itemData=${encodeURIComponent(JSON.stringify(item))}`
 				})
 			},
