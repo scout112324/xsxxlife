@@ -150,9 +150,6 @@
 					tmplIds: ['JViBKC3Lz5vnOTHt2dG0OJ_aekh-NcAq7fU6kYJ2ej4'],
 					success(res) {
 						console.log('res', res)
-						if (res.JViBKC3Lz5vnOTHt2dG0OJ_aekh - NcAq7fU6kYJ2ej4 == 'accept') {
-							console.log(res)
-						}
 					},
 					fail(err) {
 						console.log('err', err)
