@@ -169,6 +169,7 @@
 				if (!this.isUserSelectedArea) {
 					// 用户没有修改定位，则设置默认定位地址
 					this.areas = newVal;
+					this.changePlaceUser()
 				}
 			},
 		},
