@@ -145,6 +145,19 @@
 			},
 			// 点击进入在线聊天页面
 			handleJumpChat(userId) {
+				uni.requestSubscribeMessage({
+					//此处填写刚才申请模板的模板ID
+					tmplIds: ['JViBKC3Lz5vnOTHt2dG0OJ_aekh-NcAq7fU6kYJ2ej4'],
+					success(res) {
+						console.log('res', res)
+						if (res.JViBKC3Lz5vnOTHt2dG0OJ_aekh - NcAq7fU6kYJ2ej4 == 'accept') {
+							console.log(res)
+						}
+					},
+					fail(err) {
+						console.log('err', err)
+					}
+				})
 				this.show = false
 				let params = {
 					all: 1,
