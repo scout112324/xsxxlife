@@ -199,7 +199,6 @@ export default {
       rules: {
         userId: [
           {required: true, message: '请输入用户的id', trigger: 'blur'},
-          {type: 'number', message: '请输入数值', trigger: 'blur'}
         ],
       },
       noticeId: '',
