@@ -1,14 +1,23 @@
 <template>
   <div class="container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="42px">
-      <el-form-item label="内容" prop="content">
+      <el-form-item label="标题" prop="content">
         <el-input
           v-model="queryParams.content"
-          placeholder="请输入内容关键字"
+          placeholder="请输入标题关键字"
           clearable
           style="width: 240px"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+      <el-form-item label="位置" prop="place">
+        <el-cascader
+          :options="options"
+          :props="{ checkStrictly: true }"
+          clearable
+          popper-class="popper"
+          v-model="queryParams.place"
+        ></el-cascader>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -111,6 +120,7 @@
 </template>
 <script>
 import {activityList, updateActivity, deleteActivity} from '@/api/module/intraCityActivity'
+import {areaData} from "@/utils/area"
 
 export default {
   name: 'intraCityActivity',
@@ -124,7 +134,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        content: ''
+        content: '',
+        place: []
       },
       // 总条数
       total: 0,
@@ -147,15 +158,23 @@ export default {
         value: 2,
         label: '审核不通过'
       }],
+      options: []
     }
   },
   created() {
+    this.options = areaData
     this.getList()
   },
   methods: {
     /** 查询用户列表 */
     getList() {
       this.loading = true
+      this.queryParams = {
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        content: this.queryParams.content,
+        place: this.queryParams.place.toString()
+      }
       activityList(this.queryParams).then(response => {
           if (response.code === 200) {
             console.log(response)

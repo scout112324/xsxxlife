@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="120px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="80px">
       <el-form-item label="用户昵称" prop="nickname">
         <el-input
           v-model="queryParams.nickname"
@@ -18,6 +18,15 @@
           style="width: 240px"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+      <el-form-item label="位置" prop="place">
+        <el-cascader
+          :options="options"
+          :props="{ checkStrictly: true }"
+          clearable
+          popper-class="popper"
+          v-model="queryParams.place"
+        ></el-cascader>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -60,6 +69,7 @@
 </template>
 <script>
 import {userList} from "@/api/setting/setting";
+import {areaData} from "@/utils/area"
 
 export default {
   name: 'plateSetting',
@@ -75,18 +85,28 @@ export default {
         pageSize: 10,
         nickname: '',
         id: '',
+        place: []
       },
       // 总条数
       total: 0,
+      options: []
     }
   },
   created() {
+    this.options = areaData
     this.getList()
   },
   methods: {
     /** 查询用户列表 */
     getList() {
       this.loading = true
+      this.queryParams = {
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        nickname: this.queryParams.nickname,
+        id: this.queryParams.id,
+        place: this.queryParams.place.toString()
+      }
       userList(this.queryParams).then(response => {
           if (response.code === 200) {
             console.log(response)

@@ -10,6 +10,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="位置" prop="place">
+        <el-cascader
+          :options="options"
+          :props="{ checkStrictly: true }"
+          clearable
+          popper-class="popper"
+          v-model="queryParams.place"
+        ></el-cascader>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -106,6 +115,7 @@
 </template>
 <script>
 import {findList, updateFind, deleteFind} from '@/api/module/lookForPeople'
+import {areaData} from "@/utils/area"
 
 export default {
   name: 'LookForPeople',
@@ -119,7 +129,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        content: ''
+        content: '',
+        place: []
       },
       // 总条数
       total: 0,
@@ -139,9 +150,11 @@ export default {
         value: 2,
         label: '审核不通过'
       }],
+      options: []
     }
   },
   created() {
+    this.options = areaData
     this.getList()
   },
   methods: {
@@ -196,6 +209,12 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.loading = true
+      this.queryParams = {
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        content: this.queryParams.content,
+        place: this.queryParams.place.toString()
+      }
       findList(this.queryParams).then(response => {
           if (response.code === 200) {
             console.log(response)
