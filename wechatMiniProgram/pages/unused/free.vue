@@ -67,6 +67,16 @@
 			// 下拉刷新
 			this.refresh()
 		},
+		/**
+		 * 分享当前页面
+		 */
+		onShareAppMessage() {
+			const app = this
+			return {
+				title: "免费闲置专区",
+				path: "/pages/unused/free?" + app.getUnusedList()
+			}
+		},
 		methods: {
 			// 下拉刷新
 			refresh() {

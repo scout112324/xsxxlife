@@ -65,6 +65,16 @@
 			// 下拉刷新
 			this.refresh()
 		},
+		/**
+		 * 分享当前页面
+		 */
+		onShareAppMessage() {
+			const app = this
+			return {
+				title: "闲置交易",
+				path: "/pages/unused/index?" + app.getUnusedList()
+			}
+		},
 		methods: {
 			// 下拉刷新
 			refresh() {
