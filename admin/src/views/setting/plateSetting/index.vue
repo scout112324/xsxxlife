@@ -38,6 +38,7 @@
       <el-table-column label="用户id" align="center" prop="id"/>
       <el-table-column label="昵称" align="center" prop="nickname"></el-table-column>
       <el-table-column label="openId" align="center" prop="openId"></el-table-column>
+      <el-table-column label="位置" align="center" prop="place" :formatter="placeFormatter"></el-table-column>
       <el-table-column label="头像" align="center" width="200">
         <template slot-scope="scope">
           <img class="list-img" :src="scope.row.photo">
@@ -144,6 +145,12 @@ export default {
       this.queryParams.pageNum = val
       this.getList()
     },
+    placeFormatter(row) {
+      if(row.place===',') {
+        return ''
+      }
+      return row.place
+    }
   }
 }
 </script>
