@@ -120,7 +120,7 @@
           <el-input v-model="form.phone" placeholder="请输入电话号码"/>
         </el-form-item>
         <el-form-item label="详细地址" prop="detailsPlace">
-          <el-input v-model="form.detailsPlace" placeholder="请输入详细地址"/>
+          <el-input v-model="form.detailsPlace" placeholder="请输入详细地址(市区街道之间以英文逗号隔开)"/>
         </el-form-item>
         <el-form-item label="综合服务icon的id" prop="intservId">
           <el-input v-model="form.intservId" placeholder="请输入综合服务模块的id"/>
