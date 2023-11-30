@@ -131,9 +131,6 @@
 				"enablePullDownRefresh": false,
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "black"
-			},
-			"usingComponents": {
-				"cell": "plugin://materialPlugin/cell"
 			}
 		},
 		{

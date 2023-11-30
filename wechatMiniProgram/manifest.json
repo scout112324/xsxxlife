@@ -62,13 +62,7 @@
 				"desc": "你的位置信息将用于小程序位置接口的效果展示"
 			}
 		},
-		"requiredPrivateInfos": ["getLocation", "chooseLocation"],
-		"plugins": {
-			"materialPlugin": {
-				"version": "1.0.5",
-				"provider": "wx4d2deeab3aed6e5a"
-			}
-		}
+		"requiredPrivateInfos": ["getLocation", "chooseLocation"]
 	},
 	"mp-alipay": {
 		"usingComponents": true
