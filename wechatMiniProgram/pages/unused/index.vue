@@ -69,10 +69,9 @@
 		 * 分享当前页面
 		 */
 		onShareAppMessage() {
-			const app = this
 			return {
 				title: "闲置交易",
-				path: "/pages/unused/index?" + app.getUnusedList()
+				path: "/pages/unused/index?place=" + uni.getStorageSync('place')
 			}
 		},
 		methods: {

@@ -195,6 +195,9 @@
 			},
 			// 位置修改
 			changePlaceUser() {
+				uni.setStorageSync('place', this.areas.map(item => {
+					return item.value
+				}).toString());
 				placeUser({
 					place: this.areas.map(item => {
 						return item.value
