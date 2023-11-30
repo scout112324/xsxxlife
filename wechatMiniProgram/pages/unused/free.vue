@@ -26,6 +26,9 @@
 	import {
 		freeUnused
 	} from "@/api/unused/index.js"
+	import {
+		placeUser
+	} from '@/api/index/index.js'
 	import infoItem from "@/components/info_item.vue"
 
 	export default {
@@ -56,6 +59,15 @@
 		},
 		onLoad(options) {
 			uni.$on('changeUnused', this.getUnusedList)
+			if (options.place) {
+				placeUser({
+					place: options.place
+				}).then(res => {
+					if (res.code === 200) {
+						this.getUnusedList()
+					}
+				})
+			}
 		},
 		onUnload() {
 			uni.$off('changeUnused')
