@@ -65,15 +65,12 @@
 			return {
 				cameraNumber: 9,
 				content: "",
-				place: [{
-						text: `${uni.getStorageSync('province')}`,
-						value: `${uni.getStorageSync('province')}`
-					},
-					{
-						text: `${uni.getStorageSync('district')}`,
-						value: `${uni.getStorageSync('district')}`
+				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item=>{
+					return {
+						text: item,
+						value: item
 					}
-				],
+				}) : [],
 				picture: [],
 				showComeTime: false,
 				// comeTime: uni.$u.timeFormat(Number(new Date()), 'yyyy-mm-dd hh:MM:ss')

@@ -71,15 +71,12 @@
 				picture: [],
 				// imgList: [],
 				showType: false,
-				place: [{
-						text: `${uni.getStorageSync('province')}`,
-						value: `${uni.getStorageSync('province')}`
-					},
-					{
-						text: `${uni.getStorageSync('district')}`,
-						value: `${uni.getStorageSync('district')}`
+				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item=>{
+					return {
+						text: item,
+						value: item
 					}
-				],
+				}) : [],
 				userInfo: {
 					realPrice: '',
 					saleType: [],
