@@ -409,8 +409,17 @@
 					display: none;
 				}
 
-				::v-deep .selected-list {
-					overflow-x: auto;
+				::v-deep .uni-data-tree-input {
+					.selected-list {
+						overflow-x: auto;
+						.selected-item {
+							display: none;
+
+							&:last-child {
+								display: block !important;
+							}
+						}
+					}
 				}
 
 				.xiala {
