@@ -1,5 +1,5 @@
 <template>
-	<view class="item" @click="handleClick">
+	<view class="info-item" @click="handleClick">
 		<view class="avatar" v-if="showPrice">
 			<image v-if="itemData.photo" class="image" :src="itemData.photo" mode="">
 			</image>
@@ -8,7 +8,10 @@
 		</view>
 		<view class="info">
 			<view class="title" v-if="!showPrice">
-				{{itemData.title}}
+				<text>{{itemData.title}}</text>
+				<button class="btn-share" open-type="share" @click.stop>
+					<image class="image" src="../static/components/share.png" mode=""></image>
+				</button>
 			</view>
 			<view class="header" v-if="showPrice">
 				<view class="left">
@@ -40,6 +43,7 @@
 				</view>
 			</view>
 			<view class="footer">
+				<view class="sub-item" v-if="!showPrice"></view>
 				<view class="sub-item" @click.stop="handleSupport(itemData)">
 					<image v-if="itemData.support" class="image" src="../static/components/dianzan_set.png" mode="">
 					</image>
@@ -56,7 +60,7 @@
 					<image class="image" src="../static/components/pinglun.png" mode=""></image>
 					<text class="num">{{itemData.commentCount}}</text>
 				</view>
-				<view class="sub-item" @click.stop>
+				<view class="sub-item" @click.stop v-if="showPrice">
 					<button class="share" open-type="share">
 						<image class="image" src="../static/components/zhuanfa.png" mode=""></image>
 						<text class="num">{{itemData.giveCount}}</text>
@@ -239,9 +243,9 @@
 </script>
 
 <style lang="scss" scoped>
-	.item {
+	.info-item {
 		display: flex;
-		margin: 50rpx 10rpx;
+		padding: 32rpx;
 
 		.avatar {
 			margin-right: 14rpx;
@@ -257,9 +261,34 @@
 			flex: 1;
 
 			.title {
-				font-size: 38rpx;
-				font-weight: 500;
-				color: #222222;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				font-size: 32rpx;
+				font-weight: bold;
+				color: #000000;
+
+				.btn-share {
+					height: 46rpx;
+					display: flex;
+					align-items: center;
+					background-color: transparent;
+					padding: 0;
+					text-align: right;
+					margin-left: 0;
+					margin-right: 0;
+
+					&::after {
+						border: none;
+					}
+
+					.image {
+						width: 38rpx;
+						height: 38rpx;
+						margin-right: 12rpx;
+					}
+				}
 			}
 
 			.header {
@@ -301,10 +330,10 @@
 
 			.content-box {
 				.content {
-					font-size: 28rpx;
+					font-size: 30rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
-					color: #232624;
+					color: #646464;
 					line-height: 44rpx;
 					margin: 20rpx 0;
 
@@ -318,7 +347,7 @@
 					/** 对象作为伸缩盒子模型显示 **/
 					-webkit-box-orient: vertical;
 					/** 设置或检索伸缩盒对象的子元素的排列方式 **/
-					-webkit-line-clamp: 2;
+					-webkit-line-clamp: 4;
 					/** 显示的行数 **/
 				}
 
@@ -351,8 +380,8 @@
 					align-items: center;
 
 					.image {
-						width: 40rpx;
-						height: 40rpx;
+						width: 46rpx;
+						height: 46rpx;
 						margin-right: 12rpx;
 					}
 
@@ -375,8 +404,8 @@
 						}
 
 						.image {
-							width: 40rpx;
-							height: 40rpx;
+							width: 46rpx;
+							height: 46rpx;
 							margin-right: 12rpx;
 						}
 

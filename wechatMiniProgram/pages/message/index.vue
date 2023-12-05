@@ -165,10 +165,13 @@
 			height: 1497rpx;
 			background: #FFFFFF;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
-			border-radius: 20rpx;
 			overflow-y: auto;
-			padding: 10rpx 20rpx;
+			padding: 10rpx 0rpx;
 			width: auto;
+
+			.lift-item:not(:last-child) {
+				border-bottom: 20rpx solid #EEF1F0;
+			}
 		}
 	}
 </style>
