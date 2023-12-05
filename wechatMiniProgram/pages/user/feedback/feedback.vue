@@ -19,9 +19,9 @@
 				</uni-forms-item>
 				<uni-forms-item label="客服联系微信" class="copy-phone" label-width="200rpx">
 					<view class="phone">
-						18909878909
+						puqzzz
 					</view>
-					<uni-button type="primary" class="uni-btn" @tap="handleCopy('18909878909')">
+					<uni-button type="primary" class="uni-btn" @tap="handleCopy('puqzzz')">
 						<image src="../../../static/user/fuzhi.png" mode="aspectFit"
 							style="width: 26rpx; height: 26rpx;margin-right: 8rpx; ">
 						</image>

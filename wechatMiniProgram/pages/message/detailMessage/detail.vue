@@ -220,17 +220,17 @@
 
 		.container {
 			background-color: #ffffff;
-			padding: 46rpx 30rpx 20rpx 30rpx;
+			padding: 32rpx 30rpx 20rpx 30rpx;
 
 			.title {
 				font-size: 38rpx;
-				font-weight: 500;
-				color: #222222;
+				font-weight: bold;
+				color: #000000;
 				margin-bottom: 32rpx;
 			}
 
 			.content {
-				font-size: 28rpx;
+				font-size: 30rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
 				color: #232624;
