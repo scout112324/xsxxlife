@@ -143,8 +143,6 @@
 		.unused-container {
 			height: 110rpx;
 			background: linear-gradient(90deg, #FBE94E 0%, #F9DC4A 100%);
-			// border-bottom-left-radius: 30rpx;
-			// border-bottom-right-radius: 30rpx;
 			box-sizing: border-box;
 			padding: 19rpx 0;
 
@@ -161,12 +159,10 @@
 		}
 
 		.unused-list {
-			padding: 20rpx 15rpx;
 			height: 1497rpx;
 			background: #FFFFFF;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			overflow-y: auto;
-			padding: 10rpx 0rpx;
 			width: auto;
 
 			.lift-item:not(:last-child) {

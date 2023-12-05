@@ -284,8 +284,8 @@
 					}
 
 					.image {
-						width: 38rpx;
-						height: 38rpx;
+						width: 34rpx;
+						height: 34rpx;
 						margin-right: 12rpx;
 					}
 				}
