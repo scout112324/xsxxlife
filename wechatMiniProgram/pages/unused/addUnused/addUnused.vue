@@ -265,6 +265,16 @@
 	.publish-page {
 		background-color: #F3F6F5;
 		height: 100vh;
+		
+		::v-deep .dialog-close {
+			visibility: hidden;
+		
+			&:after {
+				content: '确定';
+				color: #007aff;
+				visibility: visible;
+			}
+		}
 
 		.container {
 			padding: 24rpx 15rpx;

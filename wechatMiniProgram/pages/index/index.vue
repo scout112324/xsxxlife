@@ -363,11 +363,20 @@
 </script>
 
 <style lang="scss" scoped>
-	::v-deep .uni-data-tree-dialog {
-		top: 45%;
-	}
-
 	.home-page {
+		::v-deep .uni-data-tree-dialog {
+			top: 45%;
+		}
+
+		::v-deep .dialog-close {
+			visibility: hidden;
+
+			&:after {
+				content: '确定';
+				color: #007aff;
+				visibility: visible;
+			}
+		}
 
 		::v-deep .u-status-bar,
 		::v-deep .u-navbar__content {
