@@ -53,6 +53,7 @@
 				pageSize: 50,
 				unusedList: [],
 				hasMore: true,
+				unusedListLength: 0,
 			}
 		},
 		onLoad(options) {
@@ -81,9 +82,16 @@
 		 * 分享当前页面
 		 */
 		onShareAppMessage() {
-			return {
-				title: "闲置交易",
-				path: "/pages/unused/index?place=" + uni.getStorageSync('place'),
+			if(this.unusedListLength===1) {
+				return {
+					title: "分享了一件闲置物品",
+					path: "/pages/unused/index?place=" + uni.getStorageSync('place'),
+				}
+			}else {
+				return {
+					title: `${uni.getStorageSync('place')}闲置物品列表`,
+					path: "/pages/unused/index?place=" + uni.getStorageSync('place'),
+				}
 			}
 		},
 		methods: {
@@ -132,6 +140,7 @@
 				listUnused(params).then(res => {
 					if (res.code == 200) {
 						this.unusedList = res.data
+						this.unusedListLength = this.unusedList.length
 					}
 				})
 			},
