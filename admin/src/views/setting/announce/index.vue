@@ -180,6 +180,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.noticeId = ""
       this.open = true;
       this.title = "添加公告";
     },

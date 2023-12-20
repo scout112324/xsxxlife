@@ -113,7 +113,7 @@
     </div>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog class="common-dialog" :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog class="common-dialog" :title="diaTitle" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入标题"/>
@@ -320,6 +320,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()
+      this.noticeId = ""
       this.open = true
       this.diaTitle = '添加兼职'
     },

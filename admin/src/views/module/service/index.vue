@@ -90,7 +90,7 @@
     </div>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog class="common-dialog" :diaTitle="diaTitle" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog class="common-dialog" :title="diaTitle" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="130px">
         <el-form-item label="名字" prop="name">
           <el-input v-model="form.name" placeholder="请填写名字"/>
@@ -226,6 +226,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()
+      this.noticeId = ""
       this.open = true
       this.diaTitle = '添加综合服务'
     },
