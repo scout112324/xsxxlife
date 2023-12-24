@@ -27,6 +27,15 @@ export function orderList(query) {
   })
 }
 
+// 退款
+export function refund(query) {
+  return request({
+    url: '/app/wx/refund',
+    method: 'get',
+    params: query
+  })
+}
+
 // 获取提现列表
 export function withdrawalList(query) {
   return request({

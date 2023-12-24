@@ -46,7 +46,12 @@
       <el-table-column label="闲置物品的id" align="center" prop="unusedId"/>
       <el-table-column show-overflow-tooltip label="闲置物品的内容" align="center" prop="content"></el-table-column>
       <el-table-column label="订单状态" align="center" prop="payStatus" :formatter="formatterPayStatus"/>
-      <el-table-column label="支付时间" align="center" prop="payTime"/>
+      <el-table-column label="支付时间" align="center" prop="payTime">
+        <template slot-scope="scope">
+          <span v-if="scope.row.payTime">{{ parseTime(scope.row.payTime) }}</span>
+          <span v-else>-</span>
+        </template>
+      </el-table-column>
       <el-table-column label="卖家用户的id" align="center" prop="saleid"></el-table-column>
       <el-table-column label="卖家用户的昵称" align="center" prop="saleNickName"></el-table-column>
       <el-table-column label="卖家用户的头像" align="center" width="200">
@@ -57,6 +62,24 @@
       <el-table-column label="创建时间" align="center" prop="createTime">
         <template slot-scope="scope">
           <span v-if="scope.row.createTime">{{ parseTime(scope.row.createTime) }}</span>
+          <span v-else>-</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center"
+        width="160"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.payStatus===1"
+            size="mini"
+            type="text"
+            icon="el-icon-money"
+            @click="handleRefund(scope.row)"
+          >退款
+          </el-button>
           <span v-else>-</span>
         </template>
       </el-table-column>
@@ -79,7 +102,7 @@
   </div>
 </template>
 <script>
-import {orderList} from '@/api/feedback'
+import { refund, orderList } from '@/api/feedback'
 
 export default {
   name: 'record',
@@ -105,6 +128,17 @@ export default {
     this.getList()
   },
   methods: {
+    // 退款
+    handleRefund(row) {
+      console.log('row',row)
+      this.$modal.confirm('是否确认退款').then(function () {
+        return refund({orderId: row.orderId})
+      }).then(() => {
+        this.getList()
+        this.$modal.msgSuccess('退款成功')
+      }).catch(() => {
+      })
+    },
     /** 查询用户列表 */
     getList() {
       this.loading = true
