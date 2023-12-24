@@ -58,6 +58,9 @@
 					<view class="footer" v-if="type!==3">
 						<button class="communicate" @click.stop="handleCommuniteClick(item.userId)">联系卖家</button>
 					</view>
+					<view class="footer" v-else>
+						<button class="communicate" @click.stop="handleRefundClick(item.orderId)">退款</button>
+					</view>
 				</view>
 			</block>
 		</scroll-view>
@@ -65,12 +68,17 @@
 			<image class="occupy-image" src="../../../static/occupy.png" mode=""></image>
 			<text>暂无数据~~</text>
 		</view>
+		<uni-popup ref="alertDialog" type="dialog">
+			<uni-popup-dialog :type="msgType" cancelText="关闭" confirmText="同意" title="提示" content="确认要退款吗？"
+				@confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import {
-		orderRecord
+		orderRecord,
+		refundRecord
 	} from "@/api/user/index.js"
 	export default {
 		data() {
@@ -96,6 +104,7 @@
 				tradingList: [],
 				hasMore: true,
 				screenHeight: 0,
+				orderId: ''
 			}
 		},
 		onReady() {
@@ -109,6 +118,33 @@
 			this.refresh()
 		},
 		methods: {
+			dialogClose() {
+				this.$refs.alertDialog.close()
+				this.orderId = ""
+			},
+			// 确定退款
+			dialogConfirm() {
+				this.$refs.alertDialog.close()
+				let params = {
+					orderId: this.orderId
+				}
+				refundRecord(params).then(res => {
+					if (res.code === 200) {
+						this.getOrderRecord()
+						uni.showToast({
+							title: '退款成功',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				})
+			},
+			// 退款
+			handleRefundClick(orderId) {
+				console.log('orderId', orderId)
+				this.$refs.alertDialog.open()
+				this.orderId = orderId
+			},
 			// 联系卖家
 			handleCommuniteClick(userId) {
 				uni.navigateTo({
@@ -335,6 +371,7 @@
 				}
 			}
 		}
+
 		.occupy {
 			display: flex;
 			flex-direction: column;
@@ -342,7 +379,7 @@
 			height: calc(100vh - 100rpx);
 			padding-top: 200rpx;
 			box-sizing: border-box;
-		
+
 			.occupy-image {
 				width: 200rpx;
 				height: 200rpx;

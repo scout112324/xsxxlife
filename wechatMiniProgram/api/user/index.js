@@ -17,6 +17,7 @@ const api = {
 	activityList: 'app/my/activityList',
 	myPublic: 'app/my/myPublic',
 	orderRecord: 'app/my/order',
+	refundRecord: 'app/wx/refund',
 	withdrawal: 'app/withdrawal/add',
 	infoUser: 'app/user/info',
 	deleteHouse: 'app/house/delete',
@@ -96,6 +97,11 @@ export const myPublic = (param, option) => {
 // 交易记录
 export const orderRecord = (param, option) => {
 	return request.get(api.orderRecord, param)
+}
+
+// 退款
+export const refundRecord = (param, option) => {
+	return request.get(api.refundRecord, param)
 }
 
 // 增加提现申请
