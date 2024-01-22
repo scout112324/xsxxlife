@@ -174,7 +174,7 @@
 				this.getUnusedList()
 			},
 			// 点赞,收藏状态改变
-			unusedChangeStatus() {
+			unusedChangeStatus(index,type,isAdd) {
 				if(type==='support') {
 					if(isAdd) {
 						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount + 1)
