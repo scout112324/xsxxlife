@@ -11,9 +11,9 @@
 			</uni-easyinput>
 		</view>
 		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
-			<view class="lift-item" v-for="item in unusedList" :key="item.id">
-				<info-item :pageType="pageType" :itemData="item" @unusedChangeStatus="unusedChangeStatus"
-					@handleJumpDetail="handleJumpDetail(item)"></info-item>
+			<view class="lift-item" v-for="(item,index) in unusedList" :key="item.id">
+				<info-item :pageType="pageType" :itemData="item" :index="index" @unusedChangeStatus="unusedChangeStatus"
+					@handleJumpDetail="handleJumpDetail(item,index)"></info-item>
 			</view>
 		</scroll-view>
 		<view class="publish">
@@ -59,7 +59,7 @@
 			}
 		},
 		onLoad(options) {
-			uni.$on('changeUnused', this.getUnusedList)
+			uni.$on('changeUnused', this.detailStatus)
 			if (options.place) {
 				placeUser({
 					place: options.place
@@ -73,7 +73,7 @@
 		onUnload() {
 			uni.$off('changeUnused')
 		},
-		onShow() {
+		created() {
 			this.getUnusedList()
 		},
 		onPullDownRefresh() {
@@ -97,6 +97,29 @@
 			}
 		},
 		methods: {
+			detailStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount + 1)
+						this.$set(this.unusedList[index], 'support', true)
+					}else {
+						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount - 1)
+						this.$set(this.unusedList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.unusedList[index], 'starCount', this.unusedList[index].starCount + 1)
+						this.$set(this.unusedList[index], 'star', true)
+					}else {
+						this.$set(this.unusedList[index], 'starCount', this.unusedList[index].starCount - 1)
+						this.$set(this.unusedList[index], 'star', false)
+					}
+				}else if(type==='comment') {
+					if(isAdd) {
+						this.$set(this.unusedList[index], 'commentCount', this.unusedList[index].commentCount + 1)
+					}
+				}
+			},
 			// 下拉刷新
 			refresh() {
 				this.pageNum = 1
@@ -152,12 +175,28 @@
 			},
 			// 点赞,收藏状态改变
 			unusedChangeStatus() {
-				this.getUnusedList()
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount + 1)
+						this.$set(this.unusedList[index], 'support', true)
+					}else {
+						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount - 1)
+						this.$set(this.unusedList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.unusedList[index], 'starCount', this.unusedList[index].starCount + 1)
+						this.$set(this.unusedList[index], 'star', true)
+					}else {
+						this.$set(this.unusedList[index], 'starCount', this.unusedList[index].starCount - 1)
+						this.$set(this.unusedList[index], 'star', false)
+					}
+				}
 			},
-			handleJumpDetail(item) {
+			handleJumpDetail(item,index) {
 				uni.navigateTo({
 					url: `/pages/unused/detailUnused/detail?itemData=${encodeURIComponent(JSON.stringify(item))
-			}`
+			}&index=${index}`
 				})
 			},
 			handlePublishClick() {

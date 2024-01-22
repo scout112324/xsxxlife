@@ -12,9 +12,9 @@
 		</view>
 		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 
-			<view class="lift-item" v-for="item in houseList" :key="item.id">
-				<info-item :pageType="pageType" :itemData="item" @houseTransferChangeStatus="houseTransferChangeStatus"
-					@handleJumpHouseDetail="handleJumpHouseDetail(item)"></info-item>
+			<view class="lift-item" v-for="(item,index) in houseList" :key="item.id">
+				<info-item :pageType="pageType" :itemData="item" :index="index" @houseTransferChangeStatus="houseTransferChangeStatus"
+					@handleJumpHouseDetail="handleJumpHouseDetail(item,index)"></info-item>
 			</view>
 		</scroll-view>
 		<view class="publish">
@@ -55,12 +55,12 @@
 			}
 		},
 		onLoad() {
-			uni.$on('changeHouseList', this.getHouseList)
+			uni.$on('changeHouseList', this.detailStatus)
 		},
 		onUnload() {
 			uni.$off('changeHouseList')
 		},
-		onShow() {
+		created() {
 			this.getHouseList()
 		},
 		onPullDownRefresh() {
@@ -68,6 +68,29 @@
 			this.refresh()
 		},
 		methods: {
+			detailStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.houseList[index], 'supportCount', this.houseList[index].supportCount + 1)
+						this.$set(this.houseList[index], 'support', true)
+					}else {
+						this.$set(this.houseList[index], 'supportCount', this.houseList[index].supportCount - 1)
+						this.$set(this.houseList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.houseList[index], 'starCount', this.houseList[index].starCount + 1)
+						this.$set(this.houseList[index], 'star', true)
+					}else {
+						this.$set(this.houseList[index], 'starCount', this.houseList[index].starCount - 1)
+						this.$set(this.houseList[index], 'star', false)
+					}
+				}else if(type==='comment') {
+					if(isAdd) {
+						this.$set(this.houseList[index], 'commentCount', this.houseList[index].commentCount + 1)
+					}
+				}
+			},
 			// 下拉刷新
 			refresh() {
 				this.pageNum = 1
@@ -121,17 +144,33 @@
 				this.getHouseList()
 			},
 			// 点赞,收藏状态改变
-			houseTransferChangeStatus() {
-				this.getHouseList()
+			houseTransferChangeStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.houseList[index], 'supportCount', this.houseList[index].supportCount + 1)
+						this.$set(this.houseList[index], 'support', true)
+					}else {
+						this.$set(this.houseList[index], 'supportCount', this.houseList[index].supportCount - 1)
+						this.$set(this.houseList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.houseList[index], 'starCount', this.houseList[index].starCount + 1)
+						this.$set(this.houseList[index], 'star', true)
+					}else {
+						this.$set(this.houseList[index], 'starCount', this.houseList[index].starCount - 1)
+						this.$set(this.houseList[index], 'star', false)
+					}
+				}
 			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index"
 				})
 			},
-			handleJumpHouseDetail(item) {
+			handleJumpHouseDetail(item,index) {
 				uni.navigateTo({
-					url: `/pages/index/service/modules/houseTransferDetail/houseTransferDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					url: `/pages/index/service/modules/houseTransferDetail/houseTransferDetail?itemData=${encodeURIComponent(JSON.stringify(item))}&index=${index}`
 				})
 			},
 			handlePublishClick() {

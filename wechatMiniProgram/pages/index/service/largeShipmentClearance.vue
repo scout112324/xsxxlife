@@ -12,10 +12,10 @@
 		</view>
 		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 
-			<view class="lift-item" v-for="item in bigList" :key="item.id">
-				<info-item :pageType="pageType" :itemData="item"
+			<view class="lift-item" v-for="(item,index) in bigList" :key="item.id">
+				<info-item :pageType="pageType" :itemData="item" :index="index"
 					@largeShipmentTransferChangeStatus="largeShipmentTransferChangeStatus"
-					@handleJumpLargeDetail="handleJumpLargeDetail(item)"></info-item>
+					@handleJumpLargeDetail="handleJumpLargeDetail(item,index)"></info-item>
 			</view>
 		</scroll-view>
 		<view class="publish">
@@ -56,12 +56,12 @@
 			}
 		},
 		onLoad() {
-			uni.$on('changeBigList', this.getBigList)
+			uni.$on('changeBigList', this.detailStatus)
 		},
 		onUnload() {
 			uni.$off('changeBigList')
 		},
-		onShow() {
+		created() {
 			this.getBigList()
 		},
 		onPullDownRefresh() {
@@ -69,6 +69,29 @@
 			this.refresh()
 		},
 		methods: {
+			detailStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.bigList[index], 'supportCount', this.bigList[index].supportCount + 1)
+						this.$set(this.bigList[index], 'support', true)
+					}else {
+						this.$set(this.bigList[index], 'supportCount', this.bigList[index].supportCount - 1)
+						this.$set(this.bigList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.bigList[index], 'starCount', this.bigList[index].starCount + 1)
+						this.$set(this.bigList[index], 'star', true)
+					}else {
+						this.$set(this.bigList[index], 'starCount', this.bigList[index].starCount - 1)
+						this.$set(this.bigList[index], 'star', false)
+					}
+				}else if(type==='comment') {
+					if(isAdd) {
+						this.$set(this.bigList[index], 'commentCount', this.bigList[index].commentCount + 1)
+					}
+				}
+			},
 			// 下拉刷新
 			refresh() {
 				this.pageNum = 1
@@ -122,17 +145,33 @@
 				this.getBigList()
 			},
 			// 点赞,收藏状态改变
-			largeShipmentTransferChangeStatus() {
-				this.getBigList()
+			largeShipmentTransferChangeStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.bigList[index], 'supportCount', this.bigList[index].supportCount + 1)
+						this.$set(this.bigList[index], 'support', true)
+					}else {
+						this.$set(this.bigList[index], 'supportCount', this.bigList[index].supportCount - 1)
+						this.$set(this.bigList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.bigList[index], 'starCount', this.bigList[index].starCount + 1)
+						this.$set(this.bigList[index], 'star', true)
+					}else {
+						this.$set(this.bigList[index], 'starCount', this.bigList[index].starCount - 1)
+						this.$set(this.bigList[index], 'star', false)
+					}
+				}
 			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index"
 				})
 			},
-			handleJumpLargeDetail(item) {
+			handleJumpLargeDetail(item,index) {
 				uni.navigateTo({
-					url: `/pages/index/service/modules/largeShipmentDetail/largeShipmentDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					url: `/pages/index/service/modules/largeShipmentDetail/largeShipmentDetail?itemData=${encodeURIComponent(JSON.stringify(item))}&index=${index}`
 				})
 			},
 			handlePublishClick() {

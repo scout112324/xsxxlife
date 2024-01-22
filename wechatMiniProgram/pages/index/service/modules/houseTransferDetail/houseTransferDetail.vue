@@ -122,12 +122,14 @@
 		},
 		onLoad(options) {
 			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			this.index = options.index
 			this.pictureList = this.itemData.picture ? this.itemData.picture.split(',') : []
 		},
 		data() {
 			return {
 				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 				itemData: {},
+				index: 0,
 				showCommentInput: false,
 				pageType: "houseTransfer",
 				level: 0,
@@ -153,7 +155,7 @@
 						addComment(params).then(res => {
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
-								uni.$emit('changeHouseList')
+								uni.$emit('changeHouseList',this.index,'comment',true)
 								this.itemData.commentCount += 1
 								uni.showToast({
 									title: '评论成功',
@@ -172,7 +174,7 @@
 						addComment(params).then(res => {
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
-								uni.$emit('changeHouseList')
+								uni.$emit('changeHouseList',this.index,'comment',true)
 								this.itemData.commentCount += 1
 								uni.showToast({
 									title: '评论成功',
@@ -210,7 +212,7 @@
 				if (!!item.support) {
 					cancelSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeHouseList')
+							uni.$emit('changeHouseList',this.index,'support',false)
 							this.itemData.support = !this.itemData.support
 							this.itemData.supportCount -= 1
 							uni.showToast({
@@ -223,7 +225,7 @@
 				} else {
 					addSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeHouseList')
+							uni.$emit('changeHouseList',this.index,'support',true)
 							this.itemData.support = !this.itemData.support
 							this.itemData.supportCount += 1
 							uni.showToast({
@@ -244,7 +246,7 @@
 				if (!!item.star) {
 					cancelStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeHouseList')
+							uni.$emit('changeHouseList',this.index,'star',false)
 							this.itemData.star = !this.itemData.star
 							this.itemData.starCount -= 1
 							uni.showToast({
@@ -257,7 +259,7 @@
 				} else {
 					addStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeHouseList')
+							uni.$emit('changeHouseList',this.index,'star',true)
 							this.itemData.star = !this.itemData.star
 							this.itemData.starCount += 1
 							uni.showToast({
