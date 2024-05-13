@@ -61,7 +61,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-register-footer">
-      <span>备案号：京ICP备2023005794号-1</span>
+      <span @click="handleJumpClick" style="cursor: pointer">备案号：晋ICP备2024039942号-1</span>
     </div>
   </div>
 </template>
@@ -111,6 +111,9 @@ export default {
     this.getCode();
   },
   methods: {
+    handleJumpClick() {
+      window.open('https://beian.miit.gov.cn/')
+    },
     getCode() {
       getCodeImg().then(res => {
         this.captchaEnabled = res.captchaEnabled === undefined ? true : res.captchaEnabled;
