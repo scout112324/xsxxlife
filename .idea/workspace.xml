@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/pages/user/chat/chat.vue" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/pages/user/chat/chat.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/admin/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/admin/.env.production" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,9 +30,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/wechatMiniProgram" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
@@ -43,6 +49,8 @@
       <workItem from="1695796688572" duration="3077000" />
       <workItem from="1698061126689" duration="271000" />
       <workItem from="1699253619461" duration="177000" />
+      <workItem from="1703488904529" duration="217000" />
+      <workItem from="1715592910041" duration="1254000" />
     </task>
     <servers />
   </component>
