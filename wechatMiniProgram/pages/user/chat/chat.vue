@@ -136,7 +136,7 @@
 			connect() {
 				let openId = uni.getStorageSync('openId')
 				uni.connectSocket({
-					url: `wss://www.lionjj.club/websocketxian/${openId}`,
+					url: `wss://www.xsxxshw.com/websocketxian/${openId}`,
 					// url: `ws://43.138.111.70:6001/websocket/${openId}`,
 					header: {
 						'content-type': 'application/json'
