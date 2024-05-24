@@ -10,12 +10,15 @@
 				@clear="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+		<scroll-view v-if="unusedList.length>0" class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 			<view class="lift-item" v-for="item in unusedList" :key="item.id">
 				<info-item :pageType="pageType" :itemData="item" @unusedChangeStatus="unusedChangeStatus"
 					@handleJumpDetail="handleJumpDetail(item)"></info-item>
 			</view>
 		</scroll-view>
+		<view class="occupy" v-else>
+			当前区域没有内容，请发布内容或切换区域。
+		</view>
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布闲置" @click="handlePublishClick"></u-button>
 		</view>
@@ -176,7 +179,7 @@
 
 <style lang="scss" scoped>
 	.unused-page {
-		background-color: #F3F6F5;
+		// background-color: #F3F6F5;
 		height: 100vh;
 
 		::v-deep .u-status-bar,
@@ -201,6 +204,17 @@
 			::v-deep .is-input-border {
 				border-radius: 36rpx;
 			}
+		}
+		
+		.occupy {
+			text-align: center;
+			height: 100%;
+			margin-top: 300rpx;
+		
+			font-size: 28rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #4D504F;
 		}
 
 		.unused-list {

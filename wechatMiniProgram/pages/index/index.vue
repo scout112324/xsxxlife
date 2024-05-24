@@ -18,7 +18,7 @@
 		<view class="occupy"></view>
 		<view class="content-page">
 			<view class="notice">
-				<u-notice-bar :text="text" :step="true" @click="handleClickNotice"></u-notice-bar>
+				<u-notice-bar :text="text" :step="true" duration="5000" @click="handleClickNotice"></u-notice-bar>
 			</view>
 			<view class="service">
 				<view class="item" v-for="item in serviceData" :key="item.id" @click="handleClickService(item)">
@@ -39,11 +39,14 @@
 						<image class="tiaozhuan" src="../../static/home/tiaozhuan.png" mode=""></image>
 					</view>
 				</view>
-				<view class="life-list">
+				<view class="life-list" v-if="unusedList>0">
 					<view class="lift-item" v-for="item in unusedList" :key="item.id">
 						<info-item :pageType="pageType" :itemData="item" @unusedChangeStatus="unusedChangeStatus"
 							@handleJumpDetail="handleJumpDetail(item)"></info-item>
 					</view>
+				</view>
+				<view class="occupy-text" v-else>
+					当前区域没有内容，请切换区域或发布内容。
 				</view>
 			</view>
 			<view class="attachment-community" v-if="showDataPicker">
@@ -438,8 +441,8 @@
 			margin-top: -50rpx;
 			background-color: #F1F1F2;
 			padding: 24rpx 15rpx;
-			border-top-left-radius: 50rpx;
-			border-top-right-radius: 50rpx;
+			border-top-left-radius: 25rpx;
+			border-top-right-radius: 25rpx;
 
 			.notice {
 				display: flex;
@@ -512,6 +515,17 @@
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
 				padding: 33rpx 20rpx;
+				
+				.occupy-text {
+					text-align: center;
+					height: 280rpx;
+					line-height: 280rpx;
+					
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #4D504F;
+				}
 
 				.title {
 					display: flex;
@@ -519,8 +533,8 @@
 					justify-content: space-between;
 
 					.life {
-						width: 155rpx;
-						height: 58rpx;
+						width: 130rpx;
+						height: 50rpx;
 					}
 
 					.more {
@@ -555,8 +569,8 @@
 					justify-content: space-between;
 
 					.life {
-						width: 155rpx;
-						height: 58rpx;
+						width: 140rpx;
+						height: 50rpx;
 					}
 				}
 

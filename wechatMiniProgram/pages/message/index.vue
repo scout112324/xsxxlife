@@ -8,7 +8,7 @@
 				@clear="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+		<scroll-view v-if="messageList.length>0" class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 
 			<view class="lift-item" v-for="item in messageList" :key="item.id">
 				<info-item :showPrice="showPrice" :pageType="pageType" :itemData="item"
@@ -16,6 +16,9 @@
 					@handleJumpMessageDetail="handleJumpMessageDetail(item)"></info-item>
 			</view>
 		</scroll-view>
+		<view class="occupy" v-else>
+			当前板块没有内容，敬请期待。
+		</view>
 	</view>
 </template>
 
@@ -134,6 +137,7 @@
 <style lang="scss" scoped>
 	.message-page {
 		background-color: #F3F6F5;
+		height: 100vh;
 
 		::v-deep .u-status-bar,
 		::v-deep .u-navbar__content {
@@ -159,7 +163,6 @@
 		}
 
 		.unused-list {
-			height: 1497rpx;
 			background: #FFFFFF;
 			box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 			overflow-y: auto;
@@ -168,6 +171,17 @@
 			.lift-item:not(:last-child) {
 				border-bottom: 20rpx solid #EEF1F0;
 			}
+		}
+		
+		.occupy {
+			text-align: center;
+			height: 100%;
+			margin-top: 300rpx;
+					
+			font-size: 28rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #4D504F;
 		}
 	}
 </style>
