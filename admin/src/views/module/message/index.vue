@@ -238,11 +238,12 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
+      console.log('1111111',)
       if (this.noticeId) {
         const params = {
           id: this.noticeId,
           title: this.form.title,
-          content: this.form.content.replaceAll('src="', 'src="https://www.xsxxshw.com').replaceAll('img','img style="width: 100%"'),
+          content: this.form.content.indexOf('https://www.xsxxshw.com')===-1 ? this.form.content.replaceAll('src="', 'src="https://www.xsxxshw.com').replaceAll('img','img style="width: 100%"') : this.form.content.replaceAll('img','img style="width: 100%"'),
           picture: this.fileList.toString(),
         }
         updateArticle(params).then(response => {
@@ -259,7 +260,7 @@ export default {
           if (valid) {
             const params = {
               title: this.form.title,
-              content: this.form.content.replaceAll('src="', 'src="https://www.xsxxshw.com').replaceAll('img','img style="width: 100%"'),
+              content: this.form.content.indexOf('https://www.xsxxshw.com')===-1 ? this.form.content.replaceAll('src="', 'src="https://www.xsxxshw.com').replaceAll('img','img style="width: 100%"') : this.form.content.replaceAll('img','img style="width: 100%"'),
               picture: this.fileList.toString(),
             }
             addArticle(params).then(response => {
