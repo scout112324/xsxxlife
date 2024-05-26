@@ -127,7 +127,7 @@ export default {
         console.log('content',this.form.content)
         const params = {
           title: this.form.title,
-          content: this.form.content.indexOf('https://www.xsxxshw.com')===-1 ? this.form.content.replaceAll('src="', 'src="https://www.xsxxshw.com').replaceAll('img','img style="width: 100%"') : this.form.content.replaceAll('img','img style="width: 100%"'),
+          content: this.form.content.replaceAll('src="/xian-api', 'src="https://www.xsxxshw.com/xian-api').replaceAll('img','img style="width: 100%"'),
         }
         updateNoticeTo(params).then(response => {
           if (response.code === 200) {

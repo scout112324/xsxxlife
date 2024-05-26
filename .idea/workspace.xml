@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="新需求调整">
-      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/pages/message/detailMessage/detail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/pages/message/detailMessage/detail.vue" afterDir="false" />
-    </list>
+    <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="新需求调整" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
