@@ -28,7 +28,7 @@
 					</u-form-item>
 					<u-form-item label="选择交易方式" prop="saleType" borderBottom labelPosition="top">
 						<u-checkbox-group v-model="userInfo.saleType">
-							<u-checkbox shape="circle" :customStyle="{marginRight: '16rpx'}"
+							<u-checkbox shape="circle" :customStyle="{marginRight: '30rpx'}"
 								v-for="(item, index) in checkboxList" :key="index" :label="item.name"
 								:name="item.value">
 							</u-checkbox>
@@ -370,7 +370,7 @@
 				.tips {
 					margin-top: 20rpx;
 					color: #949494;
-					font-size: 28rpx;
+					font-size: 26rpx;
 				}
 
 				::v-deep .u-form-item__body__right {

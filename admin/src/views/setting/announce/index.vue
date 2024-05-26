@@ -15,7 +15,7 @@
     <el-table v-loading="loading" :data="noticeList">
       <el-table-column type="index" width="50" align="center"></el-table-column>
       <el-table-column show-overflow-tooltip label="内容" align="center" prop="content" />
-      <el-table-column label="路径" align="center" prop="url" />
+<!--      <el-table-column label="路径" align="center" prop="url" />-->
       <el-table-column label="状态" align="center" key="status">
         <template slot-scope="scope">
           <el-switch
@@ -76,9 +76,9 @@
         <el-form-item label="内容">
           <el-input v-model="form.content" placeholder="请输入内容"/>
         </el-form-item>
-        <el-form-item label="路径">
-          <el-input v-model="form.url" placeholder="请输入路径"/>
-        </el-form-item>
+<!--        <el-form-item label="路径">-->
+<!--          <el-input v-model="form.url" placeholder="请输入路径"/>-->
+<!--        </el-form-item>-->
         <el-form-item label="状态" v-if="noticeId">
           <el-radio-group v-model="form.status">
             <el-radio

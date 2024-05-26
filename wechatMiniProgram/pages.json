@@ -348,7 +348,18 @@
 				"navigationBarTextStyle": "black"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/index/service/notice/notice",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "公告详情",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#FBE64D",
+				"navigationBarTextStyle": "black"
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

@@ -75,6 +75,10 @@
 				</view>
 			</view>
 		</u-modal>
+		
+		<view class="publish">
+			<u-button icon="plus-circle-fill" text="发布闲置" @click="handlePublishClick"></u-button>
+		</view>
 	</view>
 </template>
 
@@ -258,11 +262,14 @@
 					return
 				} else {
 					console.log('handleClickNotice', item, this.newText[item])
-					uni.switchTab({
-						url: `${this.newText[item].url}`,
-						fail(err) {
-							console.log(err)
-						}
+					// uni.switchTab({
+					// 	url: `${this.newText[item].url}`,
+					// 	fail(err) {
+					// 		console.log(err)
+					// 	}
+					// })
+					uni.navigateTo({
+						url: "/pages/index/service/notice/notice"
 					})
 				}
 			},
@@ -360,6 +367,11 @@
 						url: item.iconTo
 					})
 				}
+			},
+			handlePublishClick() {
+				uni.navigateTo({
+					url: "/pages/unused/addUnused/addUnused"
+				})
 			}
 		}
 	}
@@ -613,6 +625,29 @@
 					font-weight: 400;
 					color: #707070;
 				}
+			}
+		}
+		
+		.publish {
+			position: fixed;
+			bottom: 15rpx;
+			width: 100%;
+		
+			::v-deep .u-button {
+				width: 280rpx;
+				height: 91rpx;
+				background: #FFD100;
+				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(255, 209, 0, 0.31);
+				border-radius: 46rpx;
+				border: 0 solid rgba(255, 209, 0, 0.31);
+			}
+		
+			::v-deep .u-button__text {
+				margin-left: 6rpx;
+				font-size: 30rpx !important;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #232624;
 			}
 		}
 	}

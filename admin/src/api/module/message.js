@@ -1,5 +1,23 @@
 import request from '@/utils/request'
 
+// 查询公告（管理端）
+export function noticeToList(query) {
+  return request({
+    url: '/web/noticeTo/select',
+    method: 'get',
+    params: query
+  })
+}
+
+// 编辑公告跳转地址（管理端）
+export function updateNoticeTo(data) {
+  return request({
+    url: '/web/noticeTo/update',
+    method: 'post',
+    data: data
+  })
+}
+
 // 查询文章列表
 export function articleList(query) {
   return request({

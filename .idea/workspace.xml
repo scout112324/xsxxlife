@@ -4,9 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="feat: 配置修改">
+    <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="配置修改">
+      <change afterPath="$PROJECT_DIR$/admin/src/views/setting/notice/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/pages/user/chat/chat.vue" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/pages/user/chat/chat.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/api/module/message.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/api/module/message.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/views/setting/announce/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/views/setting/announce/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/api/index/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/api/index/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/pages/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/pages/index/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/pages/unused/addUnused/addUnused.vue" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/pages/unused/addUnused/addUnused.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/wode.png" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/wode.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/wode_set.png" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/wode_set.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/xianzhi.png" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/xianzhi.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/xianzhi_set.png" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/xianzhi_set.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/zixun.png" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/zixun.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/zixun_set.png" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/static/tabbar/zixun_set.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,13 +42,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="vue.rearranger.settings.migration" value="true" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "last_opened_file_path": "/Users/chenweiwei/Desktop/myproject/online-and-offline/admin/src/views/setting",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/admin/src/views/setting" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -50,6 +68,9 @@
       <workItem from="1698061126689" duration="271000" />
       <workItem from="1699253619461" duration="177000" />
       <workItem from="1715652049974" duration="754000" />
+      <workItem from="1715861276919" duration="42000" />
+      <workItem from="1715891312177" duration="1655000" />
+      <workItem from="1716682034055" duration="4818000" />
     </task>
     <servers />
   </component>

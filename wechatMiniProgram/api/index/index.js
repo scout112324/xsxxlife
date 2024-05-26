@@ -24,6 +24,7 @@ const api = {
 	intservInfoHome: 'app/home/intservInfo',
 	intservHome: 'app/home/intserv',
 	placeUser: 'app/user/place',
+	articleTo: 'app/articleTo/select',
 }
 
 // 登录
@@ -139,4 +140,9 @@ export const intservHome = (param, option) => {
 // 更改用户的地址
 export const placeUser = (param, option) => {
 	return request.get(api.placeUser, param)
+}
+
+// 公告跳转页面内容（小程序）
+export const articleTo = (param, option) => {
+	return request.post(api.articleTo, param)
 }
