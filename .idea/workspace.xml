@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="配置修改">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/views/module/message/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/views/module/message/index.vue" afterDir="false" />
+    <list default="true" id="e84d6af0-515b-4f81-ac0c-f63706c42730" name="变更" comment="新需求调整">
+      <change beforePath="$PROJECT_DIR$/wechatMiniProgram/pages/message/detailMessage/detail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/wechatMiniProgram/pages/message/detailMessage/detail.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +59,14 @@
       <workItem from="1715891312177" duration="1655000" />
       <workItem from="1716682034055" duration="4818000" />
     </task>
+    <task id="LOCAL-00001" summary="新需求调整">
+      <created>1716717309620</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716717309620</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -87,5 +94,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="新需求调整" />
+    <option name="LAST_COMMIT_MESSAGE" value="新需求调整" />
   </component>
 </project>
