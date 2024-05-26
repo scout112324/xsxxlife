@@ -124,9 +124,10 @@ export default {
     /** 提交按钮 */
     submitForm() {
       if (this.noticeId) {
+        console.log('content',this.form.content)
         const params = {
           title: this.form.title,
-          content: this.form.content,
+          content: this.form.content.replaceAll('src="', 'src="https://www.xsxxshw.com').replaceAll('img','img style="width: 100%"'),
         }
         updateNoticeTo(params).then(response => {
           if (response.code === 200) {

@@ -242,7 +242,7 @@ export default {
         const params = {
           id: this.noticeId,
           title: this.form.title,
-          content: this.form.content,
+          content: this.form.content.replaceAll('src="', 'src="https://www.xsxxshw.com').replaceAll('img','img style="width: 100%"'),
           picture: this.fileList.toString(),
         }
         updateArticle(params).then(response => {
@@ -257,7 +257,12 @@ export default {
       } else {
         this.$refs['form'].validate(valid => {
           if (valid) {
-            addArticle(this.form).then(response => {
+            const params = {
+              title: this.form.title,
+              content: this.form.content.replaceAll('src="', 'src="https://www.xsxxshw.com').replaceAll('img','img style="width: 100%"'),
+              picture: this.fileList.toString(),
+            }
+            addArticle(params).then(response => {
               this.$modal.msgSuccess('新增成功')
               this.open = false
               this.getList()
