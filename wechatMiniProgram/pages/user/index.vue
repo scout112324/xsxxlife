@@ -15,18 +15,24 @@
 		</view>
 		<view class="user-list">
 			<view class="user-item" v-for="item in userData" :key="item.id" @click="handleJumpDetail(item.name)">
-				<view class="icon">
+				<view class="icon" v-if="item.name!=='联系客服'">
 					<image class="icon-image" :src="item.icon" mode=""></image>
 				</view>
 				<view class="content">
-					<view class="name">
+					<view class="name" v-if="item.name!=='联系客服'">
 						{{item.name}}
 					</view>
-					<view class="right" v-if="item.name=='联系客服'">
-						<button class="btn-contact" open-type="contact">
-							<uni-icons type="forward" size="22"></uni-icons>
-						</button>
-					</view>
+					<button class="btn-contact" open-type="contact" v-if="item.name=='联系客服'">
+						<view class="left-con">
+							<view class="icon">
+								<image class="icon-image" :src="item.icon" mode=""></image>
+							</view>
+							<view class="name">
+								联系客服
+							</view>
+						</view>
+						<uni-icons type="forward" size="22"></uni-icons>
+					</button>
 					<view class="right" v-else>
 						<view class="new" v-if="item.name=='收藏列表'">
 							NEW
@@ -454,16 +460,22 @@
 			}
 
 			.btn-contact {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
 				margin: 0;
 				padding: 0;
 				background-color: #ffffff;
 				height: 44rpx;
+				width: 100%;
 				line-height: 44rpx;
 
 				&::after {
 					border: none
 				}
-
+				.left-con {
+					display: flex;
+				}
 			}
 		}
 

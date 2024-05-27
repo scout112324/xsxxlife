@@ -337,8 +337,8 @@
 				padding-top: 25rpx;
 				font-size: 26rpx;
 				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
-				color: #D30303;
+				font-weight: 700;
+				color: #000;
 
 				.num {
 					font-size: 46rpx;
