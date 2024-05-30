@@ -32,6 +32,8 @@
 				<view v-else class="content">
 					'暂无'
 				</view>
+				<view v-if="itemData.saleType && itemData.saleType == 0" class="saleType">线上交易</view>
+				<view v-if="itemData.saleType && itemData.saleType == 1" class="saleType">线下交易</view>
 				<view class="image-list" v-if="pictureList && pictureList.length>0">
 					<block v-for="(item,index) in pictureList" :key="index">
 						<image
@@ -349,6 +351,17 @@
 					/** 设置或检索伸缩盒对象的子元素的排列方式 **/
 					-webkit-line-clamp: 4;
 					/** 显示的行数 **/
+				}
+				
+				.saleType {
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #646464;
+					line-height: 44rpx;
+					margin: 20rpx 0;
+					
+					width: 100%;
 				}
 
 				.image-list {
