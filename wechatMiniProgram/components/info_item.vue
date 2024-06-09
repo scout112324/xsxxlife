@@ -32,8 +32,8 @@
 				<view v-else class="content">
 					'暂无'
 				</view>
-				<view v-if="itemData.saleType && itemData.saleType == 0" class="saleType">线上交易</view>
-				<view v-if="itemData.saleType && itemData.saleType == 1" class="saleType">线下交易</view>
+				<view v-if="itemData.saleType == 0" class="saleType">线上交易</view>
+				<view v-if="itemData.saleType == 1" class="saleType">线下交易</view>
 				<view class="image-list" v-if="pictureList && pictureList.length>0">
 					<block v-for="(item,index) in pictureList" :key="index">
 						<image
