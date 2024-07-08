@@ -12,9 +12,9 @@
 		</view>
 		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 
-			<view class="lift-item" v-for="item in findList" :key="item.id">
-				<info-item :pageType="pageType" :itemData="item" @findPeopleChangeStatus="findPeopleChangeStatus"
-					@handleJumpFindDetail="handleJumpFindDetail(item)"></info-item>
+			<view class="lift-item" v-for="(item,index) in findList" :key="item.id">
+				<info-item :pageType="pageType" :itemData="item" :index="index" @findPeopleChangeStatus="findPeopleChangeStatus"
+					@handleJumpFindDetail="handleJumpFindDetail(item,index)"></info-item>
 			</view>
 		</scroll-view>
 		<view class="publish">
@@ -54,12 +54,12 @@
 			}
 		},
 		onLoad() {
-			uni.$on('changeFindList', this.getFindList)
+			uni.$on('changeFindList', this.detailStatus)
 		},
 		onUnload() {
 			uni.$off('changeFindList')
 		},
-		onShow() {
+		created() {
 			this.getFindList()
 		},
 		onPullDownRefresh() {
@@ -67,6 +67,29 @@
 			this.refresh()
 		},
 		methods: {
+			detailStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.findList[index], 'supportCount', this.findList[index].supportCount + 1)
+						this.$set(this.findList[index], 'support', true)
+					}else {
+						this.$set(this.findList[index], 'supportCount', this.findList[index].supportCount - 1)
+						this.$set(this.findList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.findList[index], 'starCount', this.findList[index].starCount + 1)
+						this.$set(this.findList[index], 'star', true)
+					}else {
+						this.$set(this.findList[index], 'starCount', this.findList[index].starCount - 1)
+						this.$set(this.findList[index], 'star', false)
+					}
+				}else if(type==='comment') {
+					if(isAdd) {
+						this.$set(this.findList[index], 'commentCount', this.findList[index].commentCount + 1)
+					}
+				}
+			},
 			// 下拉刷新
 			refresh() {
 				this.pageNum = 1
@@ -117,17 +140,33 @@
 				this.getFindList()
 			},
 			// 点赞,收藏状态改变
-			findPeopleChangeStatus() {
-				this.getFindList()
+			findPeopleChangeStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.findList[index], 'supportCount', this.findList[index].supportCount + 1)
+						this.$set(this.findList[index], 'support', true)
+					}else {
+						this.$set(this.findList[index], 'supportCount', this.findList[index].supportCount - 1)
+						this.$set(this.findList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.findList[index], 'starCount', this.findList[index].starCount + 1)
+						this.$set(this.findList[index], 'star', true)
+					}else {
+						this.$set(this.findList[index], 'starCount', this.findList[index].starCount - 1)
+						this.$set(this.findList[index], 'star', false)
+					}
+				}
 			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index"
 				})
 			},
-			handleJumpFindDetail(item) {
+			handleJumpFindDetail(item,index) {
 				uni.navigateTo({
-					url: `/pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail?itemData=${encodeURIComponent(JSON.stringify(item))}`
+					url: `/pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail?itemData=${encodeURIComponent(JSON.stringify(item))}&index=${index}`
 				})
 			},
 			handlePublishClick() {

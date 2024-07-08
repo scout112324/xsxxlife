@@ -10,10 +10,10 @@
 		</view>
 		<scroll-view v-if="messageList.length>0" class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 
-			<view class="lift-item" v-for="item in messageList" :key="item.id">
-				<info-item :showPrice="showPrice" :pageType="pageType" :itemData="item"
+			<view class="lift-item" v-for="(item,index) in messageList" :key="item.id">
+				<info-item :showPrice="showPrice" :pageType="pageType" :itemData="item" :index="index"
 					@messageChangeStatus="messageChangeStatus"
-					@handleJumpMessageDetail="handleJumpMessageDetail(item)"></info-item>
+					@handleJumpMessageDetail="handleJumpMessageDetail(item,index)"></info-item>
 			</view>
 		</scroll-view>
 		<view class="occupy" v-else>
@@ -55,12 +55,14 @@
 			}
 		},
 		onLoad() {
-			uni.$on('changeMessage', this.getMessageList)
+			uni.$on('changeMessage', this.detailStatus)
+			uni.$on('getChangeMessage', this.refreshChangeMessage)
 		},
 		onUnload() {
 			uni.$off('changeMessage')
+			uni.$off('getChangeMessage')
 		},
-		onShow() {
+		created() {
 			this.getMessageList()
 		},
 		onPullDownRefresh() {
@@ -68,6 +70,32 @@
 			this.refresh()
 		},
 		methods: {
+			refreshChangeMessage() {
+				this.refresh()
+			},
+			detailStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.messageList[index], 'supportCount', this.messageList[index].supportCount + 1)
+						this.$set(this.messageList[index], 'support', true)
+					}else {
+						this.$set(this.messageList[index], 'supportCount', this.messageList[index].supportCount - 1)
+						this.$set(this.messageList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.messageList[index], 'starCount', this.messageList[index].starCount + 1)
+						this.$set(this.messageList[index], 'star', true)
+					}else {
+						this.$set(this.messageList[index], 'starCount', this.messageList[index].starCount - 1)
+						this.$set(this.messageList[index], 'star', false)
+					}
+				}else if(type==='comment') {
+					if(isAdd) {
+						this.$set(this.messageList[index], 'commentCount', this.messageList[index].commentCount + 1)
+					}
+				}
+			},
 			// 下拉刷新
 			refresh() {
 				this.pageNum = 1
@@ -121,13 +149,29 @@
 				this.getMessageList()
 			},
 			// 点赞,收藏状态改变
-			messageChangeStatus() {
-				this.getMessageList()
+			messageChangeStatus(index,type,isAdd) {
+				if(type==='support') {
+					if(isAdd) {
+						this.$set(this.messageList[index], 'supportCount', this.messageList[index].supportCount + 1)
+						this.$set(this.messageList[index], 'support', true)
+					}else {
+						this.$set(this.messageList[index], 'supportCount', this.messageList[index].supportCount - 1)
+						this.$set(this.messageList[index], 'support', false)
+					}
+				}else if(type==='star') {
+					if(isAdd) {
+						this.$set(this.messageList[index], 'starCount', this.messageList[index].starCount + 1)
+						this.$set(this.messageList[index], 'star', true)
+					}else {
+						this.$set(this.messageList[index], 'starCount', this.messageList[index].starCount - 1)
+						this.$set(this.messageList[index], 'star', false)
+					}
+				}
 			},
-			handleJumpMessageDetail(item) {
+			handleJumpMessageDetail(item,index) {
 				uni.navigateTo({
 					url: `/pages/message/detailMessage/detail?itemData=${encodeURIComponent(JSON.stringify(item))
-			}`
+			}&index=${index}`
 				})
 			},
 		}

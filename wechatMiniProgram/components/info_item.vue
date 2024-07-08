@@ -92,6 +92,9 @@
 			itemData: {
 				type: Object,
 				default: () => {}
+			},
+			index: {
+				type: Number
 			}
 		},
 		data() {
@@ -159,7 +162,7 @@
 				if (!!item.support) {
 					cancelSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							this.$emit(`${this.pageType}ChangeStatus`)
+							this.$emit(`${this.pageType}ChangeStatus`, this.index, 'support', false)
 							uni.showToast({
 								title: '取消点赞',
 								icon: 'success',
@@ -170,7 +173,7 @@
 				} else {
 					addSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							this.$emit(`${this.pageType}ChangeStatus`)
+							this.$emit(`${this.pageType}ChangeStatus`,this.index, 'support', true)
 							uni.showToast({
 								title: '点赞成功',
 								icon: 'success',
@@ -211,7 +214,7 @@
 				if (!!item.star) {
 					cancelStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							this.$emit(`${this.pageType}ChangeStatus`)
+							this.$emit(`${this.pageType}ChangeStatus`,this.index, 'star', false)
 							uni.showToast({
 								title: '取消收藏',
 								icon: 'success',
@@ -222,7 +225,7 @@
 				} else {
 					addStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							this.$emit(`${this.pageType}ChangeStatus`)
+							this.$emit(`${this.pageType}ChangeStatus`,this.index, 'star', true)
 							uni.showToast({
 								title: '收藏成功',
 								icon: 'success',

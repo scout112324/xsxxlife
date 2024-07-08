@@ -73,12 +73,14 @@
 		},
 		onLoad(options) {
 			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			this.index = options.index
 			this.pictureList = this.itemData.picture ? this.itemData.picture.split(',') : []
 		},
 		data() {
 			return {
 				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 				itemData: {},
+				index: 0,
 				showCommentInput: false,
 				pageType: "message",
 				level: 0,
@@ -105,7 +107,7 @@
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
 								this.itemData.commentCount += 1
-								uni.$emit('changeMessage')
+								uni.$emit('changeMessage',this.index,'comment',true)
 								uni.showToast({
 									title: '评论成功',
 									icon: 'success',
@@ -124,7 +126,7 @@
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
 								this.itemData.commentCount += 1
-								uni.$emit('changeMessage')
+								uni.$emit('changeMessage',this.index,'comment',true)
 								uni.showToast({
 									title: '评论成功',
 									icon: 'success',
@@ -150,7 +152,7 @@
 				if (!!item.support) {
 					cancelSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeMessage')
+							uni.$emit('changeMessage',this.index,'support',false)
 							this.itemData.support = !this.itemData.support
 							this.itemData.supportCount -= 1
 							uni.showToast({
@@ -163,7 +165,7 @@
 				} else {
 					addSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeMessage')
+							uni.$emit('changeMessage',this.index,'support',true)
 							this.itemData.support = !this.itemData.support
 							this.itemData.supportCount += 1
 							uni.showToast({
@@ -184,7 +186,7 @@
 				if (!!item.star) {
 					cancelStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeMessage')
+							uni.$emit('changeMessage',this.index,'star',false)
 							this.itemData.star = !this.itemData.star
 							this.itemData.starCount -= 1
 							uni.showToast({
@@ -197,7 +199,7 @@
 				} else {
 					addStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeMessage')
+							uni.$emit('changeMessage',this.index,'star',true)
 							this.itemData.star = !this.itemData.star
 							this.itemData.starCount += 1
 							uni.showToast({

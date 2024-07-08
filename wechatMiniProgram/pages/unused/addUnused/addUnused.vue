@@ -205,6 +205,7 @@
 											icon: 'success',
 											duration: 2000
 										})
+										uni.$emit('getUnusedListChange')
 										uni.switchTab({
 											url: "/pages/unused/index"
 										})
@@ -236,6 +237,7 @@
 											icon: 'success',
 											duration: 2000
 										})
+										uni.$emit('getUnusedListChange')
 										uni.switchTab({
 											url: "/pages/unused/index"
 										})

@@ -213,6 +213,9 @@
 					if (res.code === 200) {
 						this.getCrowdList()
 						this.getUnusedList()
+						
+						uni.$emit('getUnusedListChange')
+						uni.$emit('getChangeMessage')
 					}
 				})
 			},
