@@ -90,6 +90,9 @@
 									icon: 'success',
 									duration: 2000
 								})
+								uni.navigateTo({
+									url: "/pages/user/trading/trading"
+								})
 							})
 							.catch(err => {
 								console.log('支付失败')
