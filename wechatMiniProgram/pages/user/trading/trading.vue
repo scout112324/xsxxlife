@@ -30,8 +30,20 @@
 						<view class="content">
 							{{item.content}}
 						</view>
-						<view class="status" v-if="type!==2 && type!==3">
-							{{item.payStatus==0 ? '待支付' : '已支付'}}
+						<view class="status" v-if="type!==2 && type!==3 && item.payStatus==0">
+							待支付
+						</view>
+						<view class="status" v-if="type!==2 && type!==3 && item.payStatus==1">
+							已支付
+						</view>
+						<view class="status" v-if="type!==2 && type!==3 && item.payStatus==2">
+							待收货
+						</view>
+						<view class="status" v-if="type!==2 && type!==3 && item.payStatus==3">
+							已收货
+						</view>
+						<view class="status" v-if="type!==2 && type!==3 && item.payStatus==4">
+							已退款
 						</view>
 						<view class="status" v-if="type===2">
 							<text v-if="item.payStatus===1">已支付</text>
