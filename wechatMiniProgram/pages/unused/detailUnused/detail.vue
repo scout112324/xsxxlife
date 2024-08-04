@@ -129,7 +129,7 @@
 						addComment(params).then(res => {
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
-								uni.$emit('changeUnused',this.index,'comment',true)
+								uni.$emit('changeUnused', this.index, 'comment', true)
 								this.itemData.commentCount += 1
 								uni.showToast({
 									title: '评论成功',
@@ -148,7 +148,7 @@
 						addComment(params).then(res => {
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
-								uni.$emit('changeUnused',this.index,'comment',true)
+								uni.$emit('changeUnused', this.index, 'comment', true)
 								this.itemData.commentCount += 1
 								uni.showToast({
 									title: '评论成功',
@@ -174,19 +174,26 @@
 			},
 			// 去支付
 			handleOrderClick() {
-				submitWx({
+				let payInfo = {
+					...this.itemData,
 					id: this.itemData.id
-				}).then(res => {
-					if (res.code === 200) {
-						let payInfo = {
-							...this.itemData,
-							orderId: res.data.orderId
-						}
-						uni.navigateTo({
-							url: `/pages/unused/payDetail?payInfo=${encodeURIComponent(JSON.stringify(payInfo))}`
-						})
-					}
+				}
+				uni.navigateTo({
+					url: `/pages/unused/address?payInfo=${encodeURIComponent(JSON.stringify(payInfo))}`
 				})
+				// submitWx({
+				// 	id: this.itemData.id
+				// }).then(res => {
+				// 	if (res.code === 200) {
+				// 		let payInfo = {
+				// 			...this.itemData,
+				// 			orderId: res.data.orderId
+				// 		}
+				// 		uni.navigateTo({
+				// 			url: `/pages/unused/payDetail?payInfo=${encodeURIComponent(JSON.stringify(payInfo))}`
+				// 		})
+				// 	}
+				// })
 			},
 			// 点赞
 			handleSupport(item) {
@@ -197,7 +204,7 @@
 				if (!!item.support) {
 					cancelSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeUnused',this.index,'support',false)
+							uni.$emit('changeUnused', this.index, 'support', false)
 							this.itemData.support = !this.itemData.support
 							this.itemData.supportCount -= 1
 							uni.showToast({
@@ -210,7 +217,7 @@
 				} else {
 					addSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeUnused',this.index,'support',true)
+							uni.$emit('changeUnused', this.index, 'support', true)
 							this.itemData.support = !this.itemData.support
 							this.itemData.supportCount += 1
 							uni.showToast({
@@ -231,7 +238,7 @@
 				if (!!item.star) {
 					cancelStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeUnused',this.index,'star',false)
+							uni.$emit('changeUnused', this.index, 'star', false)
 							this.itemData.star = !this.itemData.star
 							this.itemData.starCount -= 1
 							uni.showToast({
@@ -244,7 +251,7 @@
 				} else {
 					addStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeUnused',this.index,'star',true)
+							uni.$emit('changeUnused', this.index, 'star', true)
 							this.itemData.star = !this.itemData.star
 							this.itemData.starCount += 1
 							uni.showToast({

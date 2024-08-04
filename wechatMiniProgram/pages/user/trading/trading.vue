@@ -34,7 +34,8 @@
 							{{item.payStatus==0 ? '待支付' : '已支付'}}
 						</view>
 						<view class="status" v-else>
-							已卖出
+							<text class="address" @click.stop="showAddressDetail(item)">显示地址</text>
+							<text>已卖出</text>
 						</view>
 					</view>
 					<view class="container">
@@ -59,7 +60,7 @@
 						<button class="communicate" @click.stop="handleCommuniteClick(item.userId)">联系卖家</button>
 					</view>
 					<view class="footer" v-else>
-						<button class="communicate" @click.stop="handleRefundClick(item.orderId)">退款</button>
+						<!-- <button class="communicate" @click.stop="handleRefundClick(item.orderId)">退款</button> -->
 					</view>
 				</view>
 			</block>
@@ -72,13 +73,15 @@
 			<uni-popup-dialog :type="msgType" cancelText="关闭" confirmText="同意" title="提示" content="确认要退款吗？"
 				@confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
 		</uni-popup>
+		<u-modal :show="showAddress" title="收货地址" :content='addressInfo' @confirm="handleConfirmClick"></u-modal>
 	</view>
 </template>
 
 <script>
 	import {
 		orderRecord,
-		refundRecord
+		refundRecord,
+		selectPlace
 	} from "@/api/user/index.js"
 	export default {
 		data() {
@@ -97,6 +100,12 @@
 					name: '已付款',
 				}, {
 					name: '已卖出'
+				}, {
+					name: '待收货'
+				}, {
+					name: '已收货'
+				}, {
+					name: '已退款'
 				}],
 				type: 0,
 				pageNum: 1,
@@ -104,7 +113,9 @@
 				tradingList: [],
 				hasMore: true,
 				screenHeight: 0,
-				orderId: ''
+				orderId: '',
+				addressInfo: "",
+				showAddress: false
 			}
 		},
 		onReady() {
@@ -118,6 +129,22 @@
 			this.refresh()
 		},
 		methods: {
+			handleConfirmClick() {
+				this.showAddress = false
+				this.addressInfo = ""
+			},
+			// 显示地址
+			showAddressDetail(item) {
+				let params = {
+					orderId: item.orderId
+				}
+				selectPlace(params).then(res => {
+					if (res.code === 200) {
+						this.addressInfo = `${res.data.placeArea},${res.data.placeDetails}`
+						this.showAddress = true
+					}
+				})
+			},
 			dialogClose() {
 				this.$refs.alertDialog.close()
 				this.orderId = ""
@@ -258,18 +285,6 @@
 
 		.tabs {
 			background-color: #ffffff;
-
-			/deep/ .u-tabs__wrapper__nav {
-				justify-content: space-around;
-			}
-
-			/deep/ .u-tabs__wrapper__nav__line {
-				left: 0;
-			}
-
-			/deep/ .u-tabs__wrapper__nav__item {
-				flex: 1;
-			}
 		}
 
 		.list-container {
@@ -299,7 +314,7 @@
 					}
 
 					.content {
-						width: 480rpx;
+						width: 380rpx;
 						font-size: 30rpx;
 						font-weight: 500;
 						color: #232624;
@@ -310,11 +325,18 @@
 					}
 
 					.status {
+						flex: 1;
 						height: 37rpx;
 						font-size: 26rpx;
 
 						font-weight: 400;
 						color: #707070;
+						display: flex;
+						justify-content: flex-end;
+
+						.address {
+							margin-right: 10rpx;
+						}
 					}
 				}
 

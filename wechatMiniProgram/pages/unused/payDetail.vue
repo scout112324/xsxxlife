@@ -18,7 +18,7 @@
 				</view>
 				<view class="price">
 					<text class="unit">¥</text>
-					<text class="num">{{payInfo.price || '暂无'}}</text>
+					<text class="num">{{payInfoMore.price || '暂无'}}</text>
 				</view>
 			</view>
 		</view>
@@ -47,7 +47,7 @@
 			<view class="chackout-box">
 				<view class="chackout-left pl-12">
 					<view class="col-amount-do">支付金额：
-						<text class="pay-amount">￥{{ payInfo.price || 0 }}</text>
+						<text class="pay-amount">￥{{ payInfoMore.price || 0 }}</text>
 					</view>
 				</view>
 				<view class="chackout-right" @click="doSubmitOrder()">
@@ -66,20 +66,20 @@
 	export default {
 		data() {
 			return {
-				payInfo: {},
+				payInfoMore: {},
 				pictureList: [],
 				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 			}
 		},
 		onLoad(options) {
-			this.payInfo = JSON.parse(decodeURIComponent(options.payInfo))
-			this.pictureList = this.payInfo.picture ? this.payInfo.picture.split(',') : []
-			console.log('payInfo', this.payInfo)
+			this.payInfoMore = JSON.parse(decodeURIComponent(options.payInfoMore))
+			this.pictureList = this.payInfoMore.picture ? this.payInfoMore.picture.split(',') : []
+			console.log('payInfoMore', this.payInfoMore)
 		},
 		methods: {
 			doSubmitOrder() {
 				toPayWx({
-					orderId: this.payInfo.orderId
+					orderId: this.payInfoMore.orderId
 				}).then(res => {
 					if (res.code === 200) {
 						let payment = res.data

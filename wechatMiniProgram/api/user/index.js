@@ -25,6 +25,7 @@ const api = {
 	deleteUnused: 'app/unused/delete',
 	deleteActivity: 'app/activity/delete',
 	deleteBig: 'app/big/delete',
+	selectPlace: 'app/wx/selectPlace',
 }
 
 // 更改昵称或者头像
@@ -137,4 +138,9 @@ export const deleteActivity = (param, option) => {
 // 删除大件清运
 export const deleteBig = (param, option) => {
 	return request.get(api.deleteBig, param)
+}
+
+// 查询地址
+export const selectPlace = (param, option) => {
+	return request.get(api.selectPlace, param)
 }
