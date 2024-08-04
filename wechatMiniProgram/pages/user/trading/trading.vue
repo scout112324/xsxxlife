@@ -78,8 +78,8 @@
 						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===3"
 							class="communicate" @click.stop>
 							已拒绝</button>
-						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===1"
-							class="communicate" @click.stop="handleTakeDeliveryClick(item.orderId)">
+						<button v-if="item.payStatus===2 && item.buttonStatus===1" class="communicate"
+							@click.stop="handleTakeDeliveryClick(item.orderId)">
 							收货</button>
 					</view>
 					<view class="footer" v-if="type===3">
