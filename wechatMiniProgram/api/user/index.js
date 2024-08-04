@@ -26,6 +26,11 @@ const api = {
 	deleteActivity: 'app/activity/delete',
 	deleteBig: 'app/big/delete',
 	selectPlace: 'app/wx/selectPlace',
+	delivery: 'app/my/delivery',
+	refund: 'app/my/refund',
+	agreeRefund: 'app/my/agreeRefund',
+	refuseRefund: 'app/my/refuseRefund',
+	takeDelivery: 'app/my/takeDelivery',
 }
 
 // 更改昵称或者头像
@@ -143,4 +148,29 @@ export const deleteBig = (param, option) => {
 // 查询地址
 export const selectPlace = (param, option) => {
 	return request.get(api.selectPlace, param)
+}
+
+// 发货
+export const delivery = (param, option) => {
+	return request.get(api.delivery, param)
+}
+
+// 退款针对买家
+export const refund = (param, option) => {
+	return request.get(api.refund, param)
+}
+
+// 同意退款
+export const agreeRefund = (param, option) => {
+	return request.get(api.agreeRefund, param)
+}
+
+// 拒绝退款
+export const refuseRefund = (param, option) => {
+	return request.get(api.refuseRefund, param)
+}
+
+// 收货
+export const takeDelivery = (param, option) => {
+	return request.get(api.takeDelivery, param)
 }

@@ -38,7 +38,7 @@
 							NEW
 						</view>
 						<view class="money" v-if="item.name=='点击提现'">
-							{{money}}￥
+							总金额：{{money}}￥
 						</view>
 						<uni-icons type="forward" size="22"></uni-icons>
 					</view>
@@ -48,6 +48,9 @@
 		<u-modal :show="show" :title="title" showCancelButton confirmColor="#FFD100" width="650rpx"
 			@cancel="handleCancle" @confirm="handleConfirm">
 			<view class="slot-content">
+				<view style="text-align: center;">
+					(可提现金额：{{myInfo.useMoney ? myInfo.useMoney : 0}}￥)
+				</view>
 				<u--form labelWidth="180rpx" labelPosition="left" :model="userInfo" :rules="rules" ref="uForm">
 					<u-form-item label="姓名:" prop="name">
 						<u--input v-model="userInfo.name" border="bottom"></u--input>
@@ -473,6 +476,7 @@
 				&::after {
 					border: none
 				}
+
 				.left-con {
 					display: flex;
 				}

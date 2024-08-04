@@ -30,12 +30,21 @@
 						<view class="content">
 							{{item.content}}
 						</view>
-						<view class="status" v-if="type!==3">
+						<view class="status" v-if="type!==2 && type!==3">
 							{{item.payStatus==0 ? '待支付' : '已支付'}}
 						</view>
-						<view class="status" v-else>
+						<view class="status" v-if="type===2">
+							<text v-if="item.payStatus===1">已支付</text>
+							<text v-if="item.payStatus===2">待收货</text>
+							<text v-if="item.payStatus===3">已收货</text>
+							<text v-if="item.payStatus===4">已退款</text>
+						</view>
+						<view class="status" v-if="type===3">
 							<text class="address" @click.stop="showAddressDetail(item)">显示地址</text>
-							<text>已卖出</text>
+							<text v-if="item.payStatus===1">已支付</text>
+							<text v-if="item.payStatus===2">已发货</text>
+							<text v-if="item.payStatus===3">已收货</text>
+							<text v-if="item.payStatus===4">已退款</text>
 						</view>
 					</view>
 					<view class="container">
@@ -56,10 +65,34 @@
 							</text>
 						</view>
 					</view>
-					<view class="footer" v-if="type!==3">
+					<view class="footer" v-if="type!==2 && type!==3 && type!==4">
 						<button class="communicate" @click.stop="handleCommuniteClick(item.userId)">联系卖家</button>
 					</view>
-					<view class="footer" v-else>
+					<view class="footer" v-if="type===2 || type===4">
+						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===1"
+							class="communicate" @click.stop="handleBuyRefundClick(item.orderId)">
+							退款</button>
+						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===2"
+							class="communicate" @click.stop>
+							退款中</button>
+						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===3"
+							class="communicate" @click.stop>
+							已拒绝</button>
+						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===1"
+							class="communicate" @click.stop="handleTakeDeliveryClick(item.orderId)">
+							收货</button>
+					</view>
+					<view class="footer" v-if="type===3">
+						<button v-if="item.payStatus===1 && item.buttonStatus===1" class="communicate"
+							@click.stop="handleDeliveryClick(item.orderId)">发货</button>
+						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===2"
+							class="communicate" @click.stop="handleConfirmRefundClick(item.orderId)">同意退款</button>
+						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===2"
+							class="communicate" @click.stop="handleRejectRefundClick(item.orderId)">拒绝退款</button>
+						<button v-if="(item.payStatus===1 || item.payStatus===2) && item.buttonStatus===3"
+							class="communicate" @click.stop>已拒绝</button>
+						<button v-if="item.payStatus===3" class="communicate" @click.stop>已收货</button>
+						<button v-if="item.payStatus===4" class="communicate" @click.stop>已退款</button>
 						<!-- <button class="communicate" @click.stop="handleRefundClick(item.orderId)">退款</button> -->
 					</view>
 				</view>
@@ -81,7 +114,12 @@
 	import {
 		orderRecord,
 		refundRecord,
-		selectPlace
+		selectPlace,
+		delivery,
+		refund,
+		agreeRefund,
+		refuseRefund,
+		takeDelivery
 	} from "@/api/user/index.js"
 	export default {
 		data() {
@@ -115,7 +153,7 @@
 				screenHeight: 0,
 				orderId: '',
 				addressInfo: "",
-				showAddress: false
+				showAddress: false,
 			}
 		},
 		onReady() {
@@ -129,6 +167,114 @@
 			this.refresh()
 		},
 		methods: {
+			// 点击收货（待收货订单列表里面——针对买家）
+			handleTakeDeliveryClick(orderId) {
+				let params = {
+					orderId: orderId
+				}
+				takeDelivery(params).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '确认收货成功',
+							icon: 'success',
+							duration: 2000
+						})
+						this.getOrderRecord()
+					} else {
+						let msg = res.msg
+						uni.showToast({
+							title: msg,
+							icon: 'none',
+							duration: 3000
+						})
+					}
+				})
+			},
+			// 同意退款
+			handleConfirmRefundClick(orderId) {
+				let params = {
+					orderId: orderId
+				}
+				agreeRefund(params).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '同意退款成功',
+							icon: 'success',
+							duration: 2000
+						})
+						this.getOrderRecord()
+					} else {
+						let msg = res.msg
+						uni.showToast({
+							title: msg,
+							icon: 'none',
+							duration: 3000
+						})
+					}
+				})
+			},
+			// 拒绝退款
+			handleRejectRefundClick(orderId) {
+				let params = {
+					orderId: orderId
+				}
+				refuseRefund(params).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '拒绝退款成功',
+							icon: 'success',
+							duration: 2000
+						})
+						this.getOrderRecord()
+					} else {
+						let msg = res.msg
+						uni.showToast({
+							title: msg,
+							icon: 'none',
+							duration: 3000
+						})
+					}
+				})
+			},
+			// 退款针对买家
+			handleBuyRefundClick(orderId) {
+				let params = {
+					orderId: orderId
+				}
+				refund(params).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '申请退款成功',
+							icon: 'success',
+							duration: 2000
+						})
+						this.getOrderRecord()
+					} else {
+						let msg = res.msg
+						uni.showToast({
+							title: msg,
+							icon: 'none',
+							duration: 3000
+						})
+					}
+				})
+			},
+			// 发货
+			handleDeliveryClick(orderId) {
+				let params = {
+					orderId: orderId
+				}
+				delivery(params).then(res => {
+					if (res.code === 200) {
+						uni.showToast({
+							title: '发货成功',
+							icon: 'success',
+							duration: 2000
+						})
+						this.getOrderRecord()
+					}
+				})
+			},
 			handleConfirmClick() {
 				this.showAddress = false
 				this.addressInfo = ""
@@ -373,6 +519,8 @@
 					justify-content: flex-end;
 
 					::v-deep .communicate {
+						margin-left: 10rpx !important;
+
 						&::after {
 							border: none
 						}
