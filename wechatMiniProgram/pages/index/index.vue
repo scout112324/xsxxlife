@@ -31,6 +31,17 @@
 					</view>
 				</view>
 			</view>
+			<view class="attachment-community" v-if="showDataPicker">
+				<view class="title">
+					<image class="life" src="../../static/home/shequnbiaoti.png" mode=""></image>
+					<view class="more"></view>
+				</view>
+				<view class="community-list">
+					<block v-for="item in communityList" :key="item.id">
+						<community-item :itemData="item" @joinCommunity="joinCommunity"></community-item>
+					</block>
+				</view>
+			</view>
 			<view class="life-circle" v-if="showDataPicker">
 				<view class="title">
 					<image class="life" src="../../static/home/shenghuoquanbiaoti.png" mode=""></image>
@@ -49,17 +60,6 @@
 					当前区域没有内容，请切换区域或发布内容。
 				</view>
 			</view>
-			<view class="attachment-community" v-if="showDataPicker">
-				<view class="title">
-					<image class="life" src="../../static/home/shequnbiaoti.png" mode=""></image>
-					<view class="more"></view>
-				</view>
-				<view class="community-list">
-					<block v-for="item in communityList" :key="item.id">
-						<community-item :itemData="item" @joinCommunity="joinCommunity"></community-item>
-					</block>
-				</view>
-			</view>
 		</view>
 		<u-modal :show="show" width="630rpx" @confirm="handleConfirm">
 			<view class="slot-content">
@@ -75,7 +75,7 @@
 				</view>
 			</view>
 		</u-modal>
-		
+
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布闲置" @click="handlePublishClick"></u-button>
 		</view>
@@ -213,7 +213,7 @@
 					if (res.code === 200) {
 						this.getCrowdList()
 						this.getUnusedList()
-						
+
 						uni.$emit('getUnusedListChange')
 						uni.$emit('getChangeMessage')
 					}
@@ -430,6 +430,7 @@
 				::v-deep .uni-data-tree-input {
 					.selected-list {
 						overflow-x: auto;
+
 						.selected-item {
 							display: none;
 
@@ -530,12 +531,12 @@
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 20rpx;
 				padding: 33rpx 20rpx;
-				
+
 				.occupy-text {
 					text-align: center;
 					height: 280rpx;
 					line-height: 280rpx;
-					
+
 					font-size: 28rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
@@ -571,7 +572,7 @@
 			}
 
 			.attachment-community {
-				margin-top: 20rpx;
+				margin-bottom: 20rpx;
 				background: #FFFFFF;
 				box-shadow: 0rpx 2rpx 24rpx 0rpx rgba(0, 0, 0, 0.04);
 				border-radius: 16rpx;
@@ -630,12 +631,12 @@
 				}
 			}
 		}
-		
+
 		.publish {
 			position: fixed;
 			bottom: 15rpx;
 			width: 100%;
-		
+
 			::v-deep .u-button {
 				width: 280rpx;
 				height: 91rpx;
@@ -644,7 +645,7 @@
 				border-radius: 46rpx;
 				border: 0 solid rgba(255, 209, 0, 0.31);
 			}
-		
+
 			::v-deep .u-button__text {
 				margin-left: 6rpx;
 				font-size: 30rpx !important;

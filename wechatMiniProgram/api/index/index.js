@@ -25,6 +25,7 @@ const api = {
 	intservHome: 'app/home/intserv',
 	placeUser: 'app/user/place',
 	articleTo: 'app/articleTo/select',
+	homeUrl: 'app/home/url'
 }
 
 // 登录
@@ -145,4 +146,9 @@ export const placeUser = (param, option) => {
 // 公告跳转页面内容（小程序）
 export const articleTo = (param, option) => {
 	return request.post(api.articleTo, param)
+}
+
+// 查询首页跳转地址跟图片地址
+export const homeUrl = (param, option) => {
+	return request.get(api.homeUrl, param)
 }
