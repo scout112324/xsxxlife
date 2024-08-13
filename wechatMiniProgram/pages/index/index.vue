@@ -75,6 +75,16 @@
 				</view>
 			</view>
 		</u-modal>
+		<u-modal :show="showHomeUrl" width="630rpx" @confirm="handleConfirm">
+			<view class="slot-content">
+				<view class="content">
+					<view class="title">
+						{{homeUrlInfo.url}}
+					</view>
+					<image class="code" :src="homeUrlInfo.picUrl" mode=""></image>
+				</view>
+			</view>
+		</u-modal>
 
 		<view class="publish">
 			<u-button icon="plus-circle-fill" text="发布闲置" @click="handlePublishClick"></u-button>
@@ -95,7 +105,8 @@
 		tabList,
 		getUnused,
 		getCrowd,
-		placeUser
+		placeUser,
+		homeUrl
 	} from '@/api/index/index.js'
 	import {
 		mapState
@@ -130,7 +141,9 @@
 				pageType: "unused",
 				nodeData: {},
 				isUserSelectedArea: false, // 用户是否修改过定位区域
-				showDataPicker: true
+				showDataPicker: true,
+				homeUrlInfo: {},
+				showHomeUrl: false
 			}
 		},
 		onShow() {
@@ -139,6 +152,7 @@
 			if (openId) {
 				this.getCrowdList()
 				this.getUnusedList()
+				this.getHomeUrl()
 			} else {
 				// 没有值
 				uni.showLoading({
@@ -181,6 +195,16 @@
 			},
 		},
 		methods: {
+			getHomeUrl() {
+				homeUrl({}).then(res => {
+					if (res.code === 200) {
+						if (res.data) {
+							this.homeUrlInfo = res.data
+							this.showHomeUrl = true
+						}
+					}
+				})
+			},
 			handleAddressClick() {
 				this.areas = [{
 						text: `${uni.getStorageSync('province')}`,
@@ -309,6 +333,7 @@
 			},
 			handleConfirm() {
 				this.show = false
+				this.showHomeUrl = false
 			},
 			changeOpened() {
 				this.showDataPicker = false
