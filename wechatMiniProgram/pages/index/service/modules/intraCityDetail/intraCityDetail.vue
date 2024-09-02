@@ -64,7 +64,7 @@
 			<view class="product-image" v-if="pictureList.length>0">
 				<block v-for="(item,index) in pictureList" :key="index">
 					<image v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
-						class="image" :src="item" mode="widthFix">
+						class="image" :src="item" mode="widthFix" @tap="previewImage(index)">
 					</image>
 					<video v-else class="image" :src="item" controls></video>
 				</block>
@@ -72,8 +72,7 @@
 			<view class="header">
 				<view class="user-info">
 					<image v-if="itemData.photo" class="avatar" :src="itemData.photo" mode=""></image>
-					<image v-else class="avatar"
-						src="../../../../../static/avatar.png" mode=""></image>
+					<image v-else class="avatar" src="../../../../../static/avatar.png" mode=""></image>
 					<view class="info">
 						<view class="nickname">
 							{{itemData.nickname}}
@@ -159,6 +158,13 @@
 			}
 		},
 		methods: {
+			previewImage: function(index) {
+				//预览图片
+				uni.previewImage({
+					current: index,
+					urls: this.pictureList
+				})
+			},
 			handleComment() {
 				this.$refs.commentRef.handleFocus()
 			},

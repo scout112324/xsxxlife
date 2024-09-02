@@ -8,7 +8,7 @@
 			<view class="product-image" v-if="pictureList && pictureList.length>0">
 				<block v-for="(item,index) in pictureList" :key="index">
 					<image v-if="imgType.includes(item.substr(item.lastIndexOf('.') + 1, item.length).toLowerCase())"
-						class="image" :src="item" mode="widthFix">
+						class="image" :src="item" mode="widthFix" @tap="previewImage(index)">
 					</image>
 					<video v-else class="image" :src="item" controls></video>
 				</block>
@@ -89,6 +89,13 @@
 			}
 		},
 		methods: {
+			previewImage: function(index) {
+				//预览图片
+				uni.previewImage({
+					current: index,
+					urls: this.pictureList
+				})
+			},
 			handleComment() {
 				this.$refs.commentRef.handleFocus()
 			},
@@ -107,7 +114,7 @@
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
 								this.itemData.commentCount += 1
-								uni.$emit('changeMessage',this.index,'comment',true)
+								uni.$emit('changeMessage', this.index, 'comment', true)
 								uni.showToast({
 									title: '评论成功',
 									icon: 'success',
@@ -126,7 +133,7 @@
 							if (res.code === 200) {
 								this.$refs.commentRef.getListComment()
 								this.itemData.commentCount += 1
-								uni.$emit('changeMessage',this.index,'comment',true)
+								uni.$emit('changeMessage', this.index, 'comment', true)
 								uni.showToast({
 									title: '评论成功',
 									icon: 'success',
@@ -152,7 +159,7 @@
 				if (!!item.support) {
 					cancelSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeMessage',this.index,'support',false)
+							uni.$emit('changeMessage', this.index, 'support', false)
 							this.itemData.support = !this.itemData.support
 							this.itemData.supportCount -= 1
 							uni.showToast({
@@ -165,7 +172,7 @@
 				} else {
 					addSupport(this.supportParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeMessage',this.index,'support',true)
+							uni.$emit('changeMessage', this.index, 'support', true)
 							this.itemData.support = !this.itemData.support
 							this.itemData.supportCount += 1
 							uni.showToast({
@@ -186,7 +193,7 @@
 				if (!!item.star) {
 					cancelStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeMessage',this.index,'star',false)
+							uni.$emit('changeMessage', this.index, 'star', false)
 							this.itemData.star = !this.itemData.star
 							this.itemData.starCount -= 1
 							uni.showToast({
@@ -199,7 +206,7 @@
 				} else {
 					addStar(this.starParams).then(res => {
 						if (res.code === 200) {
-							uni.$emit('changeMessage',this.index,'star',true)
+							uni.$emit('changeMessage', this.index, 'star', true)
 							this.itemData.star = !this.itemData.star
 							this.itemData.starCount += 1
 							uni.showToast({
