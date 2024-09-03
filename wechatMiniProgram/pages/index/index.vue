@@ -50,12 +50,26 @@
 						<image class="tiaozhuan" src="../../static/home/tiaozhuan.png" mode=""></image>
 					</view>
 				</view>
-				<view class="life-list" v-if="unusedList>0">
+				<view class="life-list" v-if="unusedList.length>0">
+					<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay"
+						:interval="interval" :duration="duration">
+						<swiper-item v-for="item in unusedList" :key="item.id">
+							<view class="swiper-item">
+								<view class="lift-item">
+									<info-item :pageType="pageType" :itemData="item"
+										@unusedChangeStatus="unusedChangeStatus"
+										@handleJumpDetail="handleJumpDetail(item)"></info-item>
+								</view>
+							</view>
+						</swiper-item>
+					</swiper>
+				</view>
+				<!-- <view class="life-list" v-if="unusedList.length>0">
 					<view class="lift-item" v-for="item in unusedList" :key="item.id">
 						<info-item :pageType="pageType" :itemData="item" @unusedChangeStatus="unusedChangeStatus"
 							@handleJumpDetail="handleJumpDetail(item)"></info-item>
 					</view>
-				</view>
+				</view> -->
 				<view class="occupy-text" v-else>
 					当前区域没有内容，请切换区域或发布内容。
 				</view>
@@ -143,7 +157,13 @@
 				isUserSelectedArea: false, // 用户是否修改过定位区域
 				showDataPicker: true,
 				homeUrlInfo: {},
-				showHomeUrl: false
+				showHomeUrl: false,
+
+				background: ['color1', 'color2', 'color3'],
+				indicatorDots: true,
+				autoplay: true,
+				interval: 2000,
+				duration: 500
 			}
 		},
 		onShow() {
@@ -407,6 +427,7 @@
 
 <style lang="scss" scoped>
 	.home-page {
+
 		::v-deep .uni-data-tree-dialog {
 			top: 45%;
 		}
@@ -678,6 +699,36 @@
 				font-weight: 500;
 				color: #232624;
 			}
+		}
+
+
+		.swiper {
+			height: 620rpx;
+
+			.swiper-item {
+				display: block;
+				height: 620rpx;
+			}
+		}
+
+		.swiper-list {
+			margin-top: 40rpx;
+			margin-bottom: 0;
+		}
+
+		.uni-common-mt {
+			margin-top: 60rpx;
+			position: relative;
+		}
+
+		.info {
+			position: absolute;
+			right: 20rpx;
+		}
+
+		.uni-padding-wrap {
+			width: 550rpx;
+			padding: 0 100rpx;
 		}
 	}
 </style>

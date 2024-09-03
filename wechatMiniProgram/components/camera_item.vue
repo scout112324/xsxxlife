@@ -131,6 +131,9 @@
 							return this.uploadImages(item)
 						})
 					},
+					fail: (err) => {
+						console.log("err", err)
+					}
 				});
 			},
 			uploadImages(imgPath) {
