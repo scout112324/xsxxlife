@@ -73,7 +73,7 @@
 			return {
 				cameraNumber: 9,
 				content: "",
-				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item=>{
+				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item => {
 					return {
 						text: item,
 						value: item
@@ -197,11 +197,7 @@
 							if (!!this.picture.toString() && !!this.content) {
 								updateActivity(params).then(res => {
 									if (res.code === 200) {
-										uni.showToast({
-											title: '编辑成功',
-											icon: 'success',
-											duration: 2000
-										})
+										this.$store.commit('INTRACITY_EDIT_SUCCESS', true)
 										uni.navigateTo({
 											url: "/pages/index/service/intraCityActivity"
 										})
@@ -230,11 +226,7 @@
 							if (!!this.picture.toString() && !!this.content) {
 								addActivity(params).then(res => {
 									if (res.code === 200) {
-										uni.showToast({
-											title: '发布成功',
-											icon: 'success',
-											duration: 2000
-										})
+										this.$store.commit('INTRACITY_ADD_SUCCESS', true)
 										uni.navigateTo({
 											url: "/pages/index/service/intraCityActivity"
 										})

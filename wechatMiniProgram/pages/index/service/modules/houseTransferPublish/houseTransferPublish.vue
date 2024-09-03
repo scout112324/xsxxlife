@@ -58,7 +58,7 @@
 			return {
 				cameraNumber: 9,
 				content: "",
-				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item=>{
+				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item => {
 					return {
 						text: item,
 						value: item
@@ -171,11 +171,7 @@
 							if (!!this.picture.toString() && !!this.content) {
 								updateHouse(params).then(res => {
 									if (res.code === 200) {
-										uni.showToast({
-											title: '编辑成功',
-											icon: 'success',
-											duration: 2000
-										})
+										this.$store.commit('HOUSETRANSFER_EDIT_SUCCESS', true)
 										uni.navigateTo({
 											url: "/pages/index/service/houseTransfer"
 										})
@@ -202,11 +198,7 @@
 							if (!!this.picture.toString() && !!this.content) {
 								addHouse(params).then(res => {
 									if (res.code === 200) {
-										uni.showToast({
-											title: '发布成功',
-											icon: 'success',
-											duration: 2000
-										})
+										this.$store.commit('HOUSETRANSFER_ADD_SUCCESS', true)
 										uni.navigateTo({
 											url: "/pages/index/service/houseTransfer"
 										})
@@ -233,10 +225,10 @@
 	.publish-page {
 		background-color: #F3F6F5;
 		height: 100vh;
-		
+
 		::v-deep .dialog-close {
 			visibility: hidden;
-		
+
 			&:after {
 				content: '确定';
 				color: #007aff;

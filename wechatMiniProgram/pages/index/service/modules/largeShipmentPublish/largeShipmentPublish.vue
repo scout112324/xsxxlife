@@ -65,7 +65,7 @@
 			return {
 				cameraNumber: 9,
 				content: "",
-				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item=>{
+				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item => {
 					return {
 						text: item,
 						value: item
@@ -189,11 +189,7 @@
 							if (!!this.picture.toString() && !!this.content) {
 								updateBig(params).then(res => {
 									if (res.code === 200) {
-										uni.showToast({
-											title: '编辑成功',
-											icon: 'success',
-											duration: 2000
-										})
+										this.$store.commit('LARGESHIPMENT_EDIT_SUCCESS', true)
 										uni.navigateTo({
 											url: "/pages/index/service/largeShipmentClearance"
 										})
@@ -221,11 +217,7 @@
 							if (!!this.picture.toString() && !!this.content) {
 								addBig(params).then(res => {
 									if (res.code === 200) {
-										uni.showToast({
-											title: '发布成功',
-											icon: 'success',
-											duration: 2000
-										})
+										this.$store.commit('LARGESHIPMENT_ADD_SUCCESS', true)
 										uni.navigateTo({
 											url: "/pages/index/service/largeShipmentClearance"
 										})
@@ -260,9 +252,10 @@
 <style lang="scss" scoped>
 	.publish-page {
 		background-color: #F3F6F5;
+
 		::v-deep .dialog-close {
 			visibility: hidden;
-		
+
 			&:after {
 				content: '确定';
 				color: #007aff;

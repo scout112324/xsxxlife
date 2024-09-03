@@ -50,7 +50,8 @@
 				pageNum: 1,
 				pageSize: 50,
 				activityList: [],
-				hasMore: true
+				hasMore: true,
+				timer: null
 			}
 		},
 		onLoad() {
@@ -58,9 +59,38 @@
 		},
 		onUnload() {
 			uni.$off('changeActivityList')
+			clearTimeout(this.timer)
 		},
-		onShow() {
-			this.getActivityList()
+		created() {
+			if (!!this.$store.state.app.intraCityAdd) {
+				uni.showToast({
+					title: '发布成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('INTRACITY_ADD_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			} else if (!!this.$store.state.app.intraCityEdit) {
+				uni.showToast({
+					title: '编辑成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('INTRACITY_EDIT_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			} else {
+				this.getActivityList()
+			}
 		},
 		onPullDownRefresh() {
 			// 下拉刷新

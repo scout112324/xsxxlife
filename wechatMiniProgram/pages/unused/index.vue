@@ -8,7 +8,8 @@
 				@clear="handleConfirm">
 			</uni-easyinput>
 		</view>
-		<scroll-view v-if="unusedList && unusedList.length>0" class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
+		<scroll-view v-if="unusedList && unusedList.length>0" class="unused-list" :style="{'height':screenHeight}"
+			scroll-y @scrolltolower="handleToLower">
 			<view class="lift-item" v-for="(item,index) in unusedList" :key="item.id">
 				<info-item :pageType="pageType" :itemData="item" :index="index" @unusedChangeStatus="unusedChangeStatus"
 					@handleJumpDetail="handleJumpDetail(item,index)"></info-item>
@@ -57,6 +58,37 @@
 				unusedList: [],
 				hasMore: true,
 				unusedListLength: 0,
+				timer: null
+			}
+		},
+		onShow() {
+			if (!!this.$store.state.app.unusedAdd) {
+				uni.showToast({
+					title: '发布成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('UNUSED_ADD_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			}
+			if (!!this.$store.state.app.unusedEdit) {
+				uni.showToast({
+					title: '编辑成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('UNUSED_EDIT_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
 			}
 		},
 		onLoad(options) {
@@ -75,6 +107,7 @@
 		onUnload() {
 			uni.$off('changeUnused')
 			uni.$off('getUnusedListChange')
+			clearTimeout(this.timer)
 		},
 		created() {
 			this.getUnusedList()
@@ -103,25 +136,25 @@
 			refreshUnusedList() {
 				this.refresh()
 			},
-			detailStatus(index,type,isAdd) {
-				if(type==='support') {
-					if(isAdd) {
+			detailStatus(index, type, isAdd) {
+				if (type === 'support') {
+					if (isAdd) {
 						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount + 1)
 						this.$set(this.unusedList[index], 'support', true)
-					}else {
+					} else {
 						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount - 1)
 						this.$set(this.unusedList[index], 'support', false)
 					}
-				}else if(type==='star') {
-					if(isAdd) {
+				} else if (type === 'star') {
+					if (isAdd) {
 						this.$set(this.unusedList[index], 'starCount', this.unusedList[index].starCount + 1)
 						this.$set(this.unusedList[index], 'star', true)
-					}else {
+					} else {
 						this.$set(this.unusedList[index], 'starCount', this.unusedList[index].starCount - 1)
 						this.$set(this.unusedList[index], 'star', false)
 					}
-				}else if(type==='comment') {
-					if(isAdd) {
+				} else if (type === 'comment') {
+					if (isAdd) {
 						this.$set(this.unusedList[index], 'commentCount', this.unusedList[index].commentCount + 1)
 					}
 				}
@@ -181,26 +214,26 @@
 				this.getUnusedList()
 			},
 			// 点赞,收藏状态改变
-			unusedChangeStatus(index,type,isAdd) {
-				if(type==='support') {
-					if(isAdd) {
+			unusedChangeStatus(index, type, isAdd) {
+				if (type === 'support') {
+					if (isAdd) {
 						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount + 1)
 						this.$set(this.unusedList[index], 'support', true)
-					}else {
+					} else {
 						this.$set(this.unusedList[index], 'supportCount', this.unusedList[index].supportCount - 1)
 						this.$set(this.unusedList[index], 'support', false)
 					}
-				}else if(type==='star') {
-					if(isAdd) {
+				} else if (type === 'star') {
+					if (isAdd) {
 						this.$set(this.unusedList[index], 'starCount', this.unusedList[index].starCount + 1)
 						this.$set(this.unusedList[index], 'star', true)
-					}else {
+					} else {
 						this.$set(this.unusedList[index], 'starCount', this.unusedList[index].starCount - 1)
 						this.$set(this.unusedList[index], 'star', false)
 					}
 				}
 			},
-			handleJumpDetail(item,index) {
+			handleJumpDetail(item, index) {
 				uni.navigateTo({
 					url: `/pages/unused/detailUnused/detail?itemData=${encodeURIComponent(JSON.stringify(item))
 			}&index=${index}`

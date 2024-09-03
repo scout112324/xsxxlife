@@ -13,7 +13,8 @@
 		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 
 			<view class="lift-item" v-for="(item,index) in findList" :key="item.id">
-				<info-item :pageType="pageType" :itemData="item" :index="index" @findPeopleChangeStatus="findPeopleChangeStatus"
+				<info-item :pageType="pageType" :itemData="item" :index="index"
+					@findPeopleChangeStatus="findPeopleChangeStatus"
 					@handleJumpFindDetail="handleJumpFindDetail(item,index)"></info-item>
 			</view>
 		</scroll-view>
@@ -50,7 +51,8 @@
 				pageNum: 1,
 				pageSize: 50,
 				findList: [],
-				hasMore: true
+				hasMore: true,
+				timer: null
 			}
 		},
 		onLoad() {
@@ -58,34 +60,63 @@
 		},
 		onUnload() {
 			uni.$off('changeFindList')
+			clearTimeout(this.timer)
 		},
 		created() {
-			this.getFindList()
+			if (!!this.$store.state.app.lookForPeopleAdd) {
+				uni.showToast({
+					title: '发布成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('LOOKFORPEOPLE_ADD_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			} else if (!!this.$store.state.app.lookForPeopleEdit) {
+				uni.showToast({
+					title: '编辑成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('LOOKFORPEOPLE_EDIT_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			} else {
+				this.getFindList()
+			}
 		},
 		onPullDownRefresh() {
 			// 下拉刷新
 			this.refresh()
 		},
 		methods: {
-			detailStatus(index,type,isAdd) {
-				if(type==='support') {
-					if(isAdd) {
+			detailStatus(index, type, isAdd) {
+				if (type === 'support') {
+					if (isAdd) {
 						this.$set(this.findList[index], 'supportCount', this.findList[index].supportCount + 1)
 						this.$set(this.findList[index], 'support', true)
-					}else {
+					} else {
 						this.$set(this.findList[index], 'supportCount', this.findList[index].supportCount - 1)
 						this.$set(this.findList[index], 'support', false)
 					}
-				}else if(type==='star') {
-					if(isAdd) {
+				} else if (type === 'star') {
+					if (isAdd) {
 						this.$set(this.findList[index], 'starCount', this.findList[index].starCount + 1)
 						this.$set(this.findList[index], 'star', true)
-					}else {
+					} else {
 						this.$set(this.findList[index], 'starCount', this.findList[index].starCount - 1)
 						this.$set(this.findList[index], 'star', false)
 					}
-				}else if(type==='comment') {
-					if(isAdd) {
+				} else if (type === 'comment') {
+					if (isAdd) {
 						this.$set(this.findList[index], 'commentCount', this.findList[index].commentCount + 1)
 					}
 				}
@@ -140,20 +171,20 @@
 				this.getFindList()
 			},
 			// 点赞,收藏状态改变
-			findPeopleChangeStatus(index,type,isAdd) {
-				if(type==='support') {
-					if(isAdd) {
+			findPeopleChangeStatus(index, type, isAdd) {
+				if (type === 'support') {
+					if (isAdd) {
 						this.$set(this.findList[index], 'supportCount', this.findList[index].supportCount + 1)
 						this.$set(this.findList[index], 'support', true)
-					}else {
+					} else {
 						this.$set(this.findList[index], 'supportCount', this.findList[index].supportCount - 1)
 						this.$set(this.findList[index], 'support', false)
 					}
-				}else if(type==='star') {
-					if(isAdd) {
+				} else if (type === 'star') {
+					if (isAdd) {
 						this.$set(this.findList[index], 'starCount', this.findList[index].starCount + 1)
 						this.$set(this.findList[index], 'star', true)
-					}else {
+					} else {
 						this.$set(this.findList[index], 'starCount', this.findList[index].starCount - 1)
 						this.$set(this.findList[index], 'star', false)
 					}
@@ -164,7 +195,7 @@
 					url: "/pages/index/index"
 				})
 			},
-			handleJumpFindDetail(item,index) {
+			handleJumpFindDetail(item, index) {
 				uni.navigateTo({
 					url: `/pages/index/service/modules/lookForPeopleDetail/lookForPeopleDetail?itemData=${encodeURIComponent(JSON.stringify(item))}&index=${index}`
 				})

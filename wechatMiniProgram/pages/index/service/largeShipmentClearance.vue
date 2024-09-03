@@ -52,7 +52,8 @@
 				pageNum: 1,
 				pageSize: 50,
 				bigList: [],
-				hasMore: true
+				hasMore: true,
+				timer: null
 			}
 		},
 		onLoad() {
@@ -60,34 +61,63 @@
 		},
 		onUnload() {
 			uni.$off('changeBigList')
+			clearTimeout(this.timer)
 		},
 		created() {
-			this.getBigList()
+			if (!!this.$store.state.app.largeShipmentAdd) {
+				uni.showToast({
+					title: '发布成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('LARGESHIPMENT_ADD_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			} else if (!!this.$store.state.app.largeShipmentEdit) {
+				uni.showToast({
+					title: '编辑成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('LARGESHIPMENT_EDIT_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			} else {
+				this.getBigList()
+			}
 		},
 		onPullDownRefresh() {
 			// 下拉刷新
 			this.refresh()
 		},
 		methods: {
-			detailStatus(index,type,isAdd) {
-				if(type==='support') {
-					if(isAdd) {
+			detailStatus(index, type, isAdd) {
+				if (type === 'support') {
+					if (isAdd) {
 						this.$set(this.bigList[index], 'supportCount', this.bigList[index].supportCount + 1)
 						this.$set(this.bigList[index], 'support', true)
-					}else {
+					} else {
 						this.$set(this.bigList[index], 'supportCount', this.bigList[index].supportCount - 1)
 						this.$set(this.bigList[index], 'support', false)
 					}
-				}else if(type==='star') {
-					if(isAdd) {
+				} else if (type === 'star') {
+					if (isAdd) {
 						this.$set(this.bigList[index], 'starCount', this.bigList[index].starCount + 1)
 						this.$set(this.bigList[index], 'star', true)
-					}else {
+					} else {
 						this.$set(this.bigList[index], 'starCount', this.bigList[index].starCount - 1)
 						this.$set(this.bigList[index], 'star', false)
 					}
-				}else if(type==='comment') {
-					if(isAdd) {
+				} else if (type === 'comment') {
+					if (isAdd) {
 						this.$set(this.bigList[index], 'commentCount', this.bigList[index].commentCount + 1)
 					}
 				}
@@ -145,20 +175,20 @@
 				this.getBigList()
 			},
 			// 点赞,收藏状态改变
-			largeShipmentTransferChangeStatus(index,type,isAdd) {
-				if(type==='support') {
-					if(isAdd) {
+			largeShipmentTransferChangeStatus(index, type, isAdd) {
+				if (type === 'support') {
+					if (isAdd) {
 						this.$set(this.bigList[index], 'supportCount', this.bigList[index].supportCount + 1)
 						this.$set(this.bigList[index], 'support', true)
-					}else {
+					} else {
 						this.$set(this.bigList[index], 'supportCount', this.bigList[index].supportCount - 1)
 						this.$set(this.bigList[index], 'support', false)
 					}
-				}else if(type==='star') {
-					if(isAdd) {
+				} else if (type === 'star') {
+					if (isAdd) {
 						this.$set(this.bigList[index], 'starCount', this.bigList[index].starCount + 1)
 						this.$set(this.bigList[index], 'star', true)
-					}else {
+					} else {
 						this.$set(this.bigList[index], 'starCount', this.bigList[index].starCount - 1)
 						this.$set(this.bigList[index], 'star', false)
 					}
@@ -169,7 +199,7 @@
 					url: "/pages/index/index"
 				})
 			},
-			handleJumpLargeDetail(item,index) {
+			handleJumpLargeDetail(item, index) {
 				uni.navigateTo({
 					url: `/pages/index/service/modules/largeShipmentDetail/largeShipmentDetail?itemData=${encodeURIComponent(JSON.stringify(item))}&index=${index}`
 				})

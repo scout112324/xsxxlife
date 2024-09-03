@@ -14,8 +14,8 @@
 				</view>
 				<view class="address">
 					<image class="dingwei" src="../../../static/home/dingwei.png" mode=""></image>
-					<uni-data-picker style="width: calc(100% - 18rpx);" ellipsis popup-title="请选择所在地区" :localdata="areaTree" v-model="place"
-						@change="onchange" :clear-icon="false">
+					<uni-data-picker style="width: calc(100% - 18rpx);" ellipsis popup-title="请选择所在地区"
+						:localdata="areaTree" v-model="place" @change="onchange" :clear-icon="false">
 					</uni-data-picker>
 					<!-- <image class="tiaozhuan" src="../../../static/unused/tiaozhuan.png" mode=""></image> -->
 				</view>
@@ -71,7 +71,7 @@
 				picture: [],
 				// imgList: [],
 				showType: false,
-				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item=>{
+				place: uni.getStorageSync('place') ? uni.getStorageSync('place').split(',').map(item => {
 					return {
 						text: item,
 						value: item
@@ -200,12 +200,8 @@
 							if (!!this.picture.toString() && !!this.content) {
 								updateUnused(param).then(res => {
 									if (res.code === 200) {
-										uni.showToast({
-											title: '编辑成功',
-											icon: 'success',
-											duration: 2000
-										})
-										uni.$emit('getUnusedListChange')
+										this.$store.commit('UNUSED_EDIT_SUCCESS', true)
+										// uni.$emit('getUnusedListChange')
 										uni.switchTab({
 											url: "/pages/unused/index"
 										})
@@ -232,12 +228,8 @@
 							if (!!this.picture.toString() && !!this.content) {
 								addUnused(param).then(res => {
 									if (res.code === 200) {
-										uni.showToast({
-											title: '发布成功',
-											icon: 'success',
-											duration: 2000
-										})
-										uni.$emit('getUnusedListChange')
+										// uni.$emit('getUnusedListChange')
+										this.$store.commit('UNUSED_ADD_SUCCESS', true)
 										uni.switchTab({
 											url: "/pages/unused/index"
 										})
@@ -264,10 +256,10 @@
 	.publish-page {
 		background-color: #F3F6F5;
 		height: 100vh;
-		
+
 		::v-deep .dialog-close {
 			visibility: hidden;
-		
+
 			&:after {
 				content: '确定';
 				color: #007aff;
@@ -369,6 +361,7 @@
 				border-radius: 20rpx;
 				margin: 20rpx 0;
 				padding: 0 30rpx 20rpx 30rpx;
+
 				.tips {
 					margin-top: 20rpx;
 					color: #949494;

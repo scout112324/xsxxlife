@@ -13,7 +13,8 @@
 		<scroll-view class="unused-list" :style="{'height':screenHeight}" scroll-y @scrolltolower="handleToLower">
 
 			<view class="lift-item" v-for="(item,index) in houseList" :key="item.id">
-				<info-item :pageType="pageType" :itemData="item" :index="index" @houseTransferChangeStatus="houseTransferChangeStatus"
+				<info-item :pageType="pageType" :itemData="item" :index="index"
+					@houseTransferChangeStatus="houseTransferChangeStatus"
 					@handleJumpHouseDetail="handleJumpHouseDetail(item,index)"></info-item>
 			</view>
 		</scroll-view>
@@ -51,7 +52,8 @@
 				pageNum: 1,
 				pageSize: 50,
 				houseList: [],
-				hasMore: true
+				hasMore: true,
+				timer: null
 			}
 		},
 		onLoad() {
@@ -59,34 +61,63 @@
 		},
 		onUnload() {
 			uni.$off('changeHouseList')
+			clearTimeout(this.timer)
 		},
 		created() {
-			this.getHouseList()
+			if (!!this.$store.state.app.houseTransferAdd) {
+				uni.showToast({
+					title: '发布成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('HOUSETRANSFER_ADD_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			} else if (!!this.$store.state.app.houseTransferEdit) {
+				uni.showToast({
+					title: '编辑成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('HOUSETRANSFER_EDIT_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.refresh()
+				}, 1000)
+			} else {
+				this.getHouseList()
+			}
 		},
 		onPullDownRefresh() {
 			// 下拉刷新
 			this.refresh()
 		},
 		methods: {
-			detailStatus(index,type,isAdd) {
-				if(type==='support') {
-					if(isAdd) {
+			detailStatus(index, type, isAdd) {
+				if (type === 'support') {
+					if (isAdd) {
 						this.$set(this.houseList[index], 'supportCount', this.houseList[index].supportCount + 1)
 						this.$set(this.houseList[index], 'support', true)
-					}else {
+					} else {
 						this.$set(this.houseList[index], 'supportCount', this.houseList[index].supportCount - 1)
 						this.$set(this.houseList[index], 'support', false)
 					}
-				}else if(type==='star') {
-					if(isAdd) {
+				} else if (type === 'star') {
+					if (isAdd) {
 						this.$set(this.houseList[index], 'starCount', this.houseList[index].starCount + 1)
 						this.$set(this.houseList[index], 'star', true)
-					}else {
+					} else {
 						this.$set(this.houseList[index], 'starCount', this.houseList[index].starCount - 1)
 						this.$set(this.houseList[index], 'star', false)
 					}
-				}else if(type==='comment') {
-					if(isAdd) {
+				} else if (type === 'comment') {
+					if (isAdd) {
 						this.$set(this.houseList[index], 'commentCount', this.houseList[index].commentCount + 1)
 					}
 				}
@@ -144,20 +175,20 @@
 				this.getHouseList()
 			},
 			// 点赞,收藏状态改变
-			houseTransferChangeStatus(index,type,isAdd) {
-				if(type==='support') {
-					if(isAdd) {
+			houseTransferChangeStatus(index, type, isAdd) {
+				if (type === 'support') {
+					if (isAdd) {
 						this.$set(this.houseList[index], 'supportCount', this.houseList[index].supportCount + 1)
 						this.$set(this.houseList[index], 'support', true)
-					}else {
+					} else {
 						this.$set(this.houseList[index], 'supportCount', this.houseList[index].supportCount - 1)
 						this.$set(this.houseList[index], 'support', false)
 					}
-				}else if(type==='star') {
-					if(isAdd) {
+				} else if (type === 'star') {
+					if (isAdd) {
 						this.$set(this.houseList[index], 'starCount', this.houseList[index].starCount + 1)
 						this.$set(this.houseList[index], 'star', true)
-					}else {
+					} else {
 						this.$set(this.houseList[index], 'starCount', this.houseList[index].starCount - 1)
 						this.$set(this.houseList[index], 'star', false)
 					}
@@ -168,7 +199,7 @@
 					url: "/pages/index/index"
 				})
 			},
-			handleJumpHouseDetail(item,index) {
+			handleJumpHouseDetail(item, index) {
 				uni.navigateTo({
 					url: `/pages/index/service/modules/houseTransferDetail/houseTransferDetail?itemData=${encodeURIComponent(JSON.stringify(item))}&index=${index}`
 				})
