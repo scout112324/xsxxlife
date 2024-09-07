@@ -20,7 +20,8 @@ const app = {
 		intraCityAdd: false,
 		intraCityEdit: false,
 		largeShipmentAdd: false,
-		largeShipmentEdit: false
+		largeShipmentEdit: false,
+		orderSuccess: false
 	},
 
 	mutations: {
@@ -66,6 +67,10 @@ const app = {
 		LARGESHIPMENT_EDIT_SUCCESS: (state, value) => {
 			state.largeShipmentEdit = value
 		},
+		ORDER_SUCCESS: (state, value) => {
+			state.orderSuccess = value
+		},
+
 	},
 
 	actions: {

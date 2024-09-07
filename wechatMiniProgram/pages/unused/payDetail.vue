@@ -85,7 +85,7 @@
 						let payment = res.data
 						wxPayment(payment)
 							.then(res => {
-								console.log("res",res)
+								console.log("res1", res)
 								uni.showToast({
 									title: '支付成功',
 									icon: 'success',

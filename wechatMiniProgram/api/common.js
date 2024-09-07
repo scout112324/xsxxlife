@@ -1,4 +1,5 @@
 import request from "@/utils/request/index.js"
+import store from '@/store/index.js';
 
 const api = {
 	addSupport: 'app/support/add',
@@ -84,10 +85,10 @@ export const wxPayment = (option) => {
 			signType: 'MD5',
 			paySign: options.paySign,
 			success: res => {
-				uni.showToast({
-					title: '支付成功',
-					icon: 'success',
-					duration: 2000
+				console.log("res", res)
+				store.commit('ORDER_SUCCESS', true)
+				uni.navigateTo({
+					url: "/pages/user/trading/trading"
 				})
 				resolve(res)
 			},

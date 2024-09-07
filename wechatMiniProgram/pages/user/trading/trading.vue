@@ -171,13 +171,32 @@
 				orderId: '',
 				addressInfo: "",
 				showAddress: false,
+				timer: null
 			}
 		},
 		onReady() {
 			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 380 + 'rpx'
 		},
+		onUnload() {
+			clearTimeout(this.timer)
+		},
 		onShow() {
-			this.getOrderRecord()
+			if (!!this.$store.state.app.orderSuccess) {
+				uni.showToast({
+					title: '支付成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('ORDER_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.getOrderRecord()
+				}, 1000)
+			} else {
+				this.getOrderRecord()
+			}
 		},
 		onPullDownRefresh() {
 			// 下拉刷新
