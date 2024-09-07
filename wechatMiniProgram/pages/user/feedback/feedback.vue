@@ -19,7 +19,7 @@
 				</uni-forms-item>
 				<uni-forms-item label="客服联系微信" class="copy-phone" label-width="200rpx">
 					<view class="phone">
-						puqzzz
+						{{wx}}
 					</view>
 					<uni-button type="primary" class="uni-btn" @tap="handleCopy('puqzzz')">
 						<image src="../../../static/user/fuzhi.png" mode="aspectFit"
@@ -41,6 +41,9 @@
 	import {
 		addAdvice
 	} from "@/api/user/index.js"
+	import {
+		concatJob
+	} from "@/api/index/index.js"
 	export default {
 		components: {
 			caremaItem
@@ -93,14 +96,26 @@
 				imgList: [],
 				pageType: "feedback",
 				cameraNumber: 3,
-				picture: []
+				picture: [],
+				wx: ""
 			}
 		},
 		onReady() {
 			// 需要在onReady中设置规则
 			this.$refs.form.setRules(this.rules)
 		},
+		onShow() {
+			this.getConcatJob()
+		},
 		methods: {
+			getConcatJob() {
+				concatJob().then(res => {
+					if (res.code === 200) {
+						console.log("concatJob", res.data)
+						this.wx = res.data.wx
+					}
+				})
+			},
 			// 文件上传
 			handleUploadFile(file) {
 				this.picture = file

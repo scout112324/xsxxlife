@@ -34,7 +34,7 @@
 						<uni-icons type="forward" size="22"></uni-icons>
 					</button>
 					<view class="right" v-else>
-						<view class="new" v-if="item.name=='收藏列表'">
+						<view class="new" v-if="item.name=='交易记录' && showOrderMsg==true">
 							NEW
 						</view>
 						<view class="money" v-if="item.name=='点击提现'">
@@ -68,7 +68,8 @@
 	import {
 		infoUser,
 		withdrawal,
-		updateUser
+		updateUser,
+		orderShowMsg
 	} from "@/api/user/index.js"
 	import {
 		uploadFiles
@@ -158,7 +159,8 @@
 					]
 				},
 				money: 0,
-				myInfo: {}
+				myInfo: {},
+				showOrderMsg: false
 			}
 		},
 		onReady() {
@@ -167,8 +169,22 @@
 		},
 		onShow() {
 			this.getInfoUser()
+			this.getOrderShowMsg()
 		},
 		methods: {
+			getOrderShowMsg() {
+				orderShowMsg().then(res => {
+					if (res.code === 200) {
+						this.showOrderMsg = res.data
+					} else {
+						uni.showToast({
+							title: res.msg,
+							icon: 'none',
+							duration: 2000
+						})
+					}
+				})
+			},
 			// 获取我的信息
 			getInfoUser() {
 				infoUser().then(res => {

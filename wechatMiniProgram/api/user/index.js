@@ -31,6 +31,18 @@ const api = {
 	agreeRefund: 'app/my/agreeRefund',
 	refuseRefund: 'app/my/refuseRefund',
 	takeDelivery: 'app/my/takeDelivery',
+	orderShowMsg: 'app/my/orderShowMsg',
+	removeRed: 'app/my/removeRed',
+}
+
+// 消除小红点
+export const removeRed = (param, option) => {
+	return request.get(api.removeRed, param)
+}
+
+// 我的—交易记录是否展示new
+export const orderShowMsg = (param, option) => {
+	return request.get(api.orderShowMsg, param)
 }
 
 // 更改昵称或者头像
