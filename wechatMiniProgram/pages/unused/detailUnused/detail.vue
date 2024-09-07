@@ -70,7 +70,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="communicate">
+			<view class="communicate" v-if="itemData.payStatus==0 || itemData.payStatus==null">
 				<u-button text="立即下单" @click="handleOrderClick"></u-button>
 			</view>
 		</view>
@@ -97,6 +97,7 @@
 		},
 		onLoad(options) {
 			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
+			console.log("this.itemData", this.itemData)
 			this.index = options.index
 			this.pictureList = this.itemData.picture ? this.itemData.picture.split(',') : []
 		},

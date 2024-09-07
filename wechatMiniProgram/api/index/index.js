@@ -25,7 +25,8 @@ const api = {
 	intservHome: 'app/home/intserv',
 	placeUser: 'app/user/place',
 	articleTo: 'app/articleTo/select',
-	homeUrl: 'app/home/url'
+	homeUrl: 'app/home/url',
+	cancelEntry: 'app/activity/cancelEntry'
 }
 
 // 登录
@@ -121,6 +122,11 @@ export const addActivity = (param, option) => {
 // 编辑同城活动
 export const updateActivity = (param, option) => {
 	return request.post(api.updateActivity, param)
+}
+
+// 取消报名同城活动
+export const cancelEntry = (param, option) => {
+	return request.get(api.cancelEntry, param)
 }
 
 // 报名同城活动

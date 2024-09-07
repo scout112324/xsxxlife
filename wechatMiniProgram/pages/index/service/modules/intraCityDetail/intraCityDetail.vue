@@ -116,8 +116,11 @@
 					</view>
 				</view>
 			</view>
-			<view class="communicate">
+			<view class="communicate" v-if="!itemData.entry">
 				<u-button text="立即报名" @click="handleCommuniteClick(itemData.id)"></u-button>
+			</view>
+			<view class="communicate" v-else>
+				<u-button text="取消报名" @click="handleCancleClick(itemData.id)"></u-button>
 			</view>
 		</view>
 	</view>
@@ -135,7 +138,8 @@
 		addGive
 	} from "@/api/common.js"
 	import {
-		entryActivity
+		entryActivity,
+		cancelEntry
 	} from "@/api/index/index.js"
 	export default {
 		components: {
@@ -219,11 +223,34 @@
 				this.level = level
 				this.childId = id
 			},
+			// 取消报名
+			handleCancleClick(id) {
+				let params = {
+					id: id
+				}
+				cancelEntry(params).then(res => {
+					if (res.code === 200) {
+						this.$set(this.itemData, "entry", false)
+						uni.showToast({
+							title: '取消报名成功',
+							icon: 'success',
+							duration: 2000
+						})
+					} else {
+						uni.showToast({
+							title: res.msg,
+							icon: 'none',
+							duration: 2000
+						})
+					}
+				})
+			},
 			handleCommuniteClick(id) {
 				entryActivity({
 					id
 				}).then(res => {
 					if (res.code === 200) {
+						this.$set(this.itemData, "entry", true)
 						uni.showToast({
 							title: '报名成功',
 							icon: 'success',
@@ -231,8 +258,8 @@
 						})
 					} else {
 						uni.showToast({
-							title: '您已报名成功!',
-							icon: 'success',
+							title: res.msg,
+							icon: 'none',
 							duration: 2000
 						})
 					}

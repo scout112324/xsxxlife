@@ -83,7 +83,14 @@ export const wxPayment = (option) => {
 			'package': options.packageValue,
 			signType: 'MD5',
 			paySign: options.paySign,
-			success: res => resolve(res),
+			success: res => {
+				uni.showToast({
+					title: '支付成功',
+					icon: 'success',
+					duration: 2000
+				})
+				resolve(res)
+			},
 			fail: res => reject(res)
 		})
 	})
