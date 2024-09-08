@@ -77,8 +77,8 @@
 	export default {
 		data() {
 			return {
-				avatarUrl: "",
-				nickname: "",
+				avatarUrl: uni.getStorageSync('avatarUrl'),
+				nickname: uni.getStorageSync('nickName'),
 				titleStyle: {
 					fontWeight: 500,
 					color: "#131313"
@@ -190,7 +190,7 @@
 				infoUser().then(res => {
 					if (res.code === 200) {
 						this.myInfo = res.data
-						this.avatarUrl = res.data.photo
+						this.avatarUrl = res.data.photo ? res.data.photo : this.avatarUrl
 						this.nickname = res.data.nickname
 						this.money = res.data.realMoney
 					}
