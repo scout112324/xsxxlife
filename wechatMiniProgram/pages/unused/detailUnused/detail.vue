@@ -14,7 +14,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="share" @click="handleCommuniteClick(itemData.userId)">
+				<view class="share" @click="handleCommuniteClick(itemData.userId)" v-if="!isMyPublish">
 					<uni-button type="primary" class="uni-btn">
 						<image src="../../../static/home/lianxi.png" mode="aspectFit"
 							style="width: 34rpx; height: 31rpx;margin-right: 8rpx; ">
@@ -35,7 +35,7 @@
 					{{itemData.phone}}
 				</view>
 				<view class="btn">
-					<button class="tel-call" @click="handlePhoneCall(itemData.phone)">呼叫</button>
+					<button class="tel-call" @click="handlePhoneCall(itemData.phone)" :disabled="isMyPublish">呼叫</button>
 				</view>
 			</view>
 			<view :class="['content',{'occupy-cot': pictureList.length==0}]">
@@ -82,7 +82,7 @@
 				</view>
 			</view>
 			<view class="communicate" v-if="itemData.payStatus==0 || itemData.payStatus==null">
-				<u-button text="立即下单" @click="handleOrderClick"></u-button>
+				<u-button text="立即下单" @click="handleOrderClick" :disabled="isMyPublish"></u-button>
 			</view>
 		</view>
 	</view>
@@ -101,6 +101,9 @@
 		submitWx,
 	} from "@/api/common.js"
 	import index from "../../../store"
+	import {
+		canBuy
+	} from "@/api/unused/index.js"
 	export default {
 		components: {
 			comment,
@@ -109,6 +112,7 @@
 		onLoad(options) {
 			this.itemData = JSON.parse(decodeURIComponent(options.itemData))
 			console.log("this.itemData", this.itemData)
+			this.getCanBuy(this.itemData.id)
 			this.index = options.index
 			this.pictureList = this.itemData.picture ? this.itemData.picture.split(',') : []
 		},
@@ -122,9 +126,20 @@
 				level: 0,
 				childId: "",
 				pictureList: [],
+				isMyPublish: false
 			}
 		},
 		methods: {
+			getCanBuy(id) {
+				let params = {
+					id: id
+				}
+				canBuy(params).then(res => {
+					if (res.code === 200) {
+						this.isMyPublish = res.data
+					}
+				})
+			},
 			// 拨打电话
 			handlePhoneCall(phoneNumber) {
 				uni.makePhoneCall({
