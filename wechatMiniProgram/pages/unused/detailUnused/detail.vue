@@ -27,6 +27,17 @@
 				<text class="unit">¥</text>
 				<text class="num">{{itemData.price || '0'}}</text>
 			</view>
+			<view v-if="itemData.saleType == 0" class="saleType">线上交易</view>
+			<view v-if="itemData.saleType == 1" class="saleType">线下交易</view>
+			<view class="communicate-phone">
+				<image class="icon" src="@/static/home/dianhua.png" mode=""></image>
+				<view class="number">
+					{{itemData.phone}}
+				</view>
+				<view class="btn">
+					<button class="tel-call" @click="handlePhoneCall(itemData.phone)">呼叫</button>
+				</view>
+			</view>
 			<view :class="['content',{'occupy-cot': pictureList.length==0}]">
 				{{itemData.content || '暂无'}}
 			</view>
@@ -114,6 +125,18 @@
 			}
 		},
 		methods: {
+			// 拨打电话
+			handlePhoneCall(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber: phoneNumber,
+					success: (e) => {
+						console.log(e)
+					},
+					fail: (e) => {
+						console.log(e)
+					}
+				});
+			},
 			previewImage: function(index) {
 				//预览图片
 				uni.previewImage({
@@ -345,6 +368,59 @@
 
 				.num {
 					font-size: 46rpx;
+				}
+			}
+
+			.saleType {
+				font-size: 28rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 600;
+				color: #646464;
+				line-height: 44rpx;
+				margin: 20rpx 0;
+
+				width: 100%;
+			}
+
+			.communicate-phone {
+				display: flex;
+				align-items: center;
+				margin: 21rpx 0 43rpx 0;
+
+				.icon {
+					width: 42rpx;
+					height: 42rpx;
+				}
+
+				.number {
+					font-size: 34rpx;
+					font-weight: 600;
+					color: #232624;
+					margin: 0 16rpx;
+				}
+
+				.btn {
+					::v-deep .tel-call {
+						&::after {
+							border: none
+						}
+
+						width: 138rpx;
+						height: 48rpx;
+						background: #FFD100;
+						border-radius: 40rpx;
+						line-height: 48rpx;
+
+						padding: 0;
+						margin: 0;
+						font-size: 26rpx;
+						font-weight: 400;
+						color: #232624;
+					}
+
+					::v-deep .uni-btn {
+						padding: 8rpx 43rpx;
+					}
 				}
 			}
 
