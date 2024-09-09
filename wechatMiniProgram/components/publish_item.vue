@@ -9,12 +9,17 @@
 		</block>
 		<image class="image" v-else src="../../../static/chat/avatar.png" mode=""></image>
 		<view class="content">
-			<view v-if="itemData.title" class="title" :class="{'mul-title': !(type!==0 && type!==2 && type!==4)}">
-				{{itemData.title}}
-			</view>
-			<view v-else-if="itemData.content" class="title"
-				:class="{'mul-title': !(type!==0 && type!==2 && type!==4)}">
-				{{itemData.content}}
+			<view class="sub-header">
+				<view v-if="itemData.title" class="title" :class="{'mul-title': !(type!==0 && type!==2 && type!==4)}">
+					{{itemData.title}}
+				</view>
+				<view v-else-if="itemData.content" class="title"
+					:class="{'mul-title': !(type!==0 && type!==2 && type!==4)}">
+					{{itemData.content}}
+				</view>
+				<view class="status" v-if="itemData.payStatus">
+					{{itemData.payStatus | statusFliter}}
+				</view>
 			</view>
 			<view class="footer">
 				<view class="price" v-if="type!==0 && type!==2 && type!==4">
@@ -184,6 +189,22 @@
 					})
 				}
 			},
+		},
+		filters: {
+			statusFliter(val) {
+				switch (val) {
+					case 0:
+						return "在售";
+					case 1:
+						return "已支付";
+					case 2:
+						return "待收货";
+					case 3:
+						return "已收货";
+					case 4:
+						return "已退款";
+				}
+			}
 		}
 	}
 </script>
@@ -208,11 +229,23 @@
 			flex-direction: column;
 			justify-content: space-between;
 
+			.sub-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				.status {
+					font-size: 26rpx;
+					font-weight: 400;
+					color: #707070;
+				}
+			}
+
 			.title {
 				font-size: 28rpx;
 				font-weight: 400;
 				color: #232624;
-				width: 521rpx;
+				// width: 521rpx;
 
 				text-overflow: ellipsis;
 				overflow: hidden;
