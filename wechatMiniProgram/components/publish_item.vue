@@ -17,7 +17,7 @@
 					:class="{'mul-title': !(type!==0 && type!==2 && type!==4)}">
 					{{itemData.content}}
 				</view>
-				<view class="status" v-if="itemData.payStatus">
+				<view class="status" v-if="itemData.payStatus || itemData.payStatus==0">
 					{{itemData.payStatus | statusFliter}}
 				</view>
 			</view>
