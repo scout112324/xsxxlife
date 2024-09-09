@@ -1,4 +1,5 @@
 import request from "@/utils/request/index.js"
+import store from '@/store/index.js';
 
 const api = {
 	addSupport: 'app/support/add',
@@ -83,7 +84,14 @@ export const wxPayment = (option) => {
 			'package': options.packageValue,
 			signType: 'MD5',
 			paySign: options.paySign,
-			success: res => resolve(res),
+			success: res => {
+				console.log("res", res)
+				store.commit('ORDER_SUCCESS', true)
+				uni.navigateTo({
+					url: "/pages/user/trading/trading"
+				})
+				resolve(res)
+			},
 			fail: res => reject(res)
 		})
 	})

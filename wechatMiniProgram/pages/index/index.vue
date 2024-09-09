@@ -288,6 +288,19 @@
 								uni.hideLoading();
 								request.header.openId = res.data;
 								that.changePlaceUser();
+
+								// 使用登录凭证获取用户信息
+								uni.getUserInfo({
+									provider: 'weixin',
+									success: function(infoRes) {
+										console.log("infoRes", infoRes, infoRes
+											.userInfo); // 打印用户信息
+										uni.setStorageSync('nickName', infoRes.userInfo
+											.nickName)
+										uni.setStorageSync('avatarUrl', infoRes.userInfo
+											.avatarUrl)
+									}
+								});
 							}
 						})
 					}

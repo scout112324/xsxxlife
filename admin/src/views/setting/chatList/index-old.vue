@@ -1,20 +1,31 @@
 <template>
   <div class="container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" label-width="120px">
-      <el-form-item label="发送方用户的id" prop="sendUserId">
+      <el-form-item label="聊天内容" prop="content">
         <el-input
-          v-model="queryParams.sendUserId"
+          v-model="queryParams.content"
+          placeholder="请输入聊天内容关键字"
+          clearable
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="发送方用户的id" prop="sendId">
+        <el-input
+          v-model="queryParams.sendId"
           placeholder="请输入发送方用户的id"
           clearable
           style="width: 240px"
+          @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="接收方用户的id" prop="acceptUserId">
+      <el-form-item label="接收方用户的id" prop="acceptId">
         <el-input
-          v-model="queryParams.acceptUserId"
+          v-model="queryParams.acceptId"
           placeholder="请输入接收方用户的id"
           clearable
           style="width: 240px"
+          @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
@@ -22,7 +33,7 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="chatMsgChat">
+    <el-table v-loading="loading" :data="chatMsgList">
       <el-table-column type="index" width="50" align="center"></el-table-column>
       <el-table-column label="发送方用户昵称" align="center" prop="sendNickname"/>
       <el-table-column label="发送方用户头像" align="center" width="200">
@@ -31,38 +42,38 @@
         </template>
       </el-table-column>
       <el-table-column label="发布的用户id" align="center" prop="sendUserId"/>
-      <el-table-column label="接收方用户昵称" align="center" prop="myNickname"/>
+      <el-table-column label="接收方用户昵称" align="center" prop="acceptNickname"/>
       <el-table-column label="接收方用户头像" align="center" width="200">
         <template slot-scope="scope">
-          <img class="list-img" :src="scope.row.myPhoto">
+          <img class="list-img" :src="scope.row.acceptPhoto">
         </template>
       </el-table-column>
-      <el-table-column label="接收方用户的id" align="center" prop="myUserId"/>
+      <el-table-column label="接收方用户的id" align="center" prop="acceptUserId"/>
       <el-table-column label="聊天类型" align="center" prop="type" :formatter="formatterType"/>
       <el-table-column show-overflow-tooltip label="消息" align="center" prop="msg"/>
-<!--      <el-table-column label="消息是否已读" align="center" prop="signFlag" :formatter="formatterSignFlag"/>-->
-      <el-table-column label="时间" align="center" prop="time">
+      <el-table-column label="消息是否已读" align="center" prop="signFlag" :formatter="formatterSignFlag"/>
+      <el-table-column label="创建时间" align="center" prop="createTime">
         <template slot-scope="scope">
-          <span v-if="scope.row.time">{{ parseTime(scope.row.time) }}</span>
+          <span v-if="scope.row.createTime">{{ parseTime(scope.row.createTime) }}</span>
           <span v-else>-</span>
         </template>
       </el-table-column>
-<!--      <el-table-column-->
-<!--        label="操作"-->
-<!--        align="center"-->
-<!--        width="160"-->
-<!--        class-name="small-padding fixed-width"-->
-<!--      >-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-delete"-->
-<!--            @click="handleDelete(scope.row)"-->
-<!--          >删除-->
-<!--          </el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column
+        label="操作"
+        align="center"
+        width="160"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+          >删除
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <div class="footer">
@@ -82,14 +93,16 @@
   </div>
 </template>
 <script>
-import {chatMsgChat, deleteChatMsg} from '@/api/setting/setting'
+import {chatMsgList, deleteChatMsg} from '@/api/setting/setting'
 
 export default {
   name: 'chatList',
   data() {
     return {
+      // 遮罩层
+      loading: true,
       // 公告表格数据
-      chatMsgChat: [],
+      chatMsgList: [],
       // 弹出层标题
       diaTitle: '',
       // 是否显示弹出层
@@ -100,8 +113,9 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        sendUserId: "",
-        acceptUserId: ""
+        content: '',
+        sendId: '',
+        acceptId: ''
       },
       // 总条数
       total: 0,
@@ -109,14 +123,19 @@ export default {
       rules: {},
     }
   },
+  created() {
+    this.getList()
+  },
   methods: {
     /** 查询用户列表 */
     getList() {
-      chatMsgChat(this.queryParams).then(response => {
+      this.loading = true
+      chatMsgList(this.queryParams).then(response => {
           if (response.code === 200) {
             console.log(response)
-            this.chatMsgChat = response.data
+            this.chatMsgList = response.rows
             this.total = response.total
+            this.loading = false
           }
         }
       )

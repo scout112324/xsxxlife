@@ -4,7 +4,12 @@ const api = {
 	addUnused: 'app/unused/add',
 	updateUnused: 'app/unused/update',
 	listUnused: 'app/unused/list',
-	freeUnused: 'app/unused/list/free'
+	freeUnused: 'app/unused/list/free',
+	canBuy: 'app/unused/canBuy'
+}
+// 判断闲置物品是否为自己的物品（为自己的立即下单按钮置灰)
+export const canBuy = (param, option) => {
+	return request.get(api.canBuy, param)
 }
 
 // 增加闲置物品

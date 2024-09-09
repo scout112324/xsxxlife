@@ -81,6 +81,15 @@ export function userList(query) {
   })
 }
 
+// 查询聊天记录
+export function chatMsgChat(query) {
+  return request({
+    url: '/web/chatMsg/chat',
+    method: 'get',
+    params: query
+  })
+}
+
 // 获取聊天列表
 export function chatMsgList(query) {
   return request({

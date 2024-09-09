@@ -112,6 +112,12 @@
 								uni.navigateTo({
 									url: `/pages/unused/payDetail?payInfoMore=${encodeURIComponent(JSON.stringify(payInfoMore))}`
 								})
+							} else {
+								uni.showToast({
+									title: res.msg,
+									icon: 'none',
+									duration: 2000
+								})
 							}
 						})
 					} else {

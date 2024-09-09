@@ -24,6 +24,7 @@
 			@scrolltolower="handleToLower">
 			<block v-for="item in tradingList" :key="item.id">
 				<view class="list-item" @click="handleDetailClick(item)">
+					<view class="red-circle" v-if="!!item.showMsg"></view>
 					<view class="header">
 						<image v-if="item.photo" class="avatar" src="../../../static/avatar.png" mode=""></image>
 						<image v-else class="avatar" src="../../../static/avatar.png" mode=""></image>
@@ -131,7 +132,8 @@
 		refund,
 		agreeRefund,
 		refuseRefund,
-		takeDelivery
+		takeDelivery,
+		removeRed
 	} from "@/api/user/index.js"
 	export default {
 		data() {
@@ -143,20 +145,23 @@
 				},
 				imgType: ['bmp', 'jpg', 'jpeg', 'png', 'gif'],
 				list: [{
-					name: '全部',
-				}, {
-					name: '待付款'
-				}, {
-					name: '已付款',
-				}, {
-					name: '已卖出'
-				}, {
-					name: '待收货'
-				}, {
-					name: '已收货'
-				}, {
-					name: '已退款'
-				}],
+						name: '全部',
+					},
+					// {
+					// 	name: '待付款'
+					// }, 
+					{
+						name: '已付款',
+					}, {
+						name: '已卖出'
+					}, {
+						name: '待收货'
+					}, {
+						name: '已收货'
+					}, {
+						name: '已退款'
+					}
+				],
 				type: 0,
 				pageNum: 1,
 				pageSize: 10,
@@ -166,13 +171,32 @@
 				orderId: '',
 				addressInfo: "",
 				showAddress: false,
+				timer: null
 			}
 		},
 		onReady() {
 			this.screenHeight = uni.getSystemInfoSync().screenHeight * 2 - 380 + 'rpx'
 		},
+		onUnload() {
+			clearTimeout(this.timer)
+		},
 		onShow() {
-			this.getOrderRecord()
+			if (!!this.$store.state.app.orderSuccess) {
+				uni.showToast({
+					title: '支付成功',
+					icon: 'success',
+					duration: 2000
+				})
+				this.$store.commit('ORDER_SUCCESS', false)
+				if (this.timer) {
+					clearTimeout(this.timer)
+				}
+				this.timer = setTimeout(() => {
+					this.getOrderRecord()
+				}, 1000)
+			} else {
+				this.getOrderRecord()
+			}
 		},
 		onPullDownRefresh() {
 			// 下拉刷新
@@ -382,7 +406,29 @@
 				})
 			},
 			handleTabClick(item) {
-				this.type = item.index
+				switch (item.name) {
+					case "全部":
+						this.type = 0
+						break
+						// case "待付款":
+						// 	this.type = 1
+						// 	break
+					case "已付款":
+						this.type = 2
+						break
+					case "已卖出":
+						this.type = 3
+						break
+					case "待收货":
+						this.type = 4
+						break
+					case "已收货":
+						this.type = 5
+						break
+					case "已退款":
+						this.type = 6
+						break
+				}
 				this.pageNum = 1
 				this.hasMore = true
 				this.tradingList = []
@@ -402,6 +448,16 @@
 				})
 			},
 			handleDetailClick(item) {
+				console.log("item", item, this.type)
+				let params = {
+					type: this.type,
+					orderId: item.orderId
+				}
+				removeRed(params).then(res => {
+					if (res.code === 200) {
+						this.$set(item, "showMsg", false)
+					}
+				})
 				uni.navigateTo({
 					url: `/pages/unused/detailUnused/detail?itemData=${encodeURIComponent(JSON.stringify(item))
 				}`
@@ -454,11 +510,22 @@
 			width: auto;
 
 			.list-item {
+				position: relative;
 				background-color: #ffffff;
 				border-radius: 24rpx;
 				margin-bottom: 20rpx;
 				padding: 30rpx 30rpx 22rpx 30rpx;
 				box-sizing: border-box;
+
+				.red-circle {
+					position: absolute;
+					right: 20rpx;
+					top: 20rpx;
+					width: 10rpx;
+					height: 10rpx;
+					border-radius: 50%;
+					background-color: red;
+				}
 
 				.header {
 					display: flex;
