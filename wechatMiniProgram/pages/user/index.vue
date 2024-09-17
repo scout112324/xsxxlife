@@ -45,7 +45,7 @@
 				</view>
 			</view>
 		</view>
-		<u-modal :show="show" :title="title" showCancelButton confirmColor="#FFD100" width="650rpx"
+		<u-modal :show="show && !!zfb" :title="title" showCancelButton confirmColor="#FFD100" width="650rpx"
 			@cancel="handleCancle" @confirm="handleConfirm">
 			<view class="slot-content">
 				<view style="text-align: center;">
@@ -160,7 +160,9 @@
 				},
 				money: 0,
 				myInfo: {},
-				showOrderMsg: false
+				showOrderMsg: false,
+				name: "",
+				zfb: ""
 			}
 		},
 		onReady() {
@@ -193,6 +195,8 @@
 						this.avatarUrl = res.data.photo ? res.data.photo : this.avatarUrl
 						this.nickname = res.data.nickname
 						this.money = res.data.realMoney
+						this.name = res.data.name
+						this.zfb = res.data.zfb
 					}
 				})
 			},
