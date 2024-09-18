@@ -45,17 +45,17 @@
 				</view>
 			</view>
 		</view>
-		<u-modal :show="show && !!zfb" :title="title" showCancelButton confirmColor="#FFD100" width="650rpx"
+		<u-modal :show="show" :title="title" showCancelButton confirmColor="#FFD100" width="650rpx"
 			@cancel="handleCancle" @confirm="handleConfirm">
 			<view class="slot-content">
 				<view style="text-align: center;">
 					(可提现金额：{{myInfo.useMoney ? myInfo.useMoney : 0}}￥)
 				</view>
 				<u--form labelWidth="180rpx" labelPosition="left" :model="userInfo" :rules="rules" ref="uForm">
-					<u-form-item label="姓名:" prop="name">
+					<u-form-item :label="name" prop="name" v-if="!!name">
 						<u--input v-model="userInfo.name" border="bottom"></u--input>
 					</u-form-item>
-					<u-form-item label="支付宝账号:" prop="account">
+					<u-form-item :label="zfb" prop="account" v-if="!!zfb">
 						<u--input v-model="userInfo.account" border="bottom"></u--input>
 					</u-form-item>
 				</u--form>
