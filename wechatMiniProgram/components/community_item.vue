@@ -42,7 +42,7 @@
 
 <style lang="scss" scoped>
 	.community-item {
-		height: 173rpx;
+		// height: 173rpx;
 		background: #F5F5F5;
 		border-radius: 24rpx;
 		margin: 20rpx 0;
