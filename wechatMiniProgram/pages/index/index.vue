@@ -214,6 +214,12 @@
 				}
 			},
 		},
+		onShareAppMessage() {
+			return {
+				title: "线上线下",
+				path: "/pages/index/index",
+			}
+		},
 		methods: {
 			getHomeUrl() {
 				homeUrl({}).then(res => {
