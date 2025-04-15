@@ -198,4 +198,34 @@ $http.requestError = e => {
     })
   }
 }
+
+// 请求拦截器
+uni.addInterceptor('request', {
+  invoke(args) {
+    // 请求前拦截
+    const options = args;
+    // 添加请求头
+    options.header = {
+      ...options.header,
+      'content-type': 'application/json',
+      'token': uni.getStorageSync("token") ? uni.getStorageSync("token") : ''
+    };
+    
+    // 只有在需要位置信息时才获取
+    if (options.needLocation) {
+      const latitude = uni.getStorageSync("latitude");
+      const longitude = uni.getStorageSync("longitude");
+      if (!latitude || !longitude) {
+        // 如果没有位置信息，返回错误
+        return Promise.reject(new Error('需要位置信息'));
+      }
+      options.header['latitude'] = latitude;
+      options.header['longitude'] = longitude;
+    }
+    
+    return args;
+  },
+  // ... existing code ...
+});
+
 export default $http

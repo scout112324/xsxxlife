@@ -1,5 +1,7 @@
 import request from "@/utils/request/index.js"
 import store from '@/store/index.js';
+import $http from '@/utils/request/index.js'
+import { getLocationInfo } from '@/utils/location.js'
 
 const api = {
 	addSupport: 'app/support/add',
@@ -97,14 +99,23 @@ export const wxPayment = (option) => {
 	})
 }
 
-// http://api.map.baidu.com/geocoder?location=31.15916,121.43592&output=json
-
+// 获取地区信息
 export const getArea = (option) => {
 	return new Promise((resolve, reject) => {
-		uni.request({
-			url: `https://api.map.baidu.com/geocoder?location=${option.latitude},${option.longitude}&output=json`,
-			success: res => resolve(res),
-			fail: res => reject(res)
-		})
-	})
+		// 先获取位置信息
+		getLocationInfo().then(location => {
+			// 使用获取到的位置信息调用 API
+			$http.request({
+				url: `https://api.map.baidu.com/geocoder?location=${location.latitude},${location.longitude}&output=json`,
+				method: 'GET',
+				needLocation: true
+			}).then(res => {
+				resolve(res);
+			}).catch(err => {
+				reject(err);
+			});
+		}).catch(err => {
+			reject(err);
+		});
+	});
 }

@@ -213,15 +213,15 @@
 		.tabs {
 			background-color: #ffffff;
 
-			/deep/ .u-tabs__wrapper__nav {
+			::v-deep .u-tabs__wrapper__nav {
 				justify-content: space-around;
 			}
 
-			/deep/ .u-tabs__wrapper__nav__line {
+			::v-deep .u-tabs__wrapper__nav__line {
 				left: 0;
 			}
 
-			/deep/ .u-tabs__wrapper__nav__item {
+			::v-deep .u-tabs__wrapper__nav__item {
 				flex: 1;
 			}
 
